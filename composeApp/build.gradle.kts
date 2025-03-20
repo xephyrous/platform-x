@@ -30,7 +30,6 @@ kotlin {
     }
     
     sourceSets {
-        
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -40,8 +39,13 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
         }
     }
 }
 
-
+compose.resources {
+    publicResClass = false
+    packageOfResClass = "platformx.composeapp.generated.resources"
+    generateResClass = auto
+}
