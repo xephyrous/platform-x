@@ -1,7 +1,12 @@
 package org.xephyrous
 
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,9 +14,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.xephyrous.views.*
 
-enum class Screens(val title: String) {
-    Homepage("Homepage"),
-    Login("Login"),
+enum class Screens {
+    Homepage,
+    Login
 }
 
 @Composable
@@ -23,16 +28,20 @@ fun App(
         backStateEntry?.destination?.route ?: Screens.Homepage.name
     )
 
-    Scaffold {
-        NavHost (
-            navController = navController,
-            startDestination = Screens.Login.name
+    MaterialTheme {
+        BoxWithConstraints (
+            modifier = Modifier.fillMaxSize().background(Color(0xFF2D2D2D))
         ) {
-            composable(route = Screens.Homepage.name) {
-                Homepage(navController)
-            }
-            composable(route = Screens.Login.name) {
-                Login(navController)
+            NavHost (
+                navController = navController,
+                startDestination = Screens.Login.name
+            ) {
+                composable(route = Screens.Homepage.name) {
+                    Homepage(navController)
+                }
+                composable(route = Screens.Login.name) {
+                    Login(navController)
+                }
             }
         }
     }
