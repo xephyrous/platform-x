@@ -22,12 +22,13 @@ import org.xephyrous.data.CallbackStore
 fun outlineInput(
     title: String, size: DpSize,
     callbackStore: CallbackStore,
+    alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.LEFT,
     multiline: Boolean = false,
     default: String = ""
 ) {
     var text by remember { mutableStateOf(default) }
 
-    outlineBox(title, size) {
+    outlineBox(title, size, alignment) {
         TextField(
             value = text,
             onValueChange = {
@@ -51,13 +52,14 @@ fun outlineInput(
 fun outlineSecureInput(
     title: String, size: DpSize,
     callbackStore: CallbackStore,
+    alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.LEFT,
     multiline: Boolean = false,
     default: String = ""
 ) {
     val text = remember { mutableStateOf(default) }
     var show by remember { mutableStateOf(false) }
 
-    outlineBox(title, size) {
+    outlineBox(title, size, alignment) {
         TextField(
             text.value,
             onValueChange = {
