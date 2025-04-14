@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.components.OutlineBoxTitleAlignment
 import org.xephyrous.components.outlineBox
 import org.xephyrous.components.outlineInput
 import org.xephyrous.components.outlineSecureInput
@@ -67,7 +69,8 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                         EnumLambda(Callback.VALUE_CHANGE) {
                             username = it as String
                         }
-                    )
+                    ),
+                    alignment = OutlineBoxTitleAlignment.RIGHT
                 )
 
                 Spacer(Modifier.height(40.dp))

@@ -14,7 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.xephyrous.data.Callback
 import org.xephyrous.data.CallbackStore
 
@@ -22,13 +26,15 @@ import org.xephyrous.data.CallbackStore
 fun outlineInput(
     title: String, size: DpSize,
     callbackStore: CallbackStore,
+    textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.LEFT,
+    alignmentSpacing: Dp = 10.dp,
     multiline: Boolean = false,
     default: String = ""
 ) {
     var text by remember { mutableStateOf(default) }
 
-    outlineBox(title, size, alignment) {
+    outlineBox(title, size, textSize, alignment, alignmentSpacing) {
         TextField(
             value = text,
             onValueChange = {
@@ -52,14 +58,16 @@ fun outlineInput(
 fun outlineSecureInput(
     title: String, size: DpSize,
     callbackStore: CallbackStore,
+    textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.LEFT,
+    alignmentSpacing: Dp = 10.dp,
     multiline: Boolean = false,
     default: String = ""
 ) {
     val text = remember { mutableStateOf(default) }
     var show by remember { mutableStateOf(false) }
 
-    outlineBox(title, size, alignment) {
+    outlineBox(title, size, textSize, alignment, alignmentSpacing) {
         TextField(
             text.value,
             onValueChange = {
