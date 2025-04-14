@@ -72,7 +72,7 @@ fun outlineBox(
         ) {
             Text(
                 title, color = Color.White, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 4.dp),
+                modifier = Modifier.padding(horizontal = 4.dp).wrapContentSize(unbounded = true),
                 fontSize = fontSize, letterSpacing = 2.sp
             )
         }

@@ -75,6 +75,13 @@ fun outlineSecureInput(
                 callbackStore.softInvoke(Callback.VALUE_CHANGE, it)
             },
             singleLine = !multiline,
+            textStyle = TextStyle(color = Color.White, fontWeight = FontWeight.Bold),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color(0xFF2D2D2D),
+                focusedIndicatorColor = Color.White,
+                unfocusedIndicatorColor = Color(0xFF2D2D2D),
+                cursorColor = Color.White,
+            ),
             visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
@@ -85,7 +92,10 @@ fun outlineSecureInput(
                 val description = if (show) "Hide password" else "Show password"
 
                 IconButton(onClick = { show = !show }){
-                    Icon(imageVector  = image, description)
+                    Icon(
+                        imageVector  = image, description,
+                        tint = Color.White
+                    )
                 }
             },
             modifier = Modifier.fillMaxSize(),

@@ -70,7 +70,7 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                             username = it as String
                         }
                     ),
-                    alignment = OutlineBoxTitleAlignment.RIGHT
+                    alignment = OutlineBoxTitleAlignment.LEFT
                 )
 
                 Spacer(Modifier.height(40.dp))
