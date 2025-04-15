@@ -16,6 +16,7 @@ captures
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+composeApp/src/wasmJsMain/kotlin/org/xephyrous/data/Secrets.kt
 .fleet
 build
 composeApp/build

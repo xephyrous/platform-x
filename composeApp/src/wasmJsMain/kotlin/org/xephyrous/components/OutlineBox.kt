@@ -22,7 +22,7 @@ enum class OutlineBoxTitleAlignment {
     CENTER,
     RIGHT
 }
-
+    
 @Composable
 fun outlineBox(
     title: String,
