@@ -12,7 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -27,11 +29,18 @@ enum class OutlineBoxTitleAlignment {
 fun outlineBox(
     title: String,
     size: DpSize = DpSize(200.dp, 75.dp),
+    fontSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.LEFT,
+    alignmentSpacing: Dp = 10.dp,
     content: @Composable (() -> Unit) = {}
 ) {
     var textWidth by remember { mutableStateOf(0.dp) }
     var textHeight by remember { mutableStateOf(0.dp) }
+
+    var boxWidth by remember { mutableStateOf(0.dp) }
+    var boxHeight by remember { mutableStateOf(0.dp) }
+
+    val localDensity = LocalDensity.current
 
     Box {
         Box (
@@ -40,20 +49,20 @@ fun outlineBox(
                 .border(4.dp, Color.White)
                 .shadow(4.dp, RoundedCornerShape(0.dp))
                 .width(maxOf(textWidth, size.width))
-                .height(maxOf(50.dp, size.height))
+                .height(maxOf(50.dp, size.height)).onGloballyPositioned {
+                    boxWidth = with(localDensity) { it.size.width.toDp() }
+                    boxHeight = with(localDensity) { it.size.height.toDp() }
+                }
         ) {
             content()
         }
-
-        val localDensity = LocalDensity.current
-
         Box (
             modifier = Modifier
                 .offset(x = when(alignment) {
-                    OutlineBoxTitleAlignment.OVERHANG -> -(textWidth) + 40.dp
-                    OutlineBoxTitleAlignment.LEFT -> 10.dp
-                    OutlineBoxTitleAlignment.CENTER -> (size.width/2)-(textWidth/2)
-                    OutlineBoxTitleAlignment.RIGHT -> (size.width-(textWidth+10.dp))
+                    OutlineBoxTitleAlignment.OVERHANG -> -(textWidth) + alignmentSpacing
+                    OutlineBoxTitleAlignment.LEFT -> alignmentSpacing
+                    OutlineBoxTitleAlignment.CENTER -> (boxWidth/2)-(textWidth/2)
+                    OutlineBoxTitleAlignment.RIGHT -> (boxWidth-(textWidth+alignmentSpacing))
                 })
                 .background(Color(0xFF2D2D2D))
                 .onGloballyPositioned {
@@ -63,8 +72,8 @@ fun outlineBox(
         ) {
             Text(
                 title, color = Color.White, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 4.dp),
-                fontSize = 22.sp, letterSpacing = 2.sp
+                modifier = Modifier.padding(horizontal = 4.dp).wrapContentSize(unbounded = true),
+                fontSize = fontSize, letterSpacing = 2.sp
             )
         }
     }
