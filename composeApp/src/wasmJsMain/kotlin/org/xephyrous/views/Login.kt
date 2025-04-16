@@ -14,10 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import io.ktor.client.call.*
 import io.ktor.http.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.Screens
 import org.xephyrous.apis.Firebase
@@ -100,6 +102,9 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                                 password
                             )
 
+                            println("SIGN IN : " + res.body())
+                            println(Firebase.Firestore.getDocument("users/test"))
+
                             if (res.status.isSuccess()) {
                                 navController.navigate(Screens.Homepage.name)
                             } else {
@@ -117,7 +122,12 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                 Text(
                     text = "Sign Up",
                     modifier = Modifier.clickable {
-                        // Show sign up form
+                        GlobalScope.launch {
+                            // Serve sign up UI
+
+                            // Debug
+                            println(Firebase.Firestore.getDocument("users/test"))
+                        }
                     },
                 )
             }

@@ -20,3 +20,4 @@ composeApp/src/wasmJsMain/kotlin/org/xephyrous/data/Secrets.kt
 .fleet
 build
 composeApp/build
+kotlin-js-store

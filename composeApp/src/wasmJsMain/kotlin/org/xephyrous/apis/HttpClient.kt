@@ -36,10 +36,6 @@ object HttpClient {
         body: T,
         headers: Map<String, String> = emptyMap()
     ): HttpResponse {
-        println("Sending request to $url")
-        println("Headers: $headers")
-        println("Body: ${Json.encodeToString(body)}")
-
         return client.post(url) {
             contentType(ContentType.Application.Json)
             headers.forEach { (key, value) -> header(key, value) }
