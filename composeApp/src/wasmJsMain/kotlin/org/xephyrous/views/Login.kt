@@ -3,10 +3,7 @@ package org.xephyrous.views
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,15 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import io.ktor.client.call.*
-import io.ktor.http.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.painterResource
-import org.xephyrous.Screens
-import org.xephyrous.apis.Firebase
+import org.xephyrous.components.OutlineBoxTitleAlignment
 import org.xephyrous.components.outlineInput
 import org.xephyrous.components.outlineSecureInput
 import org.xephyrous.data.Callback
@@ -32,10 +22,9 @@ import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.entire_network
 import platformx.composeapp.generated.resources.logo
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun Login(navController: NavController, modifier: Modifier = Modifier) {
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Row {
@@ -71,13 +60,14 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                 Spacer(Modifier.height(20.dp))
 
                 outlineInput(
-                    "EMAIL",
+                    "USERNAME",
                     DpSize(500.dp, 50.dp),
                     CallbackStore(
                         EnumLambda(Callback.VALUE_CHANGE) {
-                            email = it as String
+                            username = it as String
                         }
-                    )
+                    ),
+                    alignment = OutlineBoxTitleAlignment.LEFT
                 )
 
                 Spacer(Modifier.height(40.dp))
@@ -90,45 +80,6 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                             password = it as String
                         }
                     )
-                )
-
-                Spacer(Modifier.height(40.dp))
-
-                Button(
-                    onClick = {
-                        GlobalScope.launch {
-                            val res = Firebase.Auth.signInWithPassword(
-                                email,
-                                password
-                            )
-
-                            println("SIGN IN : " + res.body())
-                            println(Firebase.Firestore.getDocument("users/test"))
-
-                            if (res.status.isSuccess()) {
-                                navController.navigate(Screens.Homepage.name)
-                            } else {
-                                // Display error
-                            }
-                        }
-                    },
-                    content = {
-                        Text("Login")
-                    }
-                )
-
-                Spacer(Modifier.height(20.dp))
-
-                Text(
-                    text = "Sign Up",
-                    modifier = Modifier.clickable {
-                        GlobalScope.launch {
-                            // Serve sign up UI
-
-                            // Debug
-                            println(Firebase.Firestore.getDocument("users/test"))
-                        }
-                    },
                 )
             }
         }
