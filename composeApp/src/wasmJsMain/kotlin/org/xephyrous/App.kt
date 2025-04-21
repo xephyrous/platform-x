@@ -17,7 +17,6 @@ import org.xephyrous.views.*
 
 enum class Screens {
     Homepage,
-    Login,
     About
 }
 
@@ -37,13 +36,10 @@ fun App(
         ) {
             NavHost (
                 navController = navController,
-                startDestination = Screens.Login.name
+                startDestination = Screens.Homepage.name
             ) {
                 composable(route = Screens.Homepage.name) {
                     Homepage(navController, viewModel)
-                }
-                composable(route = Screens.Login.name) {
-                    Login(navController, viewModel)
                 }
                 composable(route = Screens.About.name) {
                     About(navController)
