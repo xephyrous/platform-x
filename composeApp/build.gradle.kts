@@ -73,3 +73,35 @@ compose.resources {
     packageOfResClass = "platformx.composeapp.generated.resources"
     generateResClass = auto
 }
+
+tasks.register("validateViewClasses") {
+    group = "validation"
+    description = "Validates all class signatures in the 'views' directory."
+
+    doLast {
+        val dir = File("src/wasmJsMain/kotlin/org/xephyrous/views")
+        println(":skdjhbf")
+        if (!dir.exists()) {
+            throw GradleException("Views directory not found, validation failed!")
+        }
+
+        val viewFiles = dir.walkTopDown()
+            .filter { it.isFile && it.extension == "kt" }
+            .toList()
+
+        viewFiles.forEach fileLoop@{ file ->
+            file.readLines().forEach lineLoop@{ line ->
+                if (!line.contains("class")) {
+                    return@lineLoop
+                }
+
+                val className = line.substringAfter("class ").substringBefore("{").trim()
+                println(className)
+            }
+        }
+    }
+}
+
+tasks.named("build") {
+    dependsOn("validateViewClasses")
+}

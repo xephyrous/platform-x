@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
 
 enum class Screens {
@@ -24,6 +25,7 @@ enum class Screens {
 fun App(
     navController: NavHostController = rememberNavController()
 ) {
+    val viewModel = remember { ViewModel() }
     val backStateEntry by navController.currentBackStackEntryAsState()
     val currentScreen = Screens.valueOf(
         backStateEntry?.destination?.route ?: Screens.Homepage.name
@@ -38,10 +40,10 @@ fun App(
                 startDestination = Screens.Login.name
             ) {
                 composable(route = Screens.Homepage.name) {
-                    Homepage(navController)
+                    Homepage(navController, viewModel)
                 }
                 composable(route = Screens.Login.name) {
-                    Login(navController)
+                    Login(navController, viewModel)
                 }
                 composable(route = Screens.About.name) {
                     About(navController)
