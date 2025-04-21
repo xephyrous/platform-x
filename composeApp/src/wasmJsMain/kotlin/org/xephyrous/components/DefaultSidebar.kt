@@ -1,15 +1,15 @@
 package org.xephyrous.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
 import platformx.composeapp.generated.resources.Res
-import platformx.composeapp.generated.resources.entire_network
+import platformx.composeapp.generated.resources.Return
 
 @Composable
 fun sidebar(
@@ -24,26 +24,28 @@ fun sidebar(
     Box(
         Modifier
             .fillMaxHeight()
-            .width(65.dp)
+            .width(90.dp)
     ) {
-        Column (Modifier.fillMaxSize()) {
+        Column (
+            Modifier.fillMaxSize().align(alignment = Alignment.Center)
+        ) {
             outlineImage(
                 title = title,
-                size = DpSize(50.dp, 50.dp),
+                size = DpSize(70.dp, 70.dp),
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
                 painter = painter,
                 contentDescription = contentDescription
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(60.dp))
             clickableOutlineImage(
                 title = "Return",
-                size = DpSize(50.dp, 50.dp),
+                size = DpSize(70.dp, 70.dp),
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
-                painter = painterResource(Res.drawable.entire_network), // replace with actual back logo
+                painter = painterResource(Res.drawable.Return), // replace with actual back logo
                 contentDescription = "Site Back Button"
             ) {
                 navController.navigate("Homepage")
