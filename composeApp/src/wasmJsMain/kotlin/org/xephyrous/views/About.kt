@@ -19,7 +19,7 @@ fun About(navController: NavController, modifier: Modifier = Modifier) {
         painter = painterResource(Res.drawable.About)
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(end = 90.dp),
             verticalArrangement = Arrangement.Center,
