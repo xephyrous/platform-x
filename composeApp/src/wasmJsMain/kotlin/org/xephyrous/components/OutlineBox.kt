@@ -78,3 +78,19 @@ fun outlineBox(
         }
     }
 }
+
+@Composable
+fun outlineBoxTitleless(
+    size: DpSize = DpSize(200.dp, 75.dp),
+    content: @Composable (() -> Unit) = {}
+) {
+    Box (
+        modifier = Modifier
+            .border(4.dp, Color.White)
+            .shadow(4.dp, RoundedCornerShape(0.dp))
+            .width(maxOf(50.dp, size.width))
+            .height(maxOf(50.dp, size.height))
+    ) {
+        content()
+    }
+}

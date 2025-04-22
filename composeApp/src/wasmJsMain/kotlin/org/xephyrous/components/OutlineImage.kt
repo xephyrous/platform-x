@@ -51,12 +51,13 @@ fun clickableOutlineImage(
 fun outlineImageTitleless(
     size: DpSize,
     painter: Painter,
+    padding: Dp = 15.dp,
     contentDescription: String = ""
 ) {
-    outlineBox("", size, 0.sp, OutlineBoxTitleAlignment.LEFT, 0.dp) {
+    outlineBoxTitleless(size) {
         Image(
             painter = painter,
-            modifier = Modifier.fillMaxSize().padding(15.dp),
+            modifier = Modifier.fillMaxSize().padding(padding),
             contentDescription = contentDescription,
         )
     }
