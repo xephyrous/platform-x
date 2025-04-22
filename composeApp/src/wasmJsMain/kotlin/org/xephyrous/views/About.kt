@@ -21,14 +21,15 @@ fun About(navController: NavController, modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(end = 90.dp),
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             outlineText(
                 title = "What is PlatformX?",
-                size = DpSize(600.dp, 100.dp),
-                text = "Platform-X is a simple yet effective and lightweight web platform that allows Students and Instructors to interact easily. " +
+                size = DpSize(600.dp, 160.dp),
+                maxLines = Int.MAX_VALUE,
+                text = "Platform-X is a simple yet effective and lightweight web platform that allows Students and Instructors to interact easily." +
                         "This includes easy scheduling of meetings between parties and content uploads by instructors."
             )
 
@@ -36,7 +37,8 @@ fun About(navController: NavController, modifier: Modifier = Modifier) {
 
             outlineText(
                 title = "What is Xephyrous?",
-                size = DpSize(600.dp, 100.dp),
+                size = DpSize(600.dp, 160.dp),
+                maxLines = Int.MAX_VALUE,
                 text = "Xephyrous is an organization focused on making a wide variety of open source products that encompass a wide range of features and goals. " +
                         "This includes anything from free image manipulation tools to Minecraft item sorting games."
             )
