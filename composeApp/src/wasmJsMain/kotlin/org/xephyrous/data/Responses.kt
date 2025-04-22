@@ -68,3 +68,20 @@ data class FirebaseErrorDetail(
 data class TestDocument(
     val data: String
 )
+
+@Serializable
+data class UserInfo(
+    val sub: String,
+    val email: String,
+    val emailVerified: Boolean,
+    val name: String,
+    val picture: String,
+    val givenName: String,
+    val familyName: String,
+    val locale: String
+)
+
+@Serializable
+data class GoogleError(
+    val smth: String
+)

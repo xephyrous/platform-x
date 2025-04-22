@@ -1,13 +1,15 @@
 package org.xephyrous.apis
 
 import kotlinx.browser.window
+import org.xephyrous.data.GoogleError
 import org.xephyrous.data.Secrets
+import org.xephyrous.data.UserInfo
 import org.xephyrous.data.handleResponse
 
 object OAuth {
-    const val ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth" +
-            ""
-    suspend fun redirect(
+    const val ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth"
+
+    fun redirect(
         scope: Array<String>,
         state: String? = null,
         includeGrantedScopes: Boolean? = null,
@@ -29,6 +31,19 @@ object OAuth {
                 loginHint?.let { put("login_hint", loginHint.toString()) }
                 prompt?.let { put("prompt", prompt.joinToString(" ")) }
             }
+        )
+    }
+
+    suspend fun getUserInfo(
+        token: String
+    ) : Result<UserInfo> {
+        return handleResponse<UserInfo, String>(
+            HttpClient.get(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                buildMap {
+                    put("Authorization", "Bearer $token")
+                }
+            )
         )
     }
 }
