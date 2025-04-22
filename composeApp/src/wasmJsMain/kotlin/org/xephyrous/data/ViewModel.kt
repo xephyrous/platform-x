@@ -5,5 +5,5 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 class ViewModel {
-    var auth by mutableStateOf<SignInResponse?>(null)
+    var authToken: String? by mutableStateOf(null)
 }

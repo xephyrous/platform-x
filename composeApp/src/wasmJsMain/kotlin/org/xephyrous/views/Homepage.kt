@@ -1,6 +1,5 @@
 package org.xephyrous.views
 
-import org.xephyrous.data.TestDocument
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -9,7 +8,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
-import org.xephyrous.apis.Firebase
+import org.xephyrous.apis.OAuth
 import org.xephyrous.data.ViewModel
 
 @Composable
@@ -21,16 +20,14 @@ fun Homepage(navController: NavController, viewModel: ViewModel, modifier: Modif
         Button(
             onClick = {
                 coroutineScope.launch {
-                    val testDoc = Firebase.Firestore.getDocument<TestDocument>(
-                        "users/test",
-                        viewModel.auth!!.idToken
+                    OAuth.redirect(
+                        scope = arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"),
+                        prompt = arrayOf("consent", "select_account")
                     )
-
-                    println(testDoc)
                 }
             }
         ) {
-            Text("Test getDocument()")
+            Text("Log In!")
         }
     }
 }

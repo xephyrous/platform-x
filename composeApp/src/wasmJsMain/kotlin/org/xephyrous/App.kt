@@ -10,14 +10,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import org.xephyrous.apis.getAllUrlParams
 import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
 
-enum class Screens {
-    Homepage,
-    Login
+enum class Screens{
+    AnonymousHomepage,
+    UserHomepage,
+    AdminHomepage
+}
+
+enum class UserRole {
+    Anonymous,
+    User,
+    Admin
 }
 
 @Composable
@@ -25,24 +32,32 @@ fun App(
     navController: NavHostController = rememberNavController()
 ) {
     val viewModel = remember { ViewModel() }
-    val backStateEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = Screens.valueOf(
-        backStateEntry?.destination?.route ?: Screens.Homepage.name
-    )
 
+    // Authentication
+    val params = getAllUrlParams()
+    if (params.contains("access_token")) {
+        println(params["access_token"])
+    }
+
+    // Navigation
     MaterialTheme {
-        BoxWithConstraints (
+        BoxWithConstraints(
             modifier = Modifier.fillMaxSize().background(Color(0xFF2D2D2D))
         ) {
-            NavHost (
+            NavHost(
                 navController = navController,
-                startDestination = Screens.Login.name
+                startDestination = Screens.AnonymousHomepage.name
             ) {
-                composable(route = Screens.Homepage.name) {
+                composable(route = Screens.AnonymousHomepage.name) {
                     Homepage(navController, viewModel)
                 }
-                composable(route = Screens.Login.name) {
-                    Login(navController, viewModel)
+
+                composable(route = Screens.UserHomepage.name) {
+                    Homepage(navController, viewModel)
+                }
+
+                composable(route = Screens.AdminHomepage.name) {
+                    Homepage(navController, viewModel)
                 }
             }
         }
