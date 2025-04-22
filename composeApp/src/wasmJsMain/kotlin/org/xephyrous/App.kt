@@ -19,6 +19,13 @@ enum class Screens{
     AnonymousHomepage,
     UserHomepage,
     AdminHomepage
+    About,
+    Admin,
+    Calendar,
+    Contact,
+    Courses,
+    Event,
+    Profile
 }
 
 enum class UserRole {
@@ -58,6 +65,34 @@ fun App(
 
                 composable(route = Screens.AdminHomepage.name) {
                     Homepage(navController, viewModel)
+                }
+
+                composable(route = Screens.About.name) {
+                    About(navController)
+                }
+
+                composable(route = Screens.Admin.name) {
+                    Admin(navController)
+                }
+
+                composable(route = Screens.Calendar.name) {
+                    Calendar(navController)
+                }
+
+                composable(route = Screens.Contact.name) {
+                    Contact(navController)
+                }
+
+                composable(route = Screens.Courses.name) {
+                    Courses(navController)
+                }
+
+                composable(route = Screens.Event.name) {
+                    Event(navController)
+                }
+
+                composable(route = Screens.Profile.name) {
+                    Profile(navController)
                 }
             }
         }

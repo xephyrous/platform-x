@@ -2,6 +2,8 @@ package org.xephyrous.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.onClick
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ fun outlineImage(
     outlineBox(title, size, textSize, alignment, alignmentSpacing) {
         Image(
             painter = painter,
+            modifier = Modifier.fillMaxSize().padding(15.dp),
             contentDescription = contentDescription,
         )
     }
@@ -39,7 +42,7 @@ fun clickableOutlineImage(
         Image(
             painter = painter,
             contentDescription = contentDescription,
-            modifier = Modifier.clickable{ onClick() }
+            modifier = Modifier.fillMaxSize().padding(15.dp).clickable{ onClick() }
         )
     }
 }
@@ -48,11 +51,13 @@ fun clickableOutlineImage(
 fun outlineImageTitleless(
     size: DpSize,
     painter: Painter,
+    padding: Dp = 15.dp,
     contentDescription: String = ""
 ) {
-    outlineBox("", size, 0.sp, OutlineBoxTitleAlignment.LEFT, 0.dp) {
+    outlineBoxTitleless(size) {
         Image(
             painter = painter,
+            modifier = Modifier.fillMaxSize().padding(padding),
             contentDescription = contentDescription,
         )
     }
