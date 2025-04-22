@@ -20,7 +20,7 @@ fun Contact(navController: NavController, modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(end = 90.dp),
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -43,7 +43,7 @@ fun Contact(navController: NavController, modifier: Modifier = Modifier) {
             outlineText(
                 title = "TOLL-FREE NUMBER",
                 size = DpSize(300.dp, 50.dp),
-                text = "(888)123-4567"
+                text = "(888) 123-4567"
             )
         }
     }
