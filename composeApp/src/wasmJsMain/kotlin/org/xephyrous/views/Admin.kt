@@ -27,7 +27,7 @@ fun Admin(navController: NavController, modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(start = 6.dp),
+                .padding(start = 60.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
