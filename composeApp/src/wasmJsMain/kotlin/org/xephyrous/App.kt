@@ -18,7 +18,7 @@ import org.xephyrous.views.*
 enum class Screens{
     AnonymousHomepage,
     UserHomepage,
-    AdminHomepage
+    AdminHomepage,
     About,
     Admin,
     Calendar,
