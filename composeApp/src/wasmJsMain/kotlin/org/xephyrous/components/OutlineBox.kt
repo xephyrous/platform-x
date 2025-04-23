@@ -59,15 +59,17 @@ fun outlineBox(
 
             // top wall
             if (alignment != OutlineBoxTitleAlignment.OVERHANG) {
-                Box(
+                Box( // left
                     Modifier.size(alignmentSpacing-2.dp, 4.dp).background(Color.White),
                 )
             }
             Box(
-                Modifier.size(boxWidth, 4.dp).offset(
-                    x = if (alignment == OutlineBoxTitleAlignment.OVERHANG) alignmentSpacing + 1.dp
-                    else alignmentSpacing + 1.dp + textWidth,
-                ).background(Color.White),
+                Modifier
+                    .size(boxWidth, 4.dp)
+                    .offset( // right
+                        x = if (alignment == OutlineBoxTitleAlignment.OVERHANG) alignmentSpacing + 1.dp
+                        else alignmentSpacing + 1.dp + textWidth)
+                    .background(Color.White),
             )
 
             // Left wall - with overhang difference
@@ -111,7 +113,7 @@ fun outlineBox(
         ) {
             Text(
                 title, color = Color.White, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 4.dp).wrapContentSize(unbounded = true),
+                modifier = Modifier.padding(horizontal = 4.dp).wrapContentSize(unbounded = false),
                 fontSize = fontSize, letterSpacing = 2.sp
             )
         }
