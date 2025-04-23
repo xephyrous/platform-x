@@ -1,22 +1,12 @@
 package org.xephyrous.views
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.stringResource
-import org.xephyrous.apis.OAuth
 import org.xephyrous.components.homepageTemplate
 import org.xephyrous.components.viewPanel
 import org.xephyrous.data.ViewModel
@@ -30,7 +20,7 @@ fun Homepage(navController: NavController, viewModel: ViewModel, modifier: Modif
             panel = true
         }) { Text("open panel") }
 
-        viewPanel ("TEST PANEL", DpSize(500.dp, 500.dp), panel, closeHandler = { panel = false }) {
+        viewPanel ("TEST PANEL", DpSize(50.dp, 50.dp), DpSize(1600.dp, 800.dp), panel, closeHandler = { panel = false }) {
             Text("Hello World")
         }
     }
