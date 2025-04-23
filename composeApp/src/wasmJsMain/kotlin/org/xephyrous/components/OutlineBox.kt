@@ -121,6 +121,104 @@ fun outlineBox(
 }
 
 @Composable
+fun outlineBox(
+    title: String,
+    size: DpSize = DpSize(200.dp, 75.dp),
+    xOffset: Dp = 0.dp,
+    yOffest: Dp = 0.dp,
+    fontSize: TextUnit = 14.sp,
+    alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.LEFT,
+    alignmentSpacing: Dp = 10.dp,
+    backColor: Color = Color(0xFF2D2D2D),
+    content: @Composable (() -> Unit) = {}
+) {
+    var textWidth by remember { mutableStateOf(0.dp) }
+    var textHeight by remember { mutableStateOf(0.dp) }
+
+    var boxWidth by remember { mutableStateOf(0.dp) }
+    var boxHeight by remember { mutableStateOf(0.dp) }
+
+    val localDensity = LocalDensity.current
+
+    Box (
+        modifier = Modifier.offset(x =  xOffset, y = yOffest)
+    ) {
+        Box (
+            modifier = Modifier
+                .offset(y = (textHeight/2))
+                .shadow(4.dp, RoundedCornerShape(0.dp))
+                .background(backColor)
+                .width(if (alignment == OutlineBoxTitleAlignment.OVERHANG) size.width else maxOf(textWidth, size.width))
+                .height(maxOf(50.dp, size.height)).onGloballyPositioned {
+                    boxWidth = with(localDensity) { it.size.width.toDp() }
+                    boxHeight = with(localDensity) { it.size.height.toDp() }
+                }
+        ) {
+            // custom border :D
+            // top wall
+            if (alignment != OutlineBoxTitleAlignment.OVERHANG) {
+                Box( // left
+                    Modifier.size(alignmentSpacing-2.dp, 4.dp).background(Color.White),
+                )
+            }
+            Box(
+                Modifier
+                    .size(boxWidth, 4.dp)
+                    .offset( // right
+                        x = if (alignment == OutlineBoxTitleAlignment.OVERHANG) alignmentSpacing + 1.dp
+                        else alignmentSpacing + 1.dp + textWidth)
+                    .background(Color.White),
+            )
+
+            // Left wall - with overhang difference
+            if (alignment == OutlineBoxTitleAlignment.OVERHANG) {
+                Box(
+                    Modifier.size(4.dp, boxHeight - (textHeight/2 + 1.dp)).offset(y = textHeight/2 + 1.dp).background(Color.White),
+                )
+            } else {
+                Box(
+                    Modifier.size(4.dp, boxHeight).background(Color.White),
+                )
+            }
+
+            // Right wall
+            Box(
+                Modifier.size(4.dp, boxHeight).offset(x = boxWidth-4.dp).background(Color.White),
+            )
+
+            // Bottom wall
+            Box(
+                Modifier.size(boxWidth, 4.dp).offset(y = boxHeight-4.dp).background(Color.White),
+            )
+
+            // Custom Content Server
+            Box(Modifier.padding(4.dp)) {
+                content()
+            }
+        }
+        Box (
+            modifier = Modifier
+                .offset(x = when(alignment) {
+                    OutlineBoxTitleAlignment.OVERHANG -> -(textWidth) + alignmentSpacing
+                    OutlineBoxTitleAlignment.LEFT -> alignmentSpacing
+                    OutlineBoxTitleAlignment.CENTER -> (boxWidth/2)-(textWidth/2)
+                    OutlineBoxTitleAlignment.RIGHT -> (boxWidth-(textWidth+alignmentSpacing))
+                })
+                .onGloballyPositioned {
+                    textWidth = with(localDensity) { it.size.width.toDp() }
+                    textHeight = with(localDensity) { it.size.height.toDp() }
+                }
+        ) {
+            Text(
+                title, color = Color.White, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 4.dp).wrapContentSize(unbounded = false),
+                fontSize = fontSize, letterSpacing = 2.sp
+            )
+        }
+    }
+}
+
+@Composable
 fun outlineBoxTitleless(
     size: DpSize = DpSize(200.dp, 75.dp),
     content: @Composable (() -> Unit) = {}
