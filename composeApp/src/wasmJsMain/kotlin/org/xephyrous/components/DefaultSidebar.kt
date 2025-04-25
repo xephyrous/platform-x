@@ -1,15 +1,13 @@
 package org.xephyrous.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.*
-import androidx.navigation.NavController
-import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
-import org.xephyrous.views.About
 import org.xephyrous.views.ViewController
 import org.xephyrous.views.Views
 import platformx.composeapp.generated.resources.*
@@ -27,24 +25,27 @@ fun sidebar(
     Box(
         Modifier
             .fillMaxHeight()
-            .width(90.dp)
+            .width(110.dp)
     ) {
-        Column (
-            Modifier.fillMaxSize().align(alignment = Alignment.Center)
+        Box (
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState())
         ) {
             outlineImage(
                 title = title,
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 30.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
                 painter = painter,
                 contentDescription = contentDescription
             )
-            Spacer(modifier = Modifier.height(60.dp))
             clickableOutlineImage(
                 title = "Return",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 120.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
@@ -68,30 +69,29 @@ fun homeSidebar(
     Box(
         Modifier
             .fillMaxHeight()
-            .width(90.dp)
+            .width(110.dp)
     ) {
-        Column (
-            Modifier.fillMaxSize().align(alignment = Alignment.Center)
+        Box (
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState(), reverseScrolling = true)
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
             clickableOutlineImage(
                 title = "About",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 30.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
                 painter = painterResource(Res.drawable.About),
                 contentDescription = "About"
             ) {
-                viewController.setIntermediate {
-                    delay(5000)
-                }
                 viewController.loadView(Views.About)
             }
-            Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
                 title = "Profile",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 120.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
@@ -100,10 +100,11 @@ fun homeSidebar(
             ) {
                 viewController.loadView(Views.Profile)
             }
-            Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
                 title = "Contact",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 210.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
@@ -112,22 +113,24 @@ fun homeSidebar(
             ) {
                 viewController.loadView(Views.Contact)
             }
-            Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
                 title = "Calendar",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 300.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
-                painter = painterResource(Res.drawable.About),
+                painter = painterResource(Res.drawable.Calendar),
                 contentDescription = "Calendar"
             ) {
                 viewController.loadView(Views.Calendar)
             }
-            Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
                 title = "Courses",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 480.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
@@ -136,10 +139,11 @@ fun homeSidebar(
             ) {
                 viewController.loadView(Views.Courses)
             }
-            Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
                 title = "Admin",
-                size = DpSize(70.dp, 70.dp),
+                size = DpSize(60.dp, 60.dp),
+                xOffset = 40.dp,
+                yOffset = 570.dp,
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
@@ -148,7 +152,6 @@ fun homeSidebar(
             ) {
                 viewController.loadView(Views.Admin)
             }
-            Spacer(modifier = Modifier.height(55.dp))
         }
     }
 }
