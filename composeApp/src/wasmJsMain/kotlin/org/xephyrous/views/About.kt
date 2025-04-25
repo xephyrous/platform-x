@@ -12,9 +12,9 @@ import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.About
 
 @Composable
-fun About(navController: NavController, modifier: Modifier = Modifier) {
+fun About(viewController: ViewController, modifier: Modifier = Modifier) {
     defaultScreen(
-        navController = navController,
+        viewController,
         title = "About",
         painter = painterResource(Res.drawable.About)
     ) {

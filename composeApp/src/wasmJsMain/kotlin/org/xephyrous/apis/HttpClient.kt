@@ -23,10 +23,14 @@ object HttpClient {
 
     suspend inline fun <reified T> get(
         url: String,
-        headers: Map<String, String> = emptyMap()
+        headers: Map<String, String> = emptyMap(),
+        params: Map<String, String> = emptyMap()
     ): T {
         val response = client.get(url) {
             headers.forEach { (key, value) -> header(key, value) }
+            url {
+                params.forEach { (key, value) -> parameters.append(key, value) }
+            }
         }
         return response.body()
     }

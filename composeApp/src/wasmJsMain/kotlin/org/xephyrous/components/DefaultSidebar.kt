@@ -7,12 +7,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.views.About
+import org.xephyrous.views.ViewController
+import org.xephyrous.views.Views
 import platformx.composeapp.generated.resources.*
 
 @Composable
 fun sidebar(
-    navController: NavController,
+    viewController: ViewController,
     title: String,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
@@ -47,7 +51,8 @@ fun sidebar(
                 painter = painterResource(Res.drawable.Return), // replace with actual back logo
                 contentDescription = "Site Back Button"
             ) {
-                navController.navigate("AnonymousHomepage")
+                // TODO : Navigate to correct homepage based on viewModel
+                viewController.loadView(Views.AnonymousHomepage)
             }
         }
     }
@@ -55,7 +60,7 @@ fun sidebar(
 
 @Composable
 fun homeSidebar(
-    navController: NavController,
+    viewController: ViewController,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
     alignmentSpacing: Dp = 30.dp
@@ -78,7 +83,10 @@ fun homeSidebar(
                 painter = painterResource(Res.drawable.About),
                 contentDescription = "About"
             ) {
-                navController.navigate("About")
+                viewController.setIntermediate {
+                    delay(5000)
+                }
+                viewController.loadView(Views.About)
             }
             Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
@@ -90,7 +98,7 @@ fun homeSidebar(
                 painter = painterResource(Res.drawable.Profile),
                 contentDescription = "Profile"
             ) {
-                navController.navigate("Profile")
+                viewController.loadView(Views.Profile)
             }
             Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
@@ -102,7 +110,7 @@ fun homeSidebar(
                 painter = painterResource(Res.drawable.Contact),
                 contentDescription = "Contact"
             ) {
-                navController.navigate("Contact")
+                viewController.loadView(Views.Contact)
             }
             Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
@@ -114,19 +122,7 @@ fun homeSidebar(
                 painter = painterResource(Res.drawable.About),
                 contentDescription = "Calendar"
             ) {
-                navController.navigate("Calendar")
-            }
-            Spacer(modifier = Modifier.height(55.dp))
-            clickableOutlineImage(
-                title = "Schedule",
-                size = DpSize(70.dp, 70.dp),
-                textSize = textSize,
-                alignment = alignment,
-                alignmentSpacing = alignmentSpacing,
-                painter = painterResource(Res.drawable.Schedule),
-                contentDescription = "Schedule"
-            ) {
-                navController.navigate("Schedule")
+                viewController.loadView(Views.Calendar)
             }
             Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
@@ -138,7 +134,7 @@ fun homeSidebar(
                 painter = painterResource(Res.drawable.Courses),
                 contentDescription = "Courses"
             ) {
-                navController.navigate("Courses")
+                viewController.loadView(Views.Courses)
             }
             Spacer(modifier = Modifier.height(55.dp))
             clickableOutlineImage(
@@ -150,7 +146,7 @@ fun homeSidebar(
                 painter = painterResource(Res.drawable.Admin),
                 contentDescription = "Admin"
             ) {
-                navController.navigate("Admin")
+                viewController.loadView(Views.Admin)
             }
             Spacer(modifier = Modifier.height(55.dp))
         }

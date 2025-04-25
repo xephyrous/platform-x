@@ -76,9 +76,9 @@ fun CalendarScreen() {
 
 @Composable
 fun Calendar(
-    navController: NavController, modifier: Modifier = Modifier
+    viewController: ViewController, modifier: Modifier = Modifier
 ) {
-    defaultScreen(navController = navController, title = "Calendar", painter = painterResource(Res.drawable.Calendar)) {
+    defaultScreen(viewController, title = "Calendar", painter = painterResource(Res.drawable.Calendar)) {
         CalendarScreen()
     }
 }

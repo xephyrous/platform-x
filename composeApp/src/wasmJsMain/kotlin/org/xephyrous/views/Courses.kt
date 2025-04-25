@@ -19,9 +19,9 @@ import platformx.composeapp.generated.resources.Courses
 import org.xephyrous.components.outlineText
 
 @Composable
-fun Courses(navController: NavController, modifier: Modifier = Modifier) {
+fun Courses(viewController: ViewController, modifier: Modifier = Modifier) {
     defaultScreen(
-        navController = navController, title = "Courses", painter = painterResource(Res.drawable.Courses)) {
+        viewController, title = "Courses", painter = painterResource(Res.drawable.Courses)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -10,8 +10,8 @@ import platformx.composeapp.generated.resources.Event
 
 
 @Composable
-fun Event(navController: NavController, modifier: Modifier = Modifier) {
-    defaultScreen(navController = navController, title = "Event", painter = painterResource(Res.drawable.Event)) {
+fun Event(viewController: ViewController, modifier: Modifier = Modifier) {
+    defaultScreen(viewController, title = "Event", painter = painterResource(Res.drawable.Event)) {
 
     }
 }

@@ -5,7 +5,9 @@ import org.xephyrous.data.SignInResponse
 import org.xephyrous.data.SignupNewUserResponse
 import io.ktor.client.call.*
 import io.ktor.http.HttpStatusCode
+import kotlinx.browser.window
 import kotlinx.serialization.json.Json
+import org.xephyrous.data.FirebaseUserInfo
 import org.xephyrous.data.Secrets
 import org.xephyrous.data.handleResponse
 
@@ -48,6 +50,34 @@ object Firebase {
                 )
             )
         }
+
+        suspend fun signInWithOAuth(
+            accessToken: String
+        ) /*Result<FirebaseUserInfo>*/ {
+            val res = HttpClient.post(
+                "${ENDPOINT}accounts:signInWithIdp?key=${Secrets.FIREBASE_API_KEY}",
+                mapOf(
+                    "postBody" to "access_token=$accessToken&providerId=google.com",
+                    "requestUri" to window.location.origin,
+                    "returnSecureToken" to true,
+                    "returnIdpCredential" to true
+                )
+            )
+
+            println("test")
+            println(res.body())
+//            return handleResponse<FirebaseUserInfo, FirebaseError>(
+//                HttpClient.post(
+//                    "${ENDPOINT}accounts:signInWithIdp?key=${Secrets.FIREBASE_API_KEY}",
+//                    mapOf(
+//                        "postBody" to "access_token=$accessToken&providerId=google.com",
+//                        "requestUri" to window.location.origin,
+//                        "returnSecureToken" to true,
+//                        "returnIdpCredential" to true
+//                    )
+//                )
+//            )
+        }
     }
 
     object Firestore {
@@ -64,11 +94,11 @@ object Firebase {
             return handleResponse<T, FirebaseError>(
                 HttpClient.get(
                     "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$path",
-                    buildMap {
-                        put("Authorization", "Bearer $idToken")
-                        mask?.let { put("mask", "{ \"fieldPaths\": ${Json.encodeToString(mask)} }") }
-                        transaction?.let { put("transaction", transaction) }
-                        readTime?.let { put("readTime", readTime) }
+                    headers = mapOf("Authorization" to "Bearer $idToken"),
+                    params = buildMap {
+                        mask?.let { put("mask.fieldPaths", Json.encodeToString(it)) }
+                        transaction?.let { put("transaction", it) }
+                        readTime?.let { put("readTime", it) }
                     }
                 )
             )

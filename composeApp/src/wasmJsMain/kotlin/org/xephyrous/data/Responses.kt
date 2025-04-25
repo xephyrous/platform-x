@@ -10,8 +10,6 @@ import kotlinx.serialization.json.Json
  * Handles [HttpResponse] casting and error handling
  */
 suspend inline fun <reified T, reified E> handleResponse(res: HttpResponse) : Result<T> {
-    println(Json.encodeToString(res.toString()))
-
     if (res.status != HttpStatusCode.OK) {
         return Result.failure(Exception(Json.decodeFromString<E>(res.body()).toString()))
     }
@@ -70,18 +68,43 @@ data class TestDocument(
 )
 
 @Serializable
-data class UserInfo(
+data class GoogleUserInfo(
     val sub: String,
-    val email: String,
-    val emailVerified: Boolean,
-    val name: String,
     val picture: String,
-    val givenName: String,
-    val familyName: String,
-    val locale: String
+    val email: String,
+    val email_verified: Boolean
 )
 
 @Serializable
 data class GoogleError(
-    val smth: String
+    val error: GoogleErrorDetail
+)
+
+@Serializable
+data class GoogleErrorDetail(
+    val code: Int,
+    val message: String,
+    val status: String
+)
+
+@Serializable
+data class FirebaseUserInfo(
+    val federatedId: String,
+    val providerId: String,
+    val localId: String,
+    val emailVerified: Boolean,
+    val email: String,
+    val oauthIdToken: String,
+    val oauthAccessToken: String,
+    val oauthTokenSecret: String,
+    val rawUserInfo: String,
+    val firstName: String,
+    val lastName: String,
+    val fullName: String,
+    val displayName: String,
+    val photoUrl: String,
+    val idToken: String,
+    val refreshToken: String,
+    val expiresIn: String,
+    val needConfirmation: Boolean
 )

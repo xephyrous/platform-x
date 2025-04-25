@@ -18,9 +18,9 @@ import platformx.composeapp.generated.resources.modify_events
 import platformx.composeapp.generated.resources.modify_users
 
 @Composable
-fun Admin(navController: NavController, modifier: Modifier = Modifier) {
+fun Admin(viewController: ViewController, modifier: Modifier = Modifier) {
     defaultScreen(
-        navController = navController,
+        viewController,
         title = "Admin",
         painter = painterResource(Res.drawable.Admin)
     ) {
@@ -42,7 +42,7 @@ fun Admin(navController: NavController, modifier: Modifier = Modifier) {
                     painter = painterResource(Res.drawable.modify_users),
                     contentDescription = "Modify users button",
                 ) {
-                    navController.navigate("ModifyUsers")
+//                    navController.navigate("ModifyUsers")
                 }
 
                 clickableOutlineImage(
@@ -51,7 +51,7 @@ fun Admin(navController: NavController, modifier: Modifier = Modifier) {
                     painter = painterResource(Res.drawable.modify_events),
                     contentDescription = "Modify events button",
                 ) {
-                    navController.navigate("ModifyEvents")
+//                    navController.navigate("ModifyEvents")
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(50.dp),
@@ -64,7 +64,7 @@ fun Admin(navController: NavController, modifier: Modifier = Modifier) {
                         painter = painterResource(Res.drawable.modify_data),
                         contentDescription = "Modify data button",
                     ) {
-                        navController.navigate("ModifyData")
+//                        navController.navigate("ModifyData")
                     }
 
                     clickableOutlineImage(
@@ -73,7 +73,7 @@ fun Admin(navController: NavController, modifier: Modifier = Modifier) {
                         painter = painterResource(Res.drawable.modify_courses),
                         contentDescription = "Modify courses button",
                     ) {
-                        navController.navigate("ModifyCourses")
+//                        navController.navigate("ModifyCourses")
                     }
 
 
