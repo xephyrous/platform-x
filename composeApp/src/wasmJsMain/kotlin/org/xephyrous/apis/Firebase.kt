@@ -4,10 +4,11 @@ import org.xephyrous.data.FirebaseError
 import org.xephyrous.data.SignInResponse
 import org.xephyrous.data.SignupNewUserResponse
 import io.ktor.client.call.*
-import io.ktor.http.HttpStatusCode
+import io.ktor.client.statement.bodyAsText
 import kotlinx.browser.window
 import kotlinx.serialization.json.Json
 import org.xephyrous.data.FirebaseUserInfo
+import org.xephyrous.data.FirestoreDocument
 import org.xephyrous.data.Secrets
 import org.xephyrous.data.handleResponse
 
@@ -53,30 +54,23 @@ object Firebase {
 
         suspend fun signInWithOAuth(
             accessToken: String
-        ) /*Result<FirebaseUserInfo>*/ {
+        ) : Result<FirebaseUserInfo> {
             val res = HttpClient.post(
                 "${ENDPOINT}accounts:signInWithIdp?key=${Secrets.FIREBASE_API_KEY}",
                 mapOf(
                     "postBody" to "access_token=$accessToken&providerId=google.com",
                     "requestUri" to window.location.origin,
-                    "returnSecureToken" to true,
-                    "returnIdpCredential" to true
+                    "returnSecureToken" to true.toString(),
+                    "returnIdpCredential" to true.toString()
                 )
             )
 
-            println("test")
-            println(res.body())
-//            return handleResponse<FirebaseUserInfo, FirebaseError>(
-//                HttpClient.post(
-//                    "${ENDPOINT}accounts:signInWithIdp?key=${Secrets.FIREBASE_API_KEY}",
-//                    mapOf(
-//                        "postBody" to "access_token=$accessToken&providerId=google.com",
-//                        "requestUri" to window.location.origin,
-//                        "returnSecureToken" to true,
-//                        "returnIdpCredential" to true
-//                    )
-//                )
-//            )
+            val text = res.bodyAsText()  // 👈 Read the raw body as plain text
+            println(text)
+
+            return handleResponse<FirebaseUserInfo, FirebaseError>(
+                res
+            )
         }
     }
 
@@ -84,14 +78,14 @@ object Firebase {
         const val ENDPOINT = "https://firestore.googleapis.com/v1/"
 
         // TODO
-        suspend inline fun <reified T> getDocument(
+        suspend inline fun getDocument(
             path: String,
             idToken: String,
             mask: DocumentMask? = null,
             transaction: String? = null,
             readTime: String? = null
-        ) : Result<T> {
-            return handleResponse<T, FirebaseError>(
+        ) : Result<FirestoreDocument> {
+            return handleResponse<FirestoreDocument, FirebaseError>(
                 HttpClient.get(
                     "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$path",
                     headers = mapOf("Authorization" to "Bearer $idToken"),

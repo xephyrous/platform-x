@@ -5,6 +5,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.xephyrous.UserRole
 
 /**
  * Handles [HttpResponse] casting and error handling
@@ -39,8 +40,7 @@ data class SignupNewUserResponse (
 
 @Serializable
 data class UserData(
-    var username: String,
-    var email: String,
+    val role: UserRole,
 )
 
 @Serializable
@@ -63,8 +63,39 @@ data class FirebaseErrorDetail(
 )
 
 @Serializable
-data class TestDocument(
-    val data: String
+data class FirestoreDocument(
+    val name: String,
+    val fields: Map<String, FirestoreValue>,
+    val createTime: String,
+    val updateTime: String
+) {
+    inline fun <reified T> toObject(): T {
+        val decoder = FirestoreDocumentDecoder()
+        val rawJson = FirestoreDocumentDecoder.unwrapFields(fields)
+        return decoder.decode(rawJson)
+    }
+}
+
+@Serializable
+data class FirestoreValue(
+    val stringValue: String? = null,
+    val integerValue: String? = null,
+    val booleanValue: Boolean? = null,
+    val doubleValue: Double? = null,
+    val timestampValue: String? = null,
+    val mapValue: FirestoreMapValue? = null,
+    val arrayValue: FirestoreArrayValue? = null,
+    val nullValue: String? = null
+)
+
+@Serializable
+data class FirestoreMapValue(
+    val fields: Map<String, FirestoreValue>
+)
+
+@Serializable
+data class FirestoreArrayValue(
+    val values: List<FirestoreValue>
 )
 
 @Serializable
@@ -91,20 +122,15 @@ data class GoogleErrorDetail(
 data class FirebaseUserInfo(
     val federatedId: String,
     val providerId: String,
-    val localId: String,
-    val emailVerified: Boolean,
     val email: String,
-    val oauthIdToken: String,
-    val oauthAccessToken: String,
-    val oauthTokenSecret: String,
-    val rawUserInfo: String,
-    val firstName: String,
-    val lastName: String,
-    val fullName: String,
-    val displayName: String,
+    val emailVerified: Boolean,
     val photoUrl: String,
+    val localId: String,
     val idToken: String,
+    val oauthAccessToken: String,
+    val oauthExpireIn: Int,
     val refreshToken: String,
     val expiresIn: String,
-    val needConfirmation: Boolean
+    val rawUserInfo: String,
+    val kind: String
 )
