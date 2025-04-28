@@ -39,11 +39,6 @@ data class SignupNewUserResponse (
 )
 
 @Serializable
-data class UserData(
-    val role: UserRole,
-)
-
-@Serializable
 data class FirebaseError(
     val error: FirebaseErrorData
 )
@@ -133,4 +128,34 @@ data class FirebaseUserInfo(
     val expiresIn: String,
     val rawUserInfo: String,
     val kind: String
+)
+
+@Serializable
+data class UserData(
+    val role: UserRole,
+)
+
+@Serializable
+data class CourseData(
+    val courseNumber: Int,
+    val coursePrefix: String,
+    val description: String,
+    val time: String,
+    val location: String,
+    val instructor: String
+)
+
+@Serializable
+data class EventData(
+    val name: String,
+    val description: String,
+    val location: String,
+    val time: LocaleDate,
+)
+
+@Serializable
+data class LocaleDate(
+    val month: Int,
+    val year: Int,
+    val day: Int
 )

@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.xephyrous.apis.Firebase
 import org.xephyrous.apis.getAllUrlParams
+import org.xephyrous.data.UserData
 import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
 
@@ -33,19 +34,33 @@ fun App() {
         viewModel.oAuthToken = params["access_token"]
         println("<AuthToken> ${viewModel.oAuthToken}")
 
-        // Load user information
+        // Exchange OAuth credential for Firebase credential
         coroutineScope.launch {
             Firebase.Auth.signInWithOAuth(viewModel.oAuthToken!!).onSuccess {
                 viewModel.firebaseInfo = it
                 println("<AuthToken> ${viewModel.firebaseInfo?.localId}")
 
+                // Load user data
                 Firebase.Firestore.getDocument(
                     "users/${viewModel.firebaseInfo?.localId}",
                     viewModel.firebaseInfo?.idToken ?: "" // TODO : Invalid information UI alert
                 ).onSuccess {
-                    // Load user role
-                }.onFailure {
-                    // Serve anonymous homepage
+                    Firebase.Firestore.getDocument(
+                        "users/${viewModel.firebaseInfo?.localId}",
+                        viewModel.firebaseInfo!!.idToken
+                    ).onSuccess {
+                        viewModel.userData = it.toObject<UserData>()
+
+                        // Serve corresponding homepage
+                        when(viewModel.userData?.role) {
+                            UserRole.User -> { viewController.loadView(Views.UserHomepage) }
+                            UserRole.Admin -> { viewController.loadView(Views.AdminHomepage) }
+                            UserRole.Anonymous -> { }
+                            null -> { }
+                        }
+
+                        println("<Role> ${viewModel.userData?.role}")
+                    }
                 }
             }
         }
