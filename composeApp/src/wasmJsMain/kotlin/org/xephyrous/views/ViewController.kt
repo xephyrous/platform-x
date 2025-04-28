@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import org.xephyrous.components.AlertBox
 import org.xephyrous.data.ViewModel
 
 enum class TransitionType {
@@ -20,9 +21,7 @@ enum class TransitionType {
 }
 
 enum class Views {
-    AnonymousHomepage,
-    UserHomepage,
-    AdminHomepage,
+    Homepage,
     About,
     Admin,
     Calendar,
@@ -33,7 +32,8 @@ enum class Views {
 }
 
 class ViewController(
-    viewModel: ViewModel
+    viewModel: ViewModel,
+    alertHandler: AlertBox
 ) {
     private val _viewModel: ViewModel by mutableStateOf(viewModel)
     private var _currentView by mutableStateOf<(@Composable () -> Unit)?>(null)
@@ -42,18 +42,16 @@ class ViewController(
     private var _isAnimating by mutableStateOf(false)
     private var _transition by mutableStateOf(false)
     private var _clearCache by mutableStateOf(true)
-    private var _defaultView = Views.AnonymousHomepage
+    private var _defaultView = Views.Homepage
     private var _views = mapOf<Views, @Composable () -> Unit>(
-        Views.AnonymousHomepage to { Homepage(this) },
-        Views.UserHomepage to { Homepage(this) },
-        Views.AdminHomepage to { Homepage(this) },
-        Views.About to { About(this) },
-        Views.Admin to { Admin(this) },
-        Views.Calendar to { Calendar(this) },
-        Views.Contact to { Contact(this) },
-        Views.Courses to { Courses(this) },
-        Views.Event to { Event(this) },
-        Views.Profile to { Profile(this) }
+        Views.Homepage to { Homepage(this, _viewModel, alertHandler) },
+        Views.About to { About(this, alertHandler) },
+        Views.Admin to { Admin(this, alertHandler) },
+        Views.Calendar to { Calendar(this, alertHandler) },
+        Views.Contact to { Contact(this, alertHandler) },
+        Views.Courses to { Courses(this, alertHandler) },
+        Views.Event to { Event(this, alertHandler) },
+        Views.Profile to { Profile(this, _viewModel, alertHandler) }
     )
 
     private var _intermediateBlock: (suspend () -> Unit)? = null
@@ -68,8 +66,8 @@ class ViewController(
         clearSoundCache: Boolean = false
     ) {
         _nextView = _views[view]
-        _currentTransition = transition
         _transition = true
+        _currentTransition = transition
         _clearCache = clearSoundCache
     }
 

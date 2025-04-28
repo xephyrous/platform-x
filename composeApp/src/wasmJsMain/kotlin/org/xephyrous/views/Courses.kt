@@ -1,27 +1,25 @@
 package org.xephyrous.views
 
-import androidx.compose.foundation.layout.*
-//import androidx.compose.foundation.shape.RoundedCornerShape
-//import androidx.compose.material.Card
-//import androidx.compose.material.MaterialTheme
-//import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-//import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.components.AlertBox
 import org.xephyrous.components.defaultScreen
-import platformx.composeapp.generated.resources.Res
-import platformx.composeapp.generated.resources.Courses
 import org.xephyrous.components.outlineText
+import platformx.composeapp.generated.resources.Courses
+import platformx.composeapp.generated.resources.Res
 
 @Composable
-fun Courses(viewController: ViewController, modifier: Modifier = Modifier) {
+fun Courses(viewController: ViewController, alertHandler: AlertBox) {
     defaultScreen(
-        viewController, title = "Courses", painter = painterResource(Res.drawable.Courses)) {
+        viewController, title = "Courses", painter = painterResource(Res.drawable.Courses), alertHandler = alertHandler) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

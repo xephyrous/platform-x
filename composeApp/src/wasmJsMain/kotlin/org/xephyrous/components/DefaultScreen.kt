@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import org.xephyrous.views.ViewController
 
 @Composable
@@ -23,6 +22,7 @@ fun defaultScreen(
     alignmentSpacing: Dp = 30.dp,
     painter: Painter,
     contentDescription: String = "",
+    alertHandler: AlertBox,
     content: @Composable (() -> Unit) = {}
 ) {
     Row {
@@ -30,6 +30,7 @@ fun defaultScreen(
             topBar()
             Box(modifier = Modifier.fillMaxSize()) {
                 content()
+                alertHandler.createAlert()
             }
         }
         sidebar(viewController, title, textSize, alignment, alignmentSpacing, painter, contentDescription)

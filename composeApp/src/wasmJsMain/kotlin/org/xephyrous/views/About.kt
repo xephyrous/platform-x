@@ -5,18 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.*
-import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.*
 import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.About
 
 @Composable
-fun About(viewController: ViewController, modifier: Modifier = Modifier) {
+fun About(viewController: ViewController, alertHandler: AlertBox, modifier: Modifier = Modifier) {
     defaultScreen(
         viewController,
         title = "About",
-        painter = painterResource(Res.drawable.About)
+        painter = painterResource(Res.drawable.About),
+        alertHandler = alertHandler,
     ) {
         Column(
             modifier = modifier
