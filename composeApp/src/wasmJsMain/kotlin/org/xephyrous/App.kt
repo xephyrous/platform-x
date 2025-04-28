@@ -14,6 +14,8 @@ import org.xephyrous.apis.Firebase
 import org.xephyrous.apis.OAuth
 import org.xephyrous.apis.getAllUrlParams
 import org.xephyrous.data.CourseData
+import org.xephyrous.data.EventData
+import org.xephyrous.data.LocalDate
 import org.xephyrous.data.UserData
 import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
@@ -72,7 +74,6 @@ fun App() {
                                 UserRole.Anonymous -> { }
                                 null -> { }
                             }
-
                         }
 
                         OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {

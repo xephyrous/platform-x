@@ -7,10 +7,14 @@ import kotlinx.browser.window
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.serializer
 import org.xephyrous.data.FirebaseUserInfo
 import org.xephyrous.data.FirestoreDocument
 import org.xephyrous.data.FirestoreListDocumentsResponse
 import org.xephyrous.data.Secrets
+import org.xephyrous.data.encodeFirestoreFields
+import org.xephyrous.data.encodeFirestoreValueToJsonElement
 import org.xephyrous.data.handleResponse
 
 typealias DocumentMask = Array<String>
@@ -143,6 +147,31 @@ object Firebase {
                     }
                 }.toMap()
             }
+        }
+
+        suspend inline fun <reified T> updateDocument(
+            path: String,
+            idToken: String,
+            data: T
+        ): Result<FirestoreDocument> {
+            val firestoreFields = encodeFirestoreFields(data, serializer())
+
+            val fieldsJson = JsonObject(
+                firestoreFields.mapValues { (_, value) ->
+                    encodeFirestoreValueToJsonElement(value)
+                }
+            )
+
+            return handleResponse<FirestoreDocument, FirebaseError>(
+                HttpClient.patch(
+                    "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$path",
+                    body = JsonObject(mapOf("fields" to fieldsJson)),
+                    headers = mapOf(
+                        "Authorization" to "Bearer $idToken",
+                        "Content-Type" to "application/json"
+                    )
+                )
+            )
         }
     }
 }

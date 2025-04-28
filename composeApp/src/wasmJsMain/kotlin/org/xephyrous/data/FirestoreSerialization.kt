@@ -81,3 +81,26 @@ fun encodeFirestoreFields(value: JsonElement): Any {
 fun encodeFirestoreFields(json: JsonObject): Map<String, Any> {
     return json.mapValues { (_, value) -> encodeFirestoreFields(value) }
 }
+
+fun encodeFirestoreValueToJsonElement(value: Any): JsonElement {
+    return when (value) {
+        is Map<*, *> -> {
+            JsonObject(
+                value.mapNotNull { (k, v) ->
+                    if (k is String && v != null) {
+                        k to encodeFirestoreValueToJsonElement(v)
+                    } else {
+                        null
+                    }
+                }.toMap()
+            )
+        }
+        is List<*> -> JsonArray(
+            value.filterNotNull().map { encodeFirestoreValueToJsonElement(it) }
+        )
+        is String -> JsonPrimitive(value)
+        is Number -> JsonPrimitive(value)
+        is Boolean -> JsonPrimitive(value)
+        else -> JsonPrimitive(value.toString())
+    }
+}

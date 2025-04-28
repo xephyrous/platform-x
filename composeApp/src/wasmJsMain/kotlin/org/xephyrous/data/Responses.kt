@@ -134,7 +134,7 @@ data class FirebaseUserInfo(
 @Serializable
 data class UserData(
     val role: UserRole,
-    val events: ArrayList<EventData>
+    val events: List<EventData> = emptyList()
 )
 
 @Serializable

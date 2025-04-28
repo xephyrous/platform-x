@@ -78,4 +78,26 @@ object HttpClient {
             headers.forEach { (key, value) -> header(key, value) }
         }
     }
+    suspend inline fun <reified T : Any> patch(
+        url: String,
+        body: T,
+        headers: Map<String, String> = emptyMap(),
+        params: Map<String, String> = emptyMap()
+    ): HttpResponse {
+        val finalUrl = if (params.isNotEmpty()) {
+            val encodedParams = params.entries.joinToString("&") {
+                "${encodeURIComponent(it.key)}=${encodeURIComponent(it.value)}"
+            }
+            "$url?$encodedParams"
+        } else {
+            url
+        }
+
+        return client.patch(finalUrl) {
+            contentType(ContentType.Application.Json)
+            headers.forEach { (key, value) -> header(key, value) }
+            setBody(Json.encodeToString(body))  // serialize body to JSON
+        }
+    }
+
 }

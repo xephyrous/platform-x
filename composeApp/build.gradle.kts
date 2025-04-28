@@ -47,7 +47,6 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
 
             // KotlinX
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
@@ -55,6 +54,7 @@ kotlin {
             // AndroidX
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
 
             // KTor
             implementation("io.ktor:ktor-client-core:$ktorVersion")
