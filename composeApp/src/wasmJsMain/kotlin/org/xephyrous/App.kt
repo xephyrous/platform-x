@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.xephyrous.apis.Firebase
+import org.xephyrous.apis.OAuth
 import org.xephyrous.apis.getAllUrlParams
 import org.xephyrous.data.UserData
 import org.xephyrous.data.ViewModel
@@ -32,22 +33,20 @@ fun App() {
     val params = getAllUrlParams()
     if (params.contains("access_token")) {
         viewModel.oAuthToken = params["access_token"]
-        println("<AuthToken> ${viewModel.oAuthToken}")
 
         // Exchange OAuth credential for Firebase credential
         coroutineScope.launch {
             Firebase.Auth.signInWithOAuth(viewModel.oAuthToken!!).onSuccess {
-                viewModel.firebaseInfo = it
-                println("<AuthToken> ${viewModel.firebaseInfo?.localId}")
+                viewModel.firebaseUserInfo = it
 
                 // Load user data
                 Firebase.Firestore.getDocument(
-                    "users/${viewModel.firebaseInfo?.localId}",
-                    viewModel.firebaseInfo?.idToken ?: "" // TODO : Invalid information UI alert
+                    "users/${viewModel.firebaseUserInfo?.localId}",
+                    viewModel.firebaseUserInfo?.idToken ?: "" // TODO : Invalid information UI alert
                 ).onSuccess {
                     Firebase.Firestore.getDocument(
-                        "users/${viewModel.firebaseInfo?.localId}",
-                        viewModel.firebaseInfo!!.idToken
+                        "users/${viewModel.firebaseUserInfo?.localId}",
+                        viewModel.firebaseUserInfo!!.idToken
                     ).onSuccess {
                         viewModel.userData = it.toObject<UserData>()
 
@@ -59,7 +58,12 @@ fun App() {
                             null -> { }
                         }
 
-                        println("<Role> ${viewModel.userData?.role}")
+                    }
+
+                    OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {
+                        viewModel.googleUserInfo = it
+                    }.onFailure {
+                        // TODO : Invalid information UI alert
                     }
                 }
             }
