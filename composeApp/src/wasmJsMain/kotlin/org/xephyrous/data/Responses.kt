@@ -60,7 +60,7 @@ data class FirebaseErrorDetail(
 @Serializable
 data class FirestoreDocument(
     val name: String,
-    val fields: Map<String, FirestoreValue>,
+    val fields: Map<String, FirestoreValue> = emptyMap(),
     val createTime: String,
     val updateTime: String
 ) {
@@ -90,7 +90,7 @@ data class FirestoreMapValue(
 
 @Serializable
 data class FirestoreArrayValue(
-    val values: List<FirestoreValue>
+    val values: List<FirestoreValue> = emptyList()
 )
 
 @Serializable
@@ -127,12 +127,14 @@ data class FirebaseUserInfo(
     val refreshToken: String,
     val expiresIn: String,
     val rawUserInfo: String,
-    val kind: String
+    val kind: String,
+    val isNewUser: Boolean = false
 )
 
 @Serializable
 data class UserData(
     val role: UserRole,
+    val events: ArrayList<EventData>
 )
 
 @Serializable
@@ -150,12 +152,10 @@ data class EventData(
     val name: String,
     val description: String,
     val location: String,
-    val time: LocaleDate,
+    val time: LocalDate,
 )
 
 @Serializable
-data class LocaleDate(
-    val month: Int,
-    val year: Int,
-    val day: Int
+data class FirestoreListDocumentsResponse(
+    val documents: List<FirestoreDocument> = emptyList()
 )

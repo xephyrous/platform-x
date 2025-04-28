@@ -1,5 +1,7 @@
 package org.xephyrous.data
 
+import kotlinx.serialization.Serializable
+
 data class YearMonth(val year: Int, val month: Int) {
     val monthValue: Int get() = month
 
@@ -27,6 +29,8 @@ data class YearMonth(val year: Int, val month: Int) {
         }
     }
 }
+
+@Serializable
 data class LocalDate(val year: Int, val month: Int, val day: Int) {
     fun plusMonths(months: Int): LocalDate {
         val newMonth = (month + months - 1) % 12 + 1

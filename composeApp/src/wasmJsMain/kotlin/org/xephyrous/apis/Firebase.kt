@@ -3,18 +3,21 @@ package org.xephyrous.apis
 import org.xephyrous.data.FirebaseError
 import org.xephyrous.data.SignInResponse
 import org.xephyrous.data.SignupNewUserResponse
-import io.ktor.client.call.*
-import io.ktor.client.statement.bodyAsText
 import kotlinx.browser.window
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.xephyrous.data.FirebaseUserInfo
 import org.xephyrous.data.FirestoreDocument
+import org.xephyrous.data.FirestoreListDocumentsResponse
 import org.xephyrous.data.Secrets
 import org.xephyrous.data.handleResponse
 
 typealias DocumentMask = Array<String>
 
 object Firebase {
+    const val PAGE_SIZE = 10_000
+
     object Auth {
         const val ENDPOINT = "https://identitytoolkit.googleapis.com/v1/"
 
@@ -55,21 +58,16 @@ object Firebase {
         suspend fun signInWithOAuth(
             accessToken: String
         ) : Result<FirebaseUserInfo> {
-            val res = HttpClient.post(
-                "${ENDPOINT}accounts:signInWithIdp?key=${Secrets.FIREBASE_API_KEY}",
-                mapOf(
-                    "postBody" to "access_token=$accessToken&providerId=google.com",
-                    "requestUri" to window.location.origin,
-                    "returnSecureToken" to true.toString(),
-                    "returnIdpCredential" to true.toString()
-                )
-            )
-
-            val text = res.bodyAsText()  // 👈 Read the raw body as plain text
-            println(text)
-
             return handleResponse<FirebaseUserInfo, FirebaseError>(
-                res
+                HttpClient.post(
+                    "${ENDPOINT}accounts:signInWithIdp?key=${Secrets.FIREBASE_API_KEY}",
+                    mapOf(
+                        "postBody" to "access_token=$accessToken&providerId=google.com",
+                        "requestUri" to window.location.origin,
+                        "returnSecureToken" to true.toString(),
+                        "returnIdpCredential" to true.toString()
+                    )
+                )
             )
         }
     }
@@ -77,7 +75,6 @@ object Firebase {
     object Firestore {
         const val ENDPOINT = "https://firestore.googleapis.com/v1/"
 
-        // TODO
         suspend inline fun getDocument(
             path: String,
             idToken: String,
@@ -90,7 +87,7 @@ object Firebase {
                     "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$path",
                     headers = mapOf("Authorization" to "Bearer $idToken"),
                     params = buildMap {
-                        mask?.let { put("mask.fieldPaths", Json.encodeToString(it)) }
+                        mask?.let { put("mask", Json.encodeToString(it)) }
                         transaction?.let { put("transaction", it) }
                         readTime?.let { put("readTime", it) }
                     }
@@ -98,22 +95,54 @@ object Firebase {
             )
         }
 
-        suspend inline fun <reified T> createDocument(
-            collectionId: String,
-            documentId: String,
-            document: T,
+//        suspend inline fun <reified T> createDocument(
+//            collectionId: String,
+//            documentId: String,
+//            document: T,
+//            idToken: String,
+//            mask: DocumentMask? = null
+//        ) : T {
+//            return HttpClient.post(
+//                "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$collectionId/$documentId",
+//                body = mapOf("fields" to encodeFirestoreFields(document, serializer())),
+//                headers = mapOf("Authorization" to "Bearer $idToken")
+//            ).body()
+//        }
+
+        suspend inline fun <reified T> listDocuments(
+            path: String,
             idToken: String,
-            mask: DocumentMask? = null
-        ) : T {
-            return HttpClient.post(
-                "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$collectionId",
-                Json.encodeToString(document),
-                buildMap {
-                    put("documentId", documentId)
-                    put("Authorization", "Bearer $idToken")
-                    mask?.let { put("mask", "{ \"fieldPaths\": ${Json.encodeToString(mask)} }") }
-                }
-            ).body()
+            pageSize: Int = PAGE_SIZE,
+            pageToken: String? = null,
+            orderBy: String? = null,
+            mask: DocumentMask? = null,
+            transaction: String? = null,
+            readTime: String? = null
+        ) : Result<Map<String, T>> {
+            return handleResponse<FirestoreListDocumentsResponse, FirebaseError>(
+                HttpClient.get(
+                    "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$path",
+                    headers = mapOf("Authorization" to "Bearer $idToken"),
+                    params = buildMap {
+                        put("pageSize", pageSize.toString())
+                        pageToken?.let { put("pageToken", it) }
+                        orderBy?.let { put("orderBy", it) }
+                        mask?.let { put("mask", Json.encodeToString(it)) }
+                        transaction?.let { put("transaction", it) }
+                        readTime?.let { put("readTime", it) }
+                    }
+                )
+            ).map { response ->
+                response.documents.mapNotNull { doc ->
+                    if (doc.fields.isEmpty()) return@mapNotNull null
+                    try {
+                        val id = doc.name.substringAfterLast("/")
+                        id to doc.toObject<T>()
+                    } catch (_: Exception) {
+                        null
+                    }
+                }.toMap()
+            }
         }
     }
 }

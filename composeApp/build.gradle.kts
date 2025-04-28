@@ -80,7 +80,6 @@ tasks.register("validateViewClasses") {
 
     doLast {
         val dir = File("src/wasmJsMain/kotlin/org/xephyrous/views")
-        println(":skdjhbf")
         if (!dir.exists()) {
             throw GradleException("Views directory not found, validation failed!")
         }
@@ -96,7 +95,6 @@ tasks.register("validateViewClasses") {
                 }
 
                 val className = line.substringAfter("class ").substringBefore("{").trim()
-                println(className)
             }
         }
     }

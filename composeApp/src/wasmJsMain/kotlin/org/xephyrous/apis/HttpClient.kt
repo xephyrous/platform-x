@@ -9,6 +9,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import org.xephyrous.js.encodeURIComponent
 
 object HttpClient {
     val client = HttpClient(Js) {
@@ -38,12 +39,22 @@ object HttpClient {
     suspend inline fun <reified T : Any> post(
         url: String,
         body: T,
-        headers: Map<String, String> = emptyMap()
+        headers: Map<String, String> = emptyMap(),
+        params: Map<String, String> = emptyMap()
     ): HttpResponse {
-        return client.post(url) {
+        val finalUrl = if (params.isNotEmpty()) {
+            val encodedParams = params.entries.joinToString("&") {
+                "${encodeURIComponent(it.key)}=${encodeURIComponent(it.value)}"
+            }
+            "$url?$encodedParams"
+        } else {
+            url
+        }
+
+        return client.post(finalUrl) {
             contentType(ContentType.Application.Json)
             headers.forEach { (key, value) -> header(key, value) }
-            setBody(body)
+            setBody(Json.encodeToString(body))  // Ensure body is serialized to JSON string
         }
     }
 

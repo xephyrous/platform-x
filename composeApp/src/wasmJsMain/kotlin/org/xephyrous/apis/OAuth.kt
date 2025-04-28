@@ -16,7 +16,6 @@ object OAuth {
         loginHint: String? = null,
         prompt: Array<String>? = null
     ) {
-        println(window.location.origin)
         window.location.href = buildURI(
             "https://accounts.google.com/o/oauth2/v2/auth",
             buildMap {
