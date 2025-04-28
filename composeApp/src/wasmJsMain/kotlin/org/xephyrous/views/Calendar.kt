@@ -3,17 +3,19 @@ package org.xephyrous.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.defaultScreen
+import org.xephyrous.components.outlineBox
 import org.xephyrous.data.LocalDate
 import org.xephyrous.data.YearMonth
 import platformx.composeapp.generated.resources.Calendar
@@ -27,40 +29,46 @@ fun CalendarView(yearMonth: YearMonth) {
 
     val days = List(daysInMonth) { day -> LocalDate(yearMonth.year, yearMonth.month, day + 1) }
 
-    Column {
+    val localDensity = LocalDensity.current
+
+    var boxWidth by remember { mutableStateOf(0.dp) }
+    var boxHeight by remember { mutableStateOf(0.dp) }
+
+    Box(
+        Modifier.fillMaxSize().onGloballyPositioned {
+            boxWidth = with(localDensity) { it.size.width.toDp() }
+            boxHeight = with(localDensity) { it.size.height.toDp() }
+        }
+    ) {
         Text(text = yearMonth.getDisplayName())
 
         // Display weekday names (Sun, Mon, Tue, ...)
         Row {
-            val weekdayNames = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+            val weekdayNames = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
             weekdayNames.forEach {
-                Text(text = it, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                Text(text = it, modifier = Modifier.weight(1f), textAlign = TextAlign.Center) // change sizes
             }
         }
 
         // Calendar grid
         val rows = (days.size + startDayOfWeek) / 7 + 1
         for (rowIndex in 0 until rows) {
-            Row {
+            Box {
                 // Generate each day of the row
                 for (colIndex in 0 until 7) {
                     val dayIndex = rowIndex * 7 + colIndex - startDayOfWeek
                     if (dayIndex in 0 until days.size) {
                         val day = days[dayIndex]
-                        Box(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(40.dp)
-                                .background(Color.LightGray)
-                        ) {
+                        outlineBox(
+                            day.day.toString(),
+                            DpSize(boxWidth/15, boxWidth/15),
+                            boxWidth/15*(colIndex+4) - boxWidth/30, boxWidth/16*(rowIndex+1) - boxWidth/30,
+                        ){
                             Text(
                                 text = day.day.toString(),
-                                modifier = Modifier.align(Alignment.Center),
                                 textAlign = TextAlign.Center
                             )
                         }
-                    } else {
-                        Spacer(modifier = Modifier.size(40.dp))
                     }
                 }
             }
