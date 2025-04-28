@@ -1,19 +1,18 @@
 package org.xephyrous.views
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.components.AlertBox
 import org.xephyrous.components.defaultScreen
 import org.xephyrous.components.outlineBox
 import org.xephyrous.data.LocalDate
@@ -84,9 +83,9 @@ fun CalendarScreen() {
 
 @Composable
 fun Calendar(
-    viewController: ViewController, modifier: Modifier = Modifier
+    viewController: ViewController, alertHandler: AlertBox
 ) {
-    defaultScreen(viewController, title = "Calendar", painter = painterResource(Res.drawable.Calendar)) {
+    defaultScreen(viewController, title = "Calendar", painter = painterResource(Res.drawable.Calendar), alertHandler = alertHandler) {
         CalendarScreen()
     }
 }

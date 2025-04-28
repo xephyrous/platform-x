@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
 import org.xephyrous.apis.Firebase
 import org.xephyrous.apis.OAuth
 import org.xephyrous.apis.getAllUrlParams
+import org.xephyrous.components.AlertBox
 import org.xephyrous.data.CourseData
 import org.xephyrous.data.EventData
 import org.xephyrous.data.LocalDate
@@ -35,7 +36,8 @@ enum class UserRole {
 @Composable
 fun App() {
     val viewModel = remember { ViewModel() }
-    val viewController = remember { ViewController(viewModel) }
+    val alertHandler = remember { AlertBox }
+    val viewController = remember { ViewController(viewModel, alertHandler) }
     val coroutineScope = rememberCoroutineScope()
 
     // Authentication check
@@ -68,12 +70,7 @@ fun App() {
                             viewModel.userData = it.toObject<UserData>()
 
                             // Serve corresponding homepage
-                            when(viewModel.userData?.role) {
-                                UserRole.User -> { viewController.loadView(Views.UserHomepage) }
-                                UserRole.Admin -> { viewController.loadView(Views.AdminHomepage) }
-                                UserRole.Anonymous -> { }
-                                null -> { }
-                            }
+                            viewController.loadView(Views.Homepage)
                         }
 
                         OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {

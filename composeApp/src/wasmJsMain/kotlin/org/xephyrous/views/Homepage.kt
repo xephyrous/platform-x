@@ -3,21 +3,18 @@ package org.xephyrous.views
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Composable
 import org.xephyrous.apis.OAuth
+import org.xephyrous.components.AlertBox
 import org.xephyrous.components.homepageTemplate
-import org.xephyrous.components.viewPanel
+import org.xephyrous.data.ViewModel
 
 @Composable
-fun Homepage(viewController: ViewController, modifier: Modifier = Modifier) {
-    homepageTemplate(viewController) {
-        var panel by remember { mutableStateOf(false) }
+fun Homepage(viewController: ViewController, viewModel: ViewModel, alertHandler: AlertBox) {
+    homepageTemplate(viewController, viewModel, alertHandler = alertHandler) {
 
         Column {
-            Button (
+            Button(
                 onClick = {
                     OAuth.redirect(arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"))
                 }
@@ -27,13 +24,9 @@ fun Homepage(viewController: ViewController, modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-                    panel = true
+                    alertHandler.displayAlert("poo", "test alert")
                 }
-            ) { Text("open panel") }
-        }
-
-        viewPanel ("TEST PANEL", DpSize(50.dp, 50.dp), DpSize(1600.dp, 800.dp), panel, closeHandler = { panel = false }) {
-            Text("Hello World")
+            ) { Text("test alert") }
         }
     }
 }

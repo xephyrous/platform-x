@@ -10,15 +10,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import org.xephyrous.data.ViewModel
 import org.xephyrous.views.ViewController
 
 @Composable
 fun homepageTemplate(
     viewController: ViewController,
+    viewModel: ViewModel,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
     alignmentSpacing: Dp = 30.dp,
+    alertHandler: AlertBox,
     content: @Composable (() -> Unit) = {}
 ) {
     Row {
@@ -26,8 +28,9 @@ fun homepageTemplate(
             topBar()
             Box(modifier = Modifier.fillMaxSize()) {
                 content()
+                alertHandler.createAlert()
             }
         }
-        homeSidebar(viewController, textSize, alignment, alignmentSpacing)
+        homeSidebar(viewController, viewModel, textSize, alignment, alignmentSpacing)
     }
 }
