@@ -173,5 +173,17 @@ object Firebase {
                 )
             )
         }
+
+        suspend inline fun deleteUser(
+            path: String,
+            idToken: String
+        ): Result<Unit> {
+            return handleResponse<Unit, FirebaseError>(
+                HttpClient.delete(
+                    "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$path",
+                    headers = mapOf("Authorization" to "Bearer $idToken")
+                )
+            )
+        }
     }
 }
