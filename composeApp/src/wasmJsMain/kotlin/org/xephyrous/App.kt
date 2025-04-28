@@ -7,27 +7,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import org.xephyrous.apis.Firebase
+import org.xephyrous.apis.OAuth
 import org.xephyrous.apis.getAllUrlParams
+import org.xephyrous.data.UserData
 import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
 
-enum class Screens{
-    AnonymousHomepage,
-    UserHomepage,
-    AdminHomepage,
-    About,
-    Admin,
-    Calendar,
-    Contact,
-    Courses,
-    Event,
-    Profile
-}
-
+@Serializable
 enum class UserRole {
     Anonymous,
     User,
@@ -35,15 +24,50 @@ enum class UserRole {
 }
 
 @Composable
-fun App(
-    navController: NavHostController = rememberNavController()
-) {
+fun App() {
     val viewModel = remember { ViewModel() }
+    val viewController = remember { ViewController(viewModel) }
+    val coroutineScope = rememberCoroutineScope()
 
-    // Authentication
+    // Authentication check
     val params = getAllUrlParams()
     if (params.contains("access_token")) {
-        println(params["access_token"])
+        viewModel.oAuthToken = params["access_token"]
+
+        // Exchange OAuth credential for Firebase credential
+        coroutineScope.launch {
+            Firebase.Auth.signInWithOAuth(viewModel.oAuthToken!!).onSuccess {
+                viewModel.firebaseUserInfo = it
+
+                // Load user data
+                Firebase.Firestore.getDocument(
+                    "users/${viewModel.firebaseUserInfo?.localId}",
+                    viewModel.firebaseUserInfo?.idToken ?: "" // TODO : Invalid information UI alert
+                ).onSuccess {
+                    Firebase.Firestore.getDocument(
+                        "users/${viewModel.firebaseUserInfo?.localId}",
+                        viewModel.firebaseUserInfo!!.idToken
+                    ).onSuccess {
+                        viewModel.userData = it.toObject<UserData>()
+
+                        // Serve corresponding homepage
+                        when(viewModel.userData?.role) {
+                            UserRole.User -> { viewController.loadView(Views.UserHomepage) }
+                            UserRole.Admin -> { viewController.loadView(Views.AdminHomepage) }
+                            UserRole.Anonymous -> { }
+                            null -> { }
+                        }
+
+                    }
+
+                    OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {
+                        viewModel.googleUserInfo = it
+                    }.onFailure {
+                        // TODO : Invalid information UI alert
+                    }
+                }
+            }
+        }
     }
 
     // Navigation
@@ -51,50 +75,7 @@ fun App(
         BoxWithConstraints(
             modifier = Modifier.fillMaxSize().background(Color(0xFF2D2D2D))
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = Screens.AnonymousHomepage.name
-            ) {
-                composable(route = Screens.AnonymousHomepage.name) {
-                    Homepage(navController, viewModel)
-                }
-
-                composable(route = Screens.UserHomepage.name) {
-                    Homepage(navController, viewModel)
-                }
-
-                composable(route = Screens.AdminHomepage.name) {
-                    Homepage(navController, viewModel)
-                }
-
-                composable(route = Screens.About.name) {
-                    About(navController)
-                }
-
-                composable(route = Screens.Admin.name) {
-                    Admin(navController)
-                }
-
-                composable(route = Screens.Calendar.name) {
-                    Calendar(navController)
-                }
-
-                composable(route = Screens.Contact.name) {
-                    Contact(navController)
-                }
-
-                composable(route = Screens.Courses.name) {
-                    Courses(navController)
-                }
-
-                composable(route = Screens.Event.name) {
-                    Event(navController)
-                }
-
-                composable(route = Screens.Profile.name) {
-                    Profile(navController)
-                }
-            }
+            viewController.showView()
         }
     }
 }

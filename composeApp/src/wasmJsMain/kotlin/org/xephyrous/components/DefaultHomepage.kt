@@ -11,10 +11,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.xephyrous.views.ViewController
 
 @Composable
 fun homepageTemplate(
-    navController: NavController,
+    viewController: ViewController,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
     alignmentSpacing: Dp = 30.dp,
@@ -27,6 +28,6 @@ fun homepageTemplate(
                 content()
             }
         }
-        homeSidebar(navController, textSize, alignment, alignmentSpacing)
+        homeSidebar(viewController, textSize, alignment, alignmentSpacing)
     }
 }

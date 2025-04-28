@@ -12,10 +12,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.xephyrous.views.ViewController
 
 @Composable
 fun defaultScreen(
-    navController: NavController,
+    viewController: ViewController,
     title: String,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
@@ -31,6 +32,6 @@ fun defaultScreen(
                 content()
             }
         }
-        sidebar(navController, title, textSize, alignment, alignmentSpacing, painter, contentDescription)
+        sidebar(viewController, title, textSize, alignment, alignmentSpacing, painter, contentDescription)
     }
 }

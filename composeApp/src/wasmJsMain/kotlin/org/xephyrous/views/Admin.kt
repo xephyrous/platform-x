@@ -7,13 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.OutlineBoxTitleAlignment
 import org.xephyrous.components.clickableOutlineImage
@@ -27,9 +25,9 @@ import platformx.composeapp.generated.resources.modify_events
 import platformx.composeapp.generated.resources.modify_users
 
 @Composable
-fun Admin(navController: NavController, modifier: Modifier = Modifier) {
+fun Admin(viewController: ViewController, modifier: Modifier = Modifier) {
     defaultScreen(
-        navController = navController,
+        viewController,
         title = "Admin",
         painter = painterResource(Res.drawable.Admin)
     ) {

@@ -36,8 +36,8 @@ object ProfileData {
 }
 
 @Composable
-fun Profile(navController: NavController, modifier: Modifier = Modifier) {
-    defaultScreen(navController = navController, title = "Profile", painter = painterResource(Res.drawable.Profile)) {
+fun Profile(viewController: ViewController, modifier: Modifier = Modifier) {
+    defaultScreen(viewController, title = "Profile", painter = painterResource(Res.drawable.Profile)) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

@@ -15,8 +15,8 @@ import platformx.composeapp.generated.resources.Contact
 
 
 @Composable
-fun Contact(navController: NavController, modifier: Modifier = Modifier) {
-    defaultScreen(navController = navController, title = "Contact", painter = painterResource(Res.drawable.Contact)) {
+fun Contact(viewController: ViewController, modifier: Modifier = Modifier) {
+    defaultScreen(viewController, title = "Contact", painter = painterResource(Res.drawable.Contact)) {
         Column(
             modifier = modifier
                 .fillMaxSize()
