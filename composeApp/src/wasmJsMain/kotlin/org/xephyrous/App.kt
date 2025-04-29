@@ -81,7 +81,6 @@ fun App() {
                             viewModel.firebaseUserInfo!!.idToken
                         ).onSuccess {
                             viewModel.userData = it.toObject<UserData>()
-
                         }
 
                         OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {

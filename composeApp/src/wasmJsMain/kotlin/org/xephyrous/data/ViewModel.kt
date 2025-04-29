@@ -13,7 +13,6 @@ class ViewModel {
     var events: List<EventData> by mutableStateOf<List<EventData>>(emptyList())
     var courses: List<CourseData> by mutableStateOf<List<CourseData>>(emptyList())
 
-    var idToken: String? by mutableStateOf(null)
     var oAuthToken: String? by mutableStateOf(null)
     var firebaseUserInfo: FirebaseUserInfo? by mutableStateOf(null)
     var googleUserInfo: GoogleUserInfo? by mutableStateOf(null)

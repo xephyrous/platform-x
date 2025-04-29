@@ -49,21 +49,17 @@ fun Event(
     var showDialog by remember { mutableStateOf(false) }
     var selectedEvent by remember { mutableStateOf<EventData>(EventData("", "", "", LocalDate(1,1,1))) }
     var enrolledInSelected by remember { mutableStateOf(false) }
+    var updating = false
 
     LaunchedEffect(viewModel.oAuthToken) {
         coroutineScope.launch {
-            val token = viewModel.oAuthToken
-            if (token != null) {
-                val result = Firebase.Firestore.listDocuments<EventData>(
-                    path = "Events",
-                    idToken = token
-                )
-
-                result.onSuccess { documents ->
-                    viewModel.events = documents.values.toList()
-                }.onFailure {
-                    alertHandler.displayAlert("Load Fail", "Failed to load events: ${it.message}")
-                }
+            Firebase.Firestore.listDocuments<EventData>(
+                path = "events",
+                idToken = viewModel.firebaseUserInfo!!.idToken
+            ).onSuccess {
+                viewModel.events = it.values.toList()
+            }.onFailure {
+                alertHandler.displayAlert("Load Fail", "Failed to load events: ${it.message}")
             }
         }
     }
@@ -137,9 +133,17 @@ fun Event(
             if (viewModel.userData!!.role != UserRole.Anonymous) {
                 clickableOutlineTextTitleless(DpSize(300.dp, 60.dp), text = if (enrolledInSelected) "Unenroll" else "Enroll") {
                     coroutineScope.launch {
-                        viewModel.userData = viewModel.userData!!.copy(
-                            events = viewModel.userData!!.events + selectedEvent
-                        )
+                        if (updating) return@launch // guard clause
+                        updating = true
+                        if (enrolledInSelected) {
+                            viewModel.userData = viewModel.userData!!.copy(
+                                events = viewModel.userData!!.events.filterNot { it == selectedEvent }
+                            )
+                        } else {
+                            viewModel.userData = viewModel.userData!!.copy(
+                                events = viewModel.userData!!.events + selectedEvent
+                            )
+                        }
 
                         // Push changes to database
                         Firebase.Firestore.updateDocument(
@@ -147,6 +151,8 @@ fun Event(
                             viewModel.firebaseUserInfo!!.idToken,
                             viewModel.userData!!
                         )
+                        enrolledInSelected = !enrolledInSelected
+                        updating = false
                     }
                 }
             }
