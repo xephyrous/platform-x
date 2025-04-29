@@ -9,7 +9,10 @@ import org.xephyrous.UserRole
 class ViewModel {
     var currentScreen by mutableStateOf(Screens.Homepage)
     var visible by mutableStateOf(true)
-    var events by mutableStateOf<List<EventData>>(emptyList())
+
+    var events: List<EventData> by mutableStateOf<List<EventData>>(emptyList())
+    var courses: List<CourseData> by mutableStateOf<List<CourseData>>(emptyList())
+
     var idToken: String? by mutableStateOf(null)
     var oAuthToken: String? by mutableStateOf(null)
     var firebaseUserInfo: FirebaseUserInfo? by mutableStateOf(null)

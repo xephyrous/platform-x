@@ -1,7 +1,11 @@
 package org.xephyrous.views
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -9,18 +13,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.descriptors.PrimitiveKind
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.UserRole
 import org.xephyrous.apis.Firebase
 import org.xephyrous.components.AlertBox
+import org.xephyrous.components.clickableOutlineTextTitleless
 import org.xephyrous.components.defaultScreen
+import org.xephyrous.components.outlineBox
+import org.xephyrous.components.viewPanel
 import org.xephyrous.data.EventData
+import org.xephyrous.data.LocalDate
 import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Event
 import platformx.composeapp.generated.resources.Res
+
+fun isEnrolled(
+    event: EventData,
+    viewModel: ViewModel
+): Boolean {
+    return viewModel.userData!!.events.contains(event)
+}
 
 @Composable
 fun Event(
@@ -30,7 +49,8 @@ fun Event(
     modifier: Modifier = Modifier
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    var selectedEvent by remember { mutableStateOf<EventData?>(null) }
+    var selectedEvent by remember { mutableStateOf<EventData>(EventData("", "", "", LocalDate(1,1,1))) }
+    var enrolledInSelected by remember { mutableStateOf(false) }
 
     LaunchedEffect(viewModel.oAuthToken) {
         coroutineScope.launch {
@@ -44,7 +64,7 @@ fun Event(
                 result.onSuccess { documents ->
                     viewModel.events = documents.values.toList()
                 }.onFailure {
-                    println("Failed to load events: ${it.message}")
+                    alertHandler.displayAlert("Load Fail", "Failed to load events: ${it.message}")
                 }
             }
         }
@@ -57,25 +77,82 @@ fun Event(
         painter = painterResource(Res.drawable.Event),
         alertHandler = alertHandler
     ) {
-
-    Column(
+        Column(
             modifier = modifier
                 .fillMaxSize()
                 .padding(horizontal = 48.dp, vertical = 32.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if (viewModel.events.isEmpty()) {
+                Text(
+                    text = "We have no events to show you right now!",
+                    maxLines = 1,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
+                )
+            }
             viewModel.events.forEach { event ->
                 EventSummaryCard(event = event, onClick = {
                     selectedEvent = event
+                    enrolledInSelected = isEnrolled(selectedEvent, viewModel)
                     showDialog = true
                 })
             }
         }
     }
 
-    if (showDialog && selectedEvent != null) {
-        EventDetailsDialog(event = selectedEvent!!, onDismiss = { showDialog = false })
+    viewPanel("EVENT OVERVIEW", DpSize(0.dp, 0.dp), DpSize(1200.dp, 800.dp), showDialog, closeHandler = { showDialog = false }) {
+        Column(Modifier.fillMaxSize()) {
+            Text(
+                text = selectedEvent.name,
+                maxLines = 1,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 40.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+            )
+            Column(Modifier.weight(1f).scrollable(rememberScrollState(), Orientation.Vertical)) {
+                Text(
+                    text = selectedEvent.description,
+                    maxLines = Int.MAX_VALUE,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(10.dp)
+                )
+            }
+            Text(
+                text = selectedEvent.time.toString(),
+                maxLines = 1,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+            )
+            if (viewModel.userData!!.role != UserRole.Anonymous) {
+                clickableOutlineTextTitleless(DpSize(300.dp, 60.dp), text = if (enrolledInSelected) "Unenroll" else "Enroll") {
+                    coroutineScope.launch {
+                        viewModel.userData = viewModel.userData!!.copy(
+                            events = viewModel.userData!!.events + selectedEvent
+                        )
+
+                        // Push changes to database
+                        Firebase.Firestore.updateDocument(
+                            "users/${viewModel.firebaseUserInfo!!.localId}",
+                            viewModel.firebaseUserInfo!!.idToken,
+                            viewModel.userData!!
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -107,26 +184,4 @@ fun EventSummaryCard(event: EventData, onClick: () -> Unit) {
             )
         }
     }
-}
-
-@Composable
-fun EventDetailsDialog(event: EventData, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(event.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(event.description)
-                Text("LOCATION: ${event.location}", fontWeight = FontWeight.Medium)
-                Text("TIME: ${event.time.month}/${event.time.day}/${event.time.year}")
-            }
-        },
-        confirmButton = {
-            Button(onClick = onDismiss) {
-                Text("Close")
-            }
-        }
-    )
 }

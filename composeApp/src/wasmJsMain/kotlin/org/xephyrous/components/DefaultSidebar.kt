@@ -155,6 +155,18 @@ fun homeSidebar(
                         painter = painterResource(Res.drawable.Courses),
                         contentDescription = "Courses"
                     ) { navigateTo(Screens.Courses) }
+
+                    clickableOutlineImage(
+                        title = "Events",
+                        size = DpSize(60.dp, 60.dp),
+                        xOffset = 40.dp,
+                        yOffset = 480.dp,
+                        textSize = textSize,
+                        alignment = alignment,
+                        alignmentSpacing = alignmentSpacing,
+                        painter = painterResource(Res.drawable.Event),
+                        contentDescription = "Events"
+                    ) { navigateTo(Screens.Event) }
                 }
 
                 UserRole.Admin -> {
@@ -219,10 +231,22 @@ fun homeSidebar(
                     ) { navigateTo(Screens.Courses) }
 
                     clickableOutlineImage(
-                        title = "Admin",
+                        title = "Events",
                         size = DpSize(60.dp, 60.dp),
                         xOffset = 40.dp,
                         yOffset = 480.dp,
+                        textSize = textSize,
+                        alignment = alignment,
+                        alignmentSpacing = alignmentSpacing,
+                        painter = painterResource(Res.drawable.Event),
+                        contentDescription = "Events"
+                    ) { navigateTo(Screens.Event) }
+
+                    clickableOutlineImage(
+                        title = "Admin",
+                        size = DpSize(60.dp, 60.dp),
+                        xOffset = 40.dp,
+                        yOffset = 570.dp,
                         textSize = textSize,
                         alignment = alignment,
                         alignmentSpacing = alignmentSpacing,
