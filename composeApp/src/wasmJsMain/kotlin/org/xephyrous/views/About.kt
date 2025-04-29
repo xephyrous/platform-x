@@ -4,15 +4,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.*
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
-import org.xephyrous.components.*
+import org.xephyrous.components.AlertBox
+import org.xephyrous.components.defaultScreen
+import org.xephyrous.components.outlineText
 import org.xephyrous.data.ViewModel
-import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.About
+import platformx.composeapp.generated.resources.Res
 
 @Composable
 fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {

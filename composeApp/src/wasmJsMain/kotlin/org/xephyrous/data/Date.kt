@@ -3,8 +3,6 @@ package org.xephyrous.data
 import kotlinx.serialization.Serializable
 
 data class YearMonth(val year: Int, val month: Int) {
-    val monthValue: Int get() = month
-
     fun getDisplayName(): String {
         val monthNames = listOf(
             "January", "February", "March", "April", "May", "June",
@@ -24,7 +22,7 @@ data class YearMonth(val year: Int, val month: Int) {
 
     companion object {
         fun now(): YearMonth {
-            // Hardcoded to May 2025 for WASM compatibility
+            // Hardcoded to May 2025 for no interop
             return YearMonth(2025, 5)
         }
     }
@@ -84,5 +82,13 @@ data class LocalDate(val year: Int, val month: Int, val day: Int) {
 
     companion object {
         fun now() = LocalDate(2025, 5, 1)  // Hardcoded May 2025
+    }
+
+    override fun hashCode(): Int {
+        var result = year
+        result = 31 * result + month
+        result = 31 * result + day
+        result = 31 * result + dayOfWeek
+        return result
     }
 }

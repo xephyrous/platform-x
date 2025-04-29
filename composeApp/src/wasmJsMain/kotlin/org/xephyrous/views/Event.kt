@@ -4,10 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,14 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.descriptors.PrimitiveKind
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.UserRole
 import org.xephyrous.apis.Firebase
 import org.xephyrous.components.AlertBox
 import org.xephyrous.components.clickableOutlineTextTitleless
 import org.xephyrous.components.defaultScreen
-import org.xephyrous.components.outlineBox
 import org.xephyrous.components.viewPanel
 import org.xephyrous.data.EventData
 import org.xephyrous.data.LocalDate

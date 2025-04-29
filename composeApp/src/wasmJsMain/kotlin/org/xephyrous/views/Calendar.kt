@@ -1,15 +1,8 @@
 package org.xephyrous.views
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Icon
@@ -29,16 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
-import org.xephyrous.components.AlertBox
-import org.xephyrous.components.clickableOutlineTextTitleless
-import org.xephyrous.components.defaultScreen
-import org.xephyrous.components.homeSidebar
-import org.xephyrous.components.outlineBox
-import org.xephyrous.components.outlineTextTitleless
-import org.xephyrous.components.viewPanel
+import org.xephyrous.components.*
 import org.xephyrous.data.EventData
 import org.xephyrous.data.LocalDate
 import org.xephyrous.data.ViewModel
