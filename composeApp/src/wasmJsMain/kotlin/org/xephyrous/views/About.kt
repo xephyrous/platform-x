@@ -34,8 +34,8 @@ fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                 title = "What is PlatformX?",
                 size = DpSize(600.dp, 160.dp),
                 maxLines = Int.MAX_VALUE,
-                text = "Platform-X is a simple yet effective and lightweight web platform that allows Students and Instructors to interact easily." +
-                        "This includes easy scheduling of meetings between parties and content uploads by instructors."
+                text = "Platform-X is a simple yet effective and lightweight web platform that allows Students and Admins to interact easily." +
+                        "This includes easy scheduling of events between parties and content uploads by administrators."
             )
 
             Spacer(modifier = Modifier.height(30.dp))

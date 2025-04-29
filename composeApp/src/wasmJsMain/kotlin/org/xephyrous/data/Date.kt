@@ -67,12 +67,22 @@ data class LocalDate(val year: Int, val month: Int, val day: Int) {
 
     val dayOfWeek: Int
         get() {
-            // A very simplified algorithm to calculate the weekday
-            val y = year - if (month <= 2) 1 else 0 // Adjust year if January or February
-            val m = (month + 9) % 12 + 1 // Adjust month to use the Zeller formula
-            val d = day
-            return (d + ((13 * m + 1) / 5) + y + (y / 4) - (y / 100) + (y / 400)) % 7
+            val mon = when (month) {
+                1 -> 13
+                2 -> 14
+                else -> month
+            }
+            val yr = if (month <= 2) year - 1 else year
+            val q = day
+            val k = yr % 100
+            val j = yr / 100
+            val h = q + 13*(mon + 1) / 5 + k + k / 4 + j / 4 + 5 * j
+            return h % 7
         }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is LocalDate) && year == other.year && month == other.month && day == other.day
+    }
 
     companion object {
         fun now() = LocalDate(2025, 5, 1)  // Hardcoded May 2025

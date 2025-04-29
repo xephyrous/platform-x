@@ -1,5 +1,6 @@
 package org.xephyrous.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -36,6 +37,61 @@ fun outlineText(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
+        ) {
+            Text(
+                text = text,
+                maxLines = maxLines,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = textSize,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+fun outlineTextTitleless(
+    size: DpSize,
+    xOffset: Dp = 0.dp,
+    yOffest: Dp = 0.dp,
+    textSize: TextUnit = 14.sp,
+    maxLines: Int = 1,
+    text: String
+) {
+    outlineBoxTitleless(size, xOffset, yOffest) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(
+                text = text,
+                maxLines = maxLines,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = textSize,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+fun clickableOutlineTextTitleless(
+    size: DpSize,
+    xOffset: Dp = 0.dp,
+    yOffest: Dp = 0.dp,
+    textSize: TextUnit = 14.sp,
+    maxLines: Int = 1,
+    text: String,
+    onClick: () -> Unit
+) {
+    outlineBoxTitleless(size, xOffset, yOffest) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxSize().clickable { onClick() }
         ) {
             Text(
                 text = text,
