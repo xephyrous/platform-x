@@ -1,19 +1,31 @@
 package org.xephyrous.views
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.ArrowBackIos
 import androidx.compose.material.icons.automirrored.sharp.ArrowForwardIos
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +35,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.AlertBox
 import org.xephyrous.components.clickableOutlineTextTitleless
 import org.xephyrous.components.defaultScreen
+import org.xephyrous.components.homeSidebar
+import org.xephyrous.components.outlineBox
 import org.xephyrous.components.outlineTextTitleless
 import org.xephyrous.components.viewPanel
 import org.xephyrous.data.EventData
@@ -64,6 +78,7 @@ fun CalendarView(
     var panelX by remember { mutableStateOf(0.dp) }
     var panelY by remember { mutableStateOf(0.dp) }
     var panel by remember { mutableStateOf(false) }
+    var viewDate by remember { mutableStateOf<LocalDate>(LocalDate(2, 2, 2)) } // this should never show
     var events: List<EventData> by remember { mutableStateOf<List<EventData>>(emptyList()) }
 
     Box(
@@ -106,6 +121,7 @@ fun CalendarView(
                             40.sp, text =day.day.toString(),
                             onClick = {
                                 events = findEventsOnDay(day, viewModel)
+                                viewDate = day
                                 panelX = boxWidth/14*(colIndex+4) - boxWidth/32
                                 panelY = boxWidth/14*(rowIndex+1)
                                 panel = true
@@ -143,7 +159,62 @@ fun CalendarView(
             DpSize(boxWidth/16, boxHeight/16), DpSize(boxWidth-80.dp, boxHeight-80.dp),
             panelX, panelY, 40.dp, 40.dp, panel, closeHandler = { panel = false }
         ) {
-            // TODO: ADD EVENTS LAZY COL
+            Column(Modifier.fillMaxSize()) {
+                Text(
+                    text = "Events For: $viewDate",
+                    maxLines = 1,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 40.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(10.dp)
+                )
+                if (events.isEmpty()) {
+                    Text(
+                        text = "You have no events for this day!",
+                        maxLines = 1,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(1f).padding(10.dp)
+                    )
+                } else {
+                    LazyColumn (
+                        Modifier.fillMaxSize().align(Alignment.CenterHorizontally).scrollable(rememberScrollState(), Orientation.Vertical)
+                    ) {
+                        items(events.size) { index ->
+                            outlineBox(
+                                title = events[index].name, DpSize(boxWidth - 160.dp, 80.dp),
+                            ) {
+                                Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(
+                                        text = events[index].description,
+                                        maxLines = 8,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 30.sp,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.weight(1f)
+                                    )
+
+                                    Box(Modifier.offset(x = 20.dp, 8.dp).size(boxWidth - 200.dp, 4.dp))
+
+                                    Text(
+                                        text = events[index].location,
+                                        maxLines = 8,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 30.sp,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.weight(1f).offset(y = 8.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
