@@ -57,6 +57,17 @@ data class LocalDate(val year: Int, val month: Int, val day: Int) {
         }
     }
 
+    fun isBefore(other: LocalDate): Boolean {
+        return when {
+            year < other.year -> true
+            year > other.year -> false
+            month < other.month -> true
+            month > other.month -> false
+            day < other.day -> true
+            else -> false
+        }
+    }
+
     val dayOfWeek: Int
         get() {
             val mon = when (month) {

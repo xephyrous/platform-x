@@ -283,16 +283,16 @@ fun homeSidebar(
                     ) { navigateTo(Screens.About) }
 
                     clickableOutlineImage(
-                        title = "Courses",
+                        title = "Contact",
                         size = DpSize(60.dp, 60.dp),
                         xOffset = 40.dp,
                         yOffset = 210.dp,
                         textSize = textSize,
                         alignment = alignment,
                         alignmentSpacing = alignmentSpacing,
-                        painter = painterResource(Res.drawable.Courses),
-                        contentDescription = "Courses"
-                    ) { navigateTo(Screens.Courses) }
+                        painter = painterResource(Res.drawable.Contact),
+                        contentDescription = "Contact"
+                    ) { navigateTo(Screens.Contact) }
                 }
 
                 else -> {

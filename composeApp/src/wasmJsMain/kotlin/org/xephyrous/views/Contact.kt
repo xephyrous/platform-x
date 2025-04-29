@@ -29,7 +29,7 @@ fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: 
             outlineText(
                 title = "EMAIL",
                 size = DpSize(300.dp, 50.dp),
-                text = "xephyrous.development@gmail.com"
+                text = "xephyrous.dev@gmail.com"
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -39,16 +39,7 @@ fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: 
                 size = DpSize(300.dp, 50.dp),
                 text = "xephyrous.org"
             )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            outlineText(
-                title = "TOLL-FREE NUMBER",
-                size = DpSize(300.dp, 50.dp),
-                text = "(888) 123-4567"
-            )
         }
     }
-
 }
 

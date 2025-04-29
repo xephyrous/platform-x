@@ -1,120 +1,168 @@
 package org.xephyrous.views
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.apis.Firebase
 import org.xephyrous.components.AlertBox
-import org.xephyrous.components.clickableOutlineTextTitleless
 import org.xephyrous.components.defaultScreen
+import org.xephyrous.components.outlineBox
 import org.xephyrous.components.viewPanel
+import org.xephyrous.data.CourseData
 import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Courses
 import platformx.composeapp.generated.resources.Res
 
-data class CourseData(
-    val courseCode: String,
-    val title: String,
-    val description: String,
-    val professor: String,
-    val time: String
-)
-
-val courseList = listOf(
-    CourseData("CS36000", "Software Engineering", "The course presents the common forms of the software life cycle, which are used throughout the commercial, industrial, institutional, and governmental communities when a single development effort is appropriate. " +
-            "Topics include software development models, project planning, management, communication, analysis, design, testing, and implementation"
-        , "Dr. Amal Khalifa", "MWF 1:30–2:45 PM"),
-
-    CourseData("CS36400", "Introduction to Database Systems", "Theory and application of database systems for information organization and retrieval based on the relational model. Includes database models, query languages, data dependencies, normal forms, and database design. " +
-            "Projects include use of commercial mainframe and microcomputer database software."
-        , "Thomas Bolinger", "TR 9:00–10:15 AM"),
-
-    CourseData("CS37400", "Computer Networks", "The design and implementation of data communications networks. Topics include network topologies; message, circuit and packet switching; broadcast, satellite and local area networks; routing;" +
-            "the OSI model with emphasis on the network, transport, and session layers."
-        , "Jonathan Rusert", "MW 3:00–4:15 PM"),
-
-    CourseData("CS44500", "Computer Security", "A survey of the fundamentals of computer security. Topics include risks and vulnerabilities, policy formation, controls and protection methods, survey of malicious logic, database security, encryption, authentication, intrusion detection," +
-            " network and system security issues, personnel and physical security issues, security design principles, and issues of law and privacy."
-        , "Dr. Zesheng Chen", "F 10:00–12:50 PM")
-)
-
 @Composable
-fun Courses(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
+fun Courses(
+    coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox
+) {
     var showDialog by remember { mutableStateOf(false) }
-    var selectedCourse by remember { mutableStateOf<CourseData?>(null) }
+    var selectedCourse by remember { mutableStateOf(Pair("", CourseData(0, "", "", "", "", ""))) }
+
+    LaunchedEffect(viewModel.oAuthToken) {
+        coroutineScope.launch {
+            Firebase.Firestore.listDocuments<CourseData>(
+                path = "courses",
+                idToken = viewModel.firebaseUserInfo!!.idToken
+            ).onSuccess {
+                viewModel.courses = it.toList()
+            }.onFailure {
+                alertHandler.displayAlert("Load Fail", "Failed to load courses: ${it.message}")
+            }
+        }
+    }
 
     defaultScreen(
-        coroutineScope, viewModel, title = "Courses", painter = painterResource(Res.drawable.Courses), alertHandler = alertHandler
+        coroutineScope,
+        viewModel,
+        title = "Courses",
+        painter = painterResource(Res.drawable.Courses),
+        alertHandler = alertHandler
     ) {
+        val localDensity = LocalDensity.current
+
+        var boxWidth by remember { mutableStateOf(0.dp) }
+        var boxHeight by remember { mutableStateOf(0.dp) }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .onGloballyPositioned {
+                    boxWidth = with(localDensity) { it.size.width.toDp() }
+                    boxHeight = with(localDensity) { it.size.height.toDp() }
+                }
+                .padding(horizontal = 48.dp, vertical = 32.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            courseList.forEach { course ->
-                CourseSummaryCard(course) {
-                    selectedCourse = course
-                    showDialog = true
+            if (viewModel.courses.isEmpty()) {
+                Text(
+                    text = "We have no courses to show you right now!",
+                    maxLines = 1,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+            LazyColumn (
+                Modifier.fillMaxSize().scrollable(rememberScrollState(), Orientation.Vertical),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(viewModel.courses.size) { index ->
+                    Spacer(modifier = Modifier.height(10.dp))
+                    outlineBox(
+                        title = "${viewModel.courses[index].second.coursePrefix}${viewModel.courses[index].second.courseNumber}", DpSize(boxWidth - 196.dp, 100.dp),
+                    ) {
+                        Column(Modifier.fillMaxSize().clickable{
+                            selectedCourse = viewModel.courses[index]
+                            showDialog = true
+                        }) {
+                            Text(
+                                text = viewModel.courses[index].first,
+                                maxLines = 1,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                textAlign = TextAlign.Left,
+                                modifier = Modifier.weight(1f).fillMaxWidth().padding(10.dp)
+                            )
+                            Text(
+                                text = viewModel.courses[index].second.location + " | " + viewModel.courses[index].second.time,
+                                maxLines = 1,
+                                color = Color.Gray,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                textAlign = TextAlign.Left,
+                                modifier = Modifier.fillMaxWidth().padding(10.dp)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
             }
         }
     }
 
-    selectedCourse?.let {
-        viewPanel("COURSE OVERVIEW", DpSize(0.dp, 0.dp), DpSize(1200.dp, 600.dp), showDialog, closeHandler = { showDialog = false }) {
-            Column(Modifier.fillMaxSize().padding(20.dp).verticalScroll(rememberScrollState())) {
-                Text(
-                    text = it.courseCode + ": " + it.title,
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = it.description,
-                    fontSize = 18.sp,
-                    color = Color.White
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("Professor: ${it.professor}", fontSize = 16.sp, color = Color.White)
-                Text("Time: ${it.time}", fontSize = 16.sp, color = Color.White)
-            }
-        }
-    }
-}
-
-@Composable
-fun CourseSummaryCard(course: CourseData, onClick: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        elevation = 8.dp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clickable(onClick = onClick)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(course.courseCode, fontSize = 16.sp, fontWeight = FontWeight.Medium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(course.title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    viewPanel("COURSE OVERVIEW", DpSize(0.dp, 0.dp), DpSize(1200.dp, 800.dp), showDialog, closeHandler = { showDialog = false }) {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = selectedCourse.first,
+                maxLines = 1,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 40.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+            )
+            Text(
+                text = selectedCourse.second.description,
+                maxLines = Int.MAX_VALUE,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f).padding(10.dp)
+            )
+            Text(
+                text = "Taught By: " + selectedCourse.second.instructor,
+                maxLines = 1,
+                color = Color.LightGray,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+            )
+            Text(
+                text = selectedCourse.second.location + " | " + selectedCourse.second.time,
+                maxLines = 1,
+                color = Color.Gray,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

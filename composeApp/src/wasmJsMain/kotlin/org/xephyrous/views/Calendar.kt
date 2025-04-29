@@ -1,5 +1,6 @@
 package org.xephyrous.views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -165,37 +166,37 @@ fun CalendarView(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.weight(1f).padding(10.dp)
                     )
-                } else {
-                    LazyColumn (
-                        Modifier.fillMaxSize().align(Alignment.CenterHorizontally).scrollable(rememberScrollState(), Orientation.Vertical)
-                    ) {
-                        items(events.size) { index ->
-                            outlineBox(
-                                title = events[index].name, DpSize(boxWidth - 160.dp, 80.dp),
-                            ) {
-                                Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(
-                                        text = events[index].description,
-                                        maxLines = 8,
-                                        color = Color.White,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 30.sp,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.weight(1f)
-                                    )
+                }
+                LazyColumn (
+                    Modifier.fillMaxSize().scrollable(rememberScrollState(), Orientation.Vertical),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(events.size) { index ->
+                        outlineBox(
+                            title = events[index].name, DpSize(boxWidth - 160.dp, 240.dp),
+                        ) {
+                            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = events[index].description,
+                                    maxLines = 8,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.weight(1f).padding(10.dp)
+                                )
 
-                                    Box(Modifier.offset(x = 20.dp, 8.dp).size(boxWidth - 200.dp, 4.dp))
+                                Box(Modifier.offset(x = 20.dp, y = 8.dp).size(boxWidth - 200.dp, 4.dp).background(color = Color.White)) {}
 
-                                    Text(
-                                        text = events[index].location,
-                                        maxLines = 8,
-                                        color = Color.White,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 30.sp,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.weight(1f).offset(y = 8.dp)
-                                    )
-                                }
+                                Text(
+                                    text = events[index].location,
+                                    maxLines = 1,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 30.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.fillMaxWidth().padding(10.dp)
+                                )
                             }
                         }
                     }

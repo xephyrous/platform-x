@@ -10,8 +10,8 @@ class ViewModel {
     var currentScreen by mutableStateOf(Screens.Homepage)
     var visible by mutableStateOf(true)
 
-    var events: List<EventData> by mutableStateOf<List<EventData>>(emptyList())
-    var courses: List<CourseData> by mutableStateOf<List<CourseData>>(emptyList())
+    var events: List<EventData> by mutableStateOf(emptyList())
+    var courses: List<Pair<String, CourseData>> by mutableStateOf(emptyList())
 
     var oAuthToken: String? by mutableStateOf(null)
     var firebaseUserInfo: FirebaseUserInfo? by mutableStateOf(null)
