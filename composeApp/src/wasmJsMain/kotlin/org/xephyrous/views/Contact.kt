@@ -6,17 +6,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.AlertBox
 import org.xephyrous.components.defaultScreen
 import org.xephyrous.components.outlineText
+import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Contact
 import platformx.composeapp.generated.resources.Res
 
 
 @Composable
-fun Contact(viewController: ViewController, alertHandler: AlertBox) {
-    defaultScreen(viewController, title = "Contact", painter = painterResource(Res.drawable.Contact), alertHandler = alertHandler) {
+fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
+    defaultScreen(coroutineScope, viewModel, title = "Contact", painter = painterResource(Res.drawable.Contact), alertHandler = alertHandler) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

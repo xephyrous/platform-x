@@ -5,15 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.*
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.*
+import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.About
 
 @Composable
-fun About(viewController: ViewController, alertHandler: AlertBox, modifier: Modifier = Modifier) {
+fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {
     defaultScreen(
-        viewController,
+        coroutineScope,
+        viewModel,
         title = "About",
         painter = painterResource(Res.drawable.About),
         alertHandler = alertHandler,

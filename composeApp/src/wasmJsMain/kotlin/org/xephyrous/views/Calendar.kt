@@ -11,11 +11,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.AlertBox
 import org.xephyrous.components.defaultScreen
 import org.xephyrous.components.outlineBox
 import org.xephyrous.data.LocalDate
+import org.xephyrous.data.ViewModel
 import org.xephyrous.data.YearMonth
 import platformx.composeapp.generated.resources.Calendar
 import platformx.composeapp.generated.resources.Res
@@ -60,8 +64,8 @@ fun CalendarView(yearMonth: YearMonth) {
                         val day = days[dayIndex]
                         outlineBox(
                             day.day.toString(),
-                            DpSize(boxWidth/15, boxWidth/15),
-                            boxWidth/15*(colIndex+4) - boxWidth/30, boxWidth/16*(rowIndex+1) - boxWidth/30,
+                            DpSize(boxWidth/16, boxWidth/16),
+                            boxWidth/15*(colIndex+4) - boxWidth/32, boxWidth/15*(rowIndex+1) - boxWidth/32,
                         ){
                             Text(
                                 text = day.day.toString(),
@@ -83,9 +87,9 @@ fun CalendarScreen() {
 
 @Composable
 fun Calendar(
-    viewController: ViewController, alertHandler: AlertBox
+    coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox
 ) {
-    defaultScreen(viewController, title = "Calendar", painter = painterResource(Res.drawable.Calendar), alertHandler = alertHandler) {
+    defaultScreen(coroutineScope, viewModel, title = "Calendar", painter = painterResource(Res.drawable.Calendar), alertHandler = alertHandler) {
         CalendarScreen()
     }
 }

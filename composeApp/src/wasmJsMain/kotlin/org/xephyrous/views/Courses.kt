@@ -9,17 +9,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
 import org.xephyrous.components.AlertBox
 import org.xephyrous.components.defaultScreen
 import org.xephyrous.components.outlineText
+import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Courses
 import platformx.composeapp.generated.resources.Res
 
 @Composable
-fun Courses(viewController: ViewController, alertHandler: AlertBox) {
+fun Courses(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
     defaultScreen(
-        viewController, title = "Courses", painter = painterResource(Res.drawable.Courses), alertHandler = alertHandler) {
+        coroutineScope, viewModel, title = "Courses", painter = painterResource(Res.drawable.Courses), alertHandler = alertHandler) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

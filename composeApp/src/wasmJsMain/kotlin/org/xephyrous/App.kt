@@ -1,10 +1,16 @@
 package org.xephyrous
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.launch
@@ -14,9 +20,6 @@ import org.xephyrous.apis.Firebase
 import org.xephyrous.apis.OAuth
 import org.xephyrous.apis.getAllUrlParams
 import org.xephyrous.components.AlertBox
-import org.xephyrous.data.CourseData
-import org.xephyrous.data.EventData
-import org.xephyrous.data.LocalDate
 import org.xephyrous.data.UserData
 import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
@@ -33,11 +36,21 @@ enum class UserRole {
     Admin
 }
 
+enum class Screens {
+    Homepage,
+    About,
+    Admin,
+    Calendar,
+    Contact,
+    Courses,
+    Event,
+    Profile
+}
+
 @Composable
 fun App() {
     val viewModel = remember { ViewModel() }
     val alertHandler = remember { AlertBox }
-    val viewController = remember { ViewController(viewModel, alertHandler) }
     val coroutineScope = rememberCoroutineScope()
 
     // Authentication check
@@ -69,8 +82,6 @@ fun App() {
                         ).onSuccess {
                             viewModel.userData = it.toObject<UserData>()
 
-                            // Serve corresponding homepage
-                            viewController.loadView(Views.Homepage)
                         }
 
                         OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {
@@ -87,9 +98,26 @@ fun App() {
     // Navigation
     MaterialTheme {
         BoxWithConstraints(
-            modifier = Modifier.fillMaxSize().background(Color(0xFF2D2D2D))
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF2D2D2D))
         ) {
-            viewController.showView()
+            AnimatedVisibility(
+                visible = viewModel.visible,
+                enter = fadeIn(animationSpec = tween(300)),
+                exit = fadeOut(animationSpec = tween(300))
+            ) {
+                when (viewModel.currentScreen) {
+                    Screens.Homepage -> Homepage(coroutineScope, viewModel, alertHandler)
+                    Screens.About -> About(coroutineScope, viewModel, alertHandler)
+                    Screens.Admin -> Admin(coroutineScope, viewModel, alertHandler)
+                    Screens.Calendar -> Calendar(coroutineScope, viewModel, alertHandler)
+                    Screens.Contact -> Contact(coroutineScope, viewModel, alertHandler)
+                    Screens.Courses -> Courses(coroutineScope, viewModel, alertHandler)
+                    Screens.Event -> Event(coroutineScope, viewModel, alertHandler)
+                    Screens.Profile -> Profile(coroutineScope, viewModel, alertHandler)
+                }
+            }
         }
     }
 }

@@ -4,15 +4,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
 import org.xephyrous.apis.OAuth
 import org.xephyrous.components.AlertBox
 import org.xephyrous.components.homepageTemplate
 import org.xephyrous.data.ViewModel
 
 @Composable
-fun Homepage(viewController: ViewController, viewModel: ViewModel, alertHandler: AlertBox) {
-    homepageTemplate(viewController, viewModel, alertHandler = alertHandler) {
-
+fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
+    homepageTemplate(coroutineScope, viewModel, alertHandler = alertHandler) {
         Column {
             Button(
                 onClick = {
