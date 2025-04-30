@@ -296,19 +296,7 @@ fun homeSidebar(
                 }
 
                 else -> {
-                    clickableOutlineImage(
-                        title = "Login",
-                        size = DpSize(60.dp, 60.dp),
-                        xOffset = 40.dp,
-                        yOffset = 30.dp,
-                        textSize = textSize,
-                        alignment = alignment,
-                        alignmentSpacing = alignmentSpacing,
-                        painter = painterResource(Res.drawable.entire_network),
-                        contentDescription = "Login"
-                    ) {
-                        OAuth.redirect(arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"))
-                    }
+
                 }
             }
         }

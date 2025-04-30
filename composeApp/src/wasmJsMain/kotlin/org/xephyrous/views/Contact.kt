@@ -39,6 +39,14 @@ fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: 
                 size = DpSize(300.dp, 50.dp),
                 text = "xephyrous.org"
             )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            outlineText(
+                title = "GITHUB",
+                size = DpSize(300.dp, 50.dp),
+                text = "https://github.com/xephyrous"
+            )
         }
     }
 }

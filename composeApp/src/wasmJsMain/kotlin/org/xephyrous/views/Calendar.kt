@@ -172,8 +172,9 @@ fun CalendarView(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(events.size) { index ->
+                        Spacer(modifier = Modifier.height(12.dp))
                         outlineBox(
-                            title = events[index].name, DpSize(boxWidth - 160.dp, 240.dp),
+                            title = events[index].name, DpSize(boxWidth - 160.dp, 240.dp), fontSize = 40.sp,
                         ) {
                             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
@@ -186,19 +187,20 @@ fun CalendarView(
                                     modifier = Modifier.weight(1f).padding(10.dp)
                                 )
 
-                                Box(Modifier.offset(x = 20.dp, y = 8.dp).size(boxWidth - 200.dp, 4.dp).background(color = Color.White)) {}
+                                Box(Modifier.offset(y = 8.dp).size(boxWidth - 200.dp, 4.dp).background(color = Color.White)) {}
 
                                 Text(
                                     text = events[index].location,
                                     maxLines = 1,
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 30.sp,
+                                    fontSize = 26.sp,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.fillMaxWidth().padding(10.dp)
                                 )
                             }
                         }
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
                 }
             }

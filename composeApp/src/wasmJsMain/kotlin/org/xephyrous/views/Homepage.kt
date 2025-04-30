@@ -31,14 +31,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
         ) {
             // ✅ This block is kept completely unchanged
             if (viewModel.oAuthToken == null) {
-                Button(
-                    onClick = {
-                        OAuth.redirect(arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"))
-                    },
-                    modifier = Modifier.width(200.dp).height(60.dp)
-                ) {
-                    Text("Log In", fontSize = 20.sp)
-                }
+                Text("Go Log In", fontSize = 20.sp)
             }
 
             // 🔽 Dynamic Events Panel
