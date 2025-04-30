@@ -37,6 +37,8 @@ fun isEnrolled(
     return viewModel.userData!!.events.contains(event)
 }
 
+var updating = false
+
 @Composable
 fun Event(
     coroutineScope: CoroutineScope,
@@ -46,7 +48,6 @@ fun Event(
     var showDialog by remember { mutableStateOf(false) }
     var selectedEvent by remember { mutableStateOf(EventData("", "", "", LocalDate(1,1,1))) }
     var enrolledInSelected by remember { mutableStateOf(false) }
-    var updating = false
 
     LaunchedEffect(viewModel.oAuthToken) {
         coroutineScope.launch {

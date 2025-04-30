@@ -58,19 +58,49 @@ fun outlineBox(
             // custom border :D
 
             // top wall
-            if (alignment != OutlineBoxTitleAlignment.OVERHANG) {
-                Box( // left
-                    Modifier.size(alignmentSpacing-2.dp, 4.dp).background(Color.White),
-                )
+            when (alignment) {
+                OutlineBoxTitleAlignment.OVERHANG -> {
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset( x = alignmentSpacing + 1.dp)
+                            .background(Color.White),
+                    )
+                }
+                OutlineBoxTitleAlignment.LEFT -> {
+                    Box(
+                        Modifier.size(alignmentSpacing-2.dp, 4.dp).background(Color.White),
+                    )
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset(alignmentSpacing + 1.dp + textWidth)
+                            .background(Color.White),
+                    )
+                }
+                OutlineBoxTitleAlignment.CENTER -> {
+                    Box(
+                        Modifier.size((boxWidth/2 - textWidth/2) - 2.dp, 4.dp).background(Color.White),
+                    )
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset(size.width/2 + textWidth/2 + 2.dp)
+                            .background(Color.White),
+                    )
+                }
+                OutlineBoxTitleAlignment.RIGHT -> {
+                    Box(
+                        Modifier.size(boxWidth-(textWidth+alignmentSpacing+4.dp), 4.dp).background(Color.White),
+                    )
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset(size.width + 2.dp - alignmentSpacing)
+                            .background(Color.White),
+                    )
+                }
             }
-            Box(
-                Modifier
-                    .size(boxWidth, 4.dp)
-                    .offset( // right
-                        x = if (alignment == OutlineBoxTitleAlignment.OVERHANG) alignmentSpacing + 1.dp
-                        else alignmentSpacing + 1.dp + textWidth)
-                    .background(Color.White),
-            )
 
             // Left wall - with overhang difference
             if (alignment == OutlineBoxTitleAlignment.OVERHANG) {
@@ -155,20 +185,51 @@ fun outlineBox(
                 }
         ) {
             // custom border :D
+
             // top wall
-            if (alignment != OutlineBoxTitleAlignment.OVERHANG) {
-                Box( // left
-                    Modifier.size(alignmentSpacing-2.dp, 4.dp).background(Color.White),
-                )
+            when (alignment) {
+                OutlineBoxTitleAlignment.OVERHANG -> {
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset( x = alignmentSpacing + 1.dp)
+                            .background(Color.White),
+                    )
+                }
+                OutlineBoxTitleAlignment.LEFT -> {
+                    Box(
+                        Modifier.size(alignmentSpacing-2.dp, 4.dp).background(Color.White),
+                    )
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset(alignmentSpacing + 1.dp + textWidth)
+                            .background(Color.White),
+                    )
+                }
+                OutlineBoxTitleAlignment.CENTER -> {
+                    Box(
+                        Modifier.size((boxWidth/2 - textWidth/2) - 2.dp, 4.dp).background(Color.White),
+                    )
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset(size.width/2 + textWidth/2 + 2.dp)
+                            .background(Color.White),
+                    )
+                }
+                OutlineBoxTitleAlignment.RIGHT -> {
+                    Box(
+                        Modifier.size(boxWidth-(textWidth+alignmentSpacing+4.dp), 4.dp).background(Color.White),
+                    )
+                    Box(
+                        Modifier
+                            .size(boxWidth, 4.dp)
+                            .offset(size.width + 2.dp - alignmentSpacing)
+                            .background(Color.White),
+                    )
+                }
             }
-            Box(
-                Modifier
-                    .size(boxWidth, 4.dp)
-                    .offset( // right
-                        x = if (alignment == OutlineBoxTitleAlignment.OVERHANG) alignmentSpacing + 1.dp
-                        else alignmentSpacing + 1.dp + textWidth)
-                    .background(Color.White),
-            )
 
             // Left wall - with overhang difference
             if (alignment == OutlineBoxTitleAlignment.OVERHANG) {

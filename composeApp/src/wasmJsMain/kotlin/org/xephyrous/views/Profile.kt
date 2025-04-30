@@ -27,8 +27,6 @@ fun Profile(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: 
                 outlineImageTitleless(size = DpSize(300.dp, 300.dp), painter = painterResource(Res.drawable.entire_network))
                 Spacer(Modifier.width(60.dp))
                 Column {
-                    outlineText(title = "USERNAME", size = DpSize(450.dp, 60.dp), text = "Test")
-                    Spacer(Modifier.height(60.dp))
                     outlineSecureText(title = "EMAIL", size = DpSize(450.dp, 60.dp), text = viewModel.googleUserInfo!!.email)
                     Spacer(Modifier.height(60.dp))
                     outlineText(title = "ROLE", size = DpSize(450.dp, 60.dp), text = viewModel.userData!!.role.toString())

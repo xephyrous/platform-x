@@ -1,10 +1,7 @@
 package org.xephyrous.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -33,7 +30,7 @@ fun outlineText(
     maxLines: Int = 1,
     text: String
 ) {
-    outlineBox(title, size, textSize, alignment, alignmentSpacing) {
+    outlineBox(title, size, titleSize, alignment, alignmentSpacing) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
@@ -45,7 +42,7 @@ fun outlineText(
                 fontWeight = FontWeight.Bold,
                 fontSize = textSize,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f).padding(horizontal = 10.dp)
             )
         }
     }

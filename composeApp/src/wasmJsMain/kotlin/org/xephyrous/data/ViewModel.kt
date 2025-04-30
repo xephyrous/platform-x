@@ -11,6 +11,7 @@ class ViewModel {
     var visible by mutableStateOf(true)
 
     var events: List<EventData> by mutableStateOf(emptyList())
+    var allEvents: List<Pair<String, EventData>> by mutableStateOf(emptyList())
     var courses: List<Pair<String, CourseData>> by mutableStateOf(emptyList())
 
     var oAuthToken: String? by mutableStateOf(null)

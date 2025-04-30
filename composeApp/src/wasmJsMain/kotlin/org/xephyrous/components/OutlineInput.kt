@@ -48,7 +48,8 @@ fun outlineInput(
                 focusedIndicatorColor = Color.White,
                 unfocusedIndicatorColor = Color(0xFF2D2D2D),
                 cursorColor = Color.White,
-            )
+            ),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
