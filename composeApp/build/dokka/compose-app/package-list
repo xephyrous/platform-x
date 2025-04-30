@@ -1,0 +1,103 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:org.xephyrous.components////PointingToDeclaration/compose-app/org.xephyrous.components/index.html
+$dokka.location:org.xephyrous.components//outlineBox/#kotlin.String#androidx.compose.ui.unit.DpSize#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/compose-app/org.xephyrous.components/outline-box.html
+$dokka.location:org.xephyrous.components//outlineInput/#kotlin.String#androidx.compose.ui.unit.DpSize#org.xephyrous.data.CallbackStore#kotlin.Boolean#kotlin.String/PointingToDeclaration/compose-app/org.xephyrous.components/outline-input.html
+$dokka.location:org.xephyrous.components//outlineSecureInput/#kotlin.String#androidx.compose.ui.unit.DpSize#org.xephyrous.data.CallbackStore#kotlin.Boolean#kotlin.String/PointingToDeclaration/compose-app/org.xephyrous.components/outline-secure-input.html
+$dokka.location:org.xephyrous.data////PointingToDeclaration/compose-app/org.xephyrous.data/index.html
+$dokka.location:org.xephyrous.data/Callback.VALUE_CHANGE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}compose-app/org.xephyrous.data/-callback/-v-a-l-u-e_-c-h-a-n-g-e/index.html
+$dokka.location:org.xephyrous.data/Callback///PointingToDeclaration/compose-app/org.xephyrous.data/-callback/index.html
+$dokka.location:org.xephyrous.data/Callback/entries/#/PointingToDeclaration/compose-app/org.xephyrous.data/-callback/entries.html
+$dokka.location:org.xephyrous.data/Callback/valueOf/#kotlin.String/PointingToDeclaration/compose-app/org.xephyrous.data/-callback/value-of.html
+$dokka.location:org.xephyrous.data/Callback/values/#/PointingToDeclaration/compose-app/org.xephyrous.data/-callback/values.html
+$dokka.location:org.xephyrous.data/CallbackStore///PointingToDeclaration/compose-app/org.xephyrous.data/-callback-store/index.html
+$dokka.location:org.xephyrous.data/CallbackStore/CallbackStore/#kotlin.Array[org.xephyrous.data.EnumLambda]/PointingToDeclaration/compose-app/org.xephyrous.data/-callback-store/-callback-store.html
+$dokka.location:org.xephyrous.data/CallbackStore/contains/#kotlin.Enum[*]/PointingToDeclaration/compose-app/org.xephyrous.data/-callback-store/contains.html
+$dokka.location:org.xephyrous.data/CallbackStore/empty/#kotlin.Enum[*]/PointingToDeclaration/compose-app/org.xephyrous.data/-callback-store/empty.html
+$dokka.location:org.xephyrous.data/CallbackStore/invoke/#kotlin.Enum[*]#kotlin.Any/PointingToDeclaration/compose-app/org.xephyrous.data/-callback-store/invoke.html
+$dokka.location:org.xephyrous.data/CallbackStore/softInvoke/#kotlin.Enum[*]#kotlin.Any/PointingToDeclaration/compose-app/org.xephyrous.data/-callback-store/soft-invoke.html
+$dokka.location:org.xephyrous.data/EnumLambda///PointingToDeclaration/compose-app/org.xephyrous.data/-enum-lambda/index.html
+$dokka.location:org.xephyrous.data/EnumLambda/EnumLambda/#kotlin.Enum[*]#kotlin.Function1[kotlin.Any,kotlin.Unit]/PointingToDeclaration/compose-app/org.xephyrous.data/-enum-lambda/-enum-lambda.html
+$dokka.location:org.xephyrous.data/EnumLambda/enum/#/PointingToDeclaration/compose-app/org.xephyrous.data/-enum-lambda/enum.html
+$dokka.location:org.xephyrous.data/EnumLambda/lambda/#/PointingToDeclaration/compose-app/org.xephyrous.data/-enum-lambda/lambda.html
+$dokka.location:org.xephyrous.views////PointingToDeclaration/compose-app/org.xephyrous.views/index.html
+$dokka.location:org.xephyrous.views//Homepage/#androidx.navigation.NavController#androidx.compose.ui.Modifier/PointingToDeclaration/compose-app/org.xephyrous.views/-homepage.html
+$dokka.location:org.xephyrous.views//Login/#androidx.navigation.NavController#androidx.compose.ui.Modifier/PointingToDeclaration/compose-app/org.xephyrous.views/-login.html
+$dokka.location:org.xephyrous////PointingToDeclaration/compose-app/org.xephyrous/index.html
+$dokka.location:org.xephyrous//App/#androidx.navigation.NavHostController/PointingToDeclaration/compose-app/org.xephyrous/-app.html
+$dokka.location:org.xephyrous//main/#/PointingToDeclaration/compose-app/org.xephyrous/main.html
+$dokka.location:org.xephyrous/Screens.Homepage///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}compose-app/org.xephyrous/-screens/-homepage/index.html
+$dokka.location:org.xephyrous/Screens.Login///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}compose-app/org.xephyrous/-screens/-login/index.html
+$dokka.location:org.xephyrous/Screens///PointingToDeclaration/compose-app/org.xephyrous/-screens/index.html
+$dokka.location:org.xephyrous/Screens/entries/#/PointingToDeclaration/compose-app/org.xephyrous/-screens/entries.html
+$dokka.location:org.xephyrous/Screens/valueOf/#kotlin.String/PointingToDeclaration/compose-app/org.xephyrous/-screens/value-of.html
+$dokka.location:org.xephyrous/Screens/values/#/PointingToDeclaration/compose-app/org.xephyrous/-screens/values.html
+$dokka.location:xdevuikit.core.components////PointingToDeclaration/compose-app/xdevuikit.core.components/index.html
+$dokka.location:xdevuikit.core.components//Button/#androidx.compose.ui.Modifier/PointingToDeclaration/compose-app/xdevuikit.core.components/-button.html
+$dokka.location:xdevuikit.core.components//FlexBox/#androidx.compose.ui.Modifier#xdevuikit.core.utils.DpSize#androidx.compose.ui.Alignment#kotlin.Function1[xdevuikit.core.components.FlexBoxController,kotlin.Unit]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box.html
+$dokka.location:xdevuikit.core.components//HFlexMenu/#androidx.compose.ui.Modifier#xdevuikit.core.utils.DpSize#androidx.compose.ui.Alignment#xdevuikit.core.components.FlexMenuController#kotlin.Function1[xdevuikit.core.components.FlexMenuController,kotlin.Unit]/PointingToDeclaration/compose-app/xdevuikit.core.components/-h-flex-menu.html
+$dokka.location:xdevuikit.core.components//VFlexMenu/#androidx.compose.ui.Modifier#xdevuikit.core.utils.DpSize#androidx.compose.ui.Alignment#xdevuikit.core.components.FlexMenuController#kotlin.Function1[xdevuikit.core.components.FlexMenuController,kotlin.Unit]/PointingToDeclaration/compose-app/xdevuikit.core.components/-v-flex-menu.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase///PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/index.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/flexAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Array[kotlin.Int?]#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/flex-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/flexAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Int#androidx.compose.animation.core.Easing/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/flex-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/floatAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Array[kotlin.Int?]#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/float-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/floatAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Int#androidx.compose.animation.core.Easing/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/float-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/revertAsync/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/revert-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/revertFlexAsync/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/revert-flex-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/revertFloatAsync/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/revert-float-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/snapAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/snap-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/then/#kotlin.Function1[xdevuikit.core.components.FlexBoxAsyncBase,kotlin.Unit]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/then.html
+$dokka.location:xdevuikit.core.components/FlexBoxAsyncBase/wait/#kotlin.Long/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-async-base/wait.html
+$dokka.location:xdevuikit.core.components/FlexBoxController///PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/index.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/FlexBoxController/#xdevuikit.core.utils.DpSize/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/-flex-box-controller.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/animating/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/animating.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/durationMs/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/duration-ms.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/easing/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/easing.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/flex/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Array[kotlin.Int?]#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/flex.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/flex/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Int#androidx.compose.animation.core.Easing/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/flex.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/flexAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Array[kotlin.Int?]#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/flex-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/flexAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Int#androidx.compose.animation.core.Easing/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/flex-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/float/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Array[kotlin.Int?]#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/float.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/float/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Int#androidx.compose.animation.core.Easing/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/float.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/floatAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Array[kotlin.Int?]#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/float-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/floatAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?#kotlin.Int#androidx.compose.animation.core.Easing/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/float-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/revert/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/revert.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/revertAsync/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/revert-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/revertFlex/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/revert-flex.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/revertFlexAsync/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/revert-flex-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/revertFloat/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/revert-float.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/revertFloatAsync/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/revert-float-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/snap/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/snap.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/snapAsync/#androidx.compose.ui.unit.Dp?#androidx.compose.ui.unit.Dp?/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/snap-async.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/targetHeight/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/target-height.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/targetWidth/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/target-width.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/targetX/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/target-x.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/targetY/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/target-y.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/then/#kotlin.Function1[xdevuikit.core.components.FlexBoxAsyncBase,kotlin.Unit]/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/then.html
+$dokka.location:xdevuikit.core.components/FlexBoxController/wait/#kotlin.Long/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-box-controller/wait.html
+$dokka.location:xdevuikit.core.components/FlexMenuController///PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-menu-controller/index.html
+$dokka.location:xdevuikit.core.components/FlexMenuController/FlexMenuController/#/PointingToDeclaration/compose-app/xdevuikit.core.components/-flex-menu-controller/-flex-menu-controller.html
+$dokka.location:xdevuikit.core.utils////PointingToDeclaration/compose-app/xdevuikit.core.utils/index.html
+$dokka.location:xdevuikit.core.utils//animateStateWithCallback/#TypeParam(bounds=[kotlin.Any?])#androidx.compose.animation.core.AnimationSpec[TypeParam(bounds=[kotlin.Any?])]#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/compose-app/xdevuikit.core.utils/animate-state-with-callback.html
+$dokka.location:xdevuikit.core.utils//durations/#kotlin.Array[kotlin.Int?]/PointingToDeclaration/compose-app/xdevuikit.core.utils/durations.html
+$dokka.location:xdevuikit.core.utils//easings/#kotlin.Array[androidx.compose.animation.core.Easing?]/PointingToDeclaration/compose-app/xdevuikit.core.utils/easings.html
+$dokka.location:xdevuikit.core.utils//first/kotlin.Array[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/compose-app/xdevuikit.core.utils/first.html
+$dokka.location:xdevuikit.core.utils//first/kotlin.IntArray#/PointingToDeclaration/compose-app/xdevuikit.core.utils/first.html
+$dokka.location:xdevuikit.core.utils//second/kotlin.Array[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/compose-app/xdevuikit.core.utils/second.html
+$dokka.location:xdevuikit.core.utils//second/kotlin.IntArray#/PointingToDeclaration/compose-app/xdevuikit.core.utils/second.html
+$dokka.location:xdevuikit.core.utils/AnimatedStateDelegate///PointingToDeclaration/compose-app/xdevuikit.core.utils/-animated-state-delegate/index.html
+$dokka.location:xdevuikit.core.utils/AnimatedStateDelegate/AnimatedStateDelegate/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/compose-app/xdevuikit.core.utils/-animated-state-delegate/-animated-state-delegate.html
+$dokka.location:xdevuikit.core.utils/AnimatedStateDelegate/finished/#/PointingToDeclaration/compose-app/xdevuikit.core.utils/-animated-state-delegate/finished.html
+$dokka.location:xdevuikit.core.utils/AnimatedStateDelegate/getValue/#kotlin.Any?#kotlin.reflect.KProperty[*]/PointingToDeclaration/compose-app/xdevuikit.core.utils/-animated-state-delegate/get-value.html
+$dokka.location:xdevuikit.core.utils/AnimatedStateDelegate/setValue/#kotlin.Any?#kotlin.reflect.KProperty[*]#androidx.compose.runtime.State[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/compose-app/xdevuikit.core.utils/-animated-state-delegate/set-value.html
+$dokka.location:xdevuikit.core.utils/DpSize///PointingToDeclaration/compose-app/xdevuikit.core.utils/-dp-size/index.html
+$dokka.location:xdevuikit.core.utils/DpSize/DpSize/#androidx.compose.ui.unit.Dp#androidx.compose.ui.unit.Dp/PointingToDeclaration/compose-app/xdevuikit.core.utils/-dp-size/-dp-size.html
+$dokka.location:xdevuikit.core.utils/DpSize/height/#/PointingToDeclaration/compose-app/xdevuikit.core.utils/-dp-size/height.html
+$dokka.location:xdevuikit.core.utils/DpSize/width/#/PointingToDeclaration/compose-app/xdevuikit.core.utils/-dp-size/width.html
+org.xephyrous
+org.xephyrous.components
+org.xephyrous.data
+org.xephyrous.views
+xdevuikit.core.components
+xdevuikit.core.utils
+
