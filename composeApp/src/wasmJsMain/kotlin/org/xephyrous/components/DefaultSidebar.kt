@@ -7,18 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.Screens
 import org.xephyrous.UserRole
 import org.xephyrous.apis.OAuth
 import org.xephyrous.data.ViewModel
-import org.xephyrous.views.TransitionType
-import org.xephyrous.views.ViewController
-import org.xephyrous.views.Views
 import platformx.composeapp.generated.resources.*
 
 @Composable
 fun sidebar(
-    viewController: ViewController,
+    coroutineScope: CoroutineScope,
+    viewModel: ViewModel,
     title: String,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
@@ -56,7 +58,12 @@ fun sidebar(
                 painter = painterResource(Res.drawable.Return), // replace with actual back logo
                 contentDescription = "Site Back Button"
             ) {
-                viewController.loadView(Views.Homepage)
+                coroutineScope.launch {
+                    viewModel.visible = false
+                    delay(300)
+                    viewModel.currentScreen = Screens.Homepage
+                    viewModel.visible = true
+                }
             }
         }
     }
@@ -64,18 +71,27 @@ fun sidebar(
 
 @Composable
 fun homeSidebar(
-    viewController: ViewController,
+    coroutineScope: CoroutineScope,
     viewModel: ViewModel,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
     alignmentSpacing: Dp = 30.dp
 ) {
+    fun navigateTo(screen: Screens) {
+        coroutineScope.launch {
+            viewModel.visible = false
+            delay(300)
+            viewModel.currentScreen = screen
+            viewModel.visible = true
+        }
+    }
+
     Box(
         Modifier
             .fillMaxHeight()
             .width(110.dp)
     ) {
-        Box (
+        Box(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState(), reverseScrolling = true)
         ) {
             when (viewModel.userData?.role) {
@@ -90,9 +106,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.About),
                         contentDescription = "About"
-                    ) {
-                        viewController.loadView(Views.About)
-                    }
+                    ) { navigateTo(Screens.About) }
+
                     clickableOutlineImage(
                         title = "Profile",
                         size = DpSize(60.dp, 60.dp),
@@ -103,9 +118,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Profile),
                         contentDescription = "Profile"
-                    ) {
-                        viewController.loadView(Views.Profile)
-                    }
+                    ) { navigateTo(Screens.Profile) }
+
                     clickableOutlineImage(
                         title = "Contact",
                         size = DpSize(60.dp, 60.dp),
@@ -116,9 +130,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Contact),
                         contentDescription = "Contact"
-                    ) {
-                        viewController.loadView(Views.Contact)
-                    }
+                    ) { navigateTo(Screens.Contact) }
+
                     clickableOutlineImage(
                         title = "Calendar",
                         size = DpSize(60.dp, 60.dp),
@@ -129,9 +142,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Calendar),
                         contentDescription = "Calendar"
-                    ) {
-                        viewController.loadView(Views.Calendar)
-                    }
+                    ) { navigateTo(Screens.Calendar) }
+
                     clickableOutlineImage(
                         title = "Courses",
                         size = DpSize(60.dp, 60.dp),
@@ -142,10 +154,21 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Courses),
                         contentDescription = "Courses"
-                    ) {
-                        viewController.loadView(Views.Courses)
-                    }
+                    ) { navigateTo(Screens.Courses) }
+
+                    clickableOutlineImage(
+                        title = "Events",
+                        size = DpSize(60.dp, 60.dp),
+                        xOffset = 40.dp,
+                        yOffset = 480.dp,
+                        textSize = textSize,
+                        alignment = alignment,
+                        alignmentSpacing = alignmentSpacing,
+                        painter = painterResource(Res.drawable.Event),
+                        contentDescription = "Events"
+                    ) { navigateTo(Screens.Event) }
                 }
+
                 UserRole.Admin -> {
                     clickableOutlineImage(
                         title = "About",
@@ -157,9 +180,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.About),
                         contentDescription = "About"
-                    ) {
-                        viewController.loadView(Views.About)
-                    }
+                    ) { navigateTo(Screens.About) }
+
                     clickableOutlineImage(
                         title = "Profile",
                         size = DpSize(60.dp, 60.dp),
@@ -170,9 +192,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Profile),
                         contentDescription = "Profile"
-                    ) {
-                        viewController.loadView(Views.Profile)
-                    }
+                    ) { navigateTo(Screens.Profile) }
+
                     clickableOutlineImage(
                         title = "Contact",
                         size = DpSize(60.dp, 60.dp),
@@ -183,9 +204,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Contact),
                         contentDescription = "Contact"
-                    ) {
-                        viewController.loadView(Views.Contact)
-                    }
+                    ) { navigateTo(Screens.Contact) }
+
                     clickableOutlineImage(
                         title = "Calendar",
                         size = DpSize(60.dp, 60.dp),
@@ -196,9 +216,8 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Calendar),
                         contentDescription = "Calendar"
-                    ) {
-                        viewController.loadView(Views.Calendar)
-                    }
+                    ) { navigateTo(Screens.Calendar) }
+
                     clickableOutlineImage(
                         title = "Courses",
                         size = DpSize(60.dp, 60.dp),
@@ -209,23 +228,33 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Courses),
                         contentDescription = "Courses"
-                    ) {
-                        viewController.loadView(Views.Courses)
-                    }
+                    ) { navigateTo(Screens.Courses) }
+
                     clickableOutlineImage(
-                        title = "Admin",
+                        title = "Events",
                         size = DpSize(60.dp, 60.dp),
                         xOffset = 40.dp,
                         yOffset = 480.dp,
                         textSize = textSize,
                         alignment = alignment,
                         alignmentSpacing = alignmentSpacing,
+                        painter = painterResource(Res.drawable.Event),
+                        contentDescription = "Events"
+                    ) { navigateTo(Screens.Event) }
+
+                    clickableOutlineImage(
+                        title = "Admin",
+                        size = DpSize(60.dp, 60.dp),
+                        xOffset = 40.dp,
+                        yOffset = 570.dp,
+                        textSize = textSize,
+                        alignment = alignment,
+                        alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.Admin),
                         contentDescription = "Admin"
-                    ) {
-                        viewController.loadView(Views.Admin)
-                    }
+                    ) { navigateTo(Screens.Admin) }
                 }
+
                 UserRole.Anonymous -> {
                     clickableOutlineImage(
                         title = "Login",
@@ -240,6 +269,7 @@ fun homeSidebar(
                     ) {
                         OAuth.redirect(arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"))
                     }
+
                     clickableOutlineImage(
                         title = "About",
                         size = DpSize(60.dp, 60.dp),
@@ -250,26 +280,24 @@ fun homeSidebar(
                         alignmentSpacing = alignmentSpacing,
                         painter = painterResource(Res.drawable.About),
                         contentDescription = "About"
-                    ) {
-                        viewController.loadView(Views.About)
-                    }
+                    ) { navigateTo(Screens.About) }
+
                     clickableOutlineImage(
-                        title = "Courses",
+                        title = "Contact",
                         size = DpSize(60.dp, 60.dp),
                         xOffset = 40.dp,
                         yOffset = 210.dp,
                         textSize = textSize,
                         alignment = alignment,
                         alignmentSpacing = alignmentSpacing,
-                        painter = painterResource(Res.drawable.Courses),
-                        contentDescription = "Courses"
-                    ) {
-                        viewController.loadView(Views.Courses)
-                    }
+                        painter = painterResource(Res.drawable.Contact),
+                        contentDescription = "Contact"
+                    ) { navigateTo(Screens.Contact) }
                 }
+
                 else -> {
                     clickableOutlineImage(
-                        title = "some ting wong",
+                        title = "Login",
                         size = DpSize(60.dp, 60.dp),
                         xOffset = 40.dp,
                         yOffset = 30.dp,

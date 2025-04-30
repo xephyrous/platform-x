@@ -1,21 +1,28 @@
 package org.xephyrous.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.xephyrous.views.ViewController
+import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
+import org.xephyrous.data.ViewModel
 
 @Composable
 fun defaultScreen(
-    viewController: ViewController,
+    coroutineScope: CoroutineScope,
+    viewModel: ViewModel,
     title: String,
     textSize: TextUnit = 14.sp,
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
@@ -26,13 +33,14 @@ fun defaultScreen(
     content: @Composable (() -> Unit) = {}
 ) {
     Row {
-        Column (Modifier.weight(1f)) {
+        Column(Modifier.weight(1f)) {
             topBar()
             Box(modifier = Modifier.fillMaxSize()) {
                 content()
                 alertHandler.createAlert()
             }
         }
-        sidebar(viewController, title, textSize, alignment, alignmentSpacing, painter, contentDescription)
+        sidebar(coroutineScope, viewModel, title, textSize, alignment, alignmentSpacing, painter, contentDescription)
+
     }
 }

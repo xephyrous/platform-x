@@ -4,16 +4,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
-import org.xephyrous.components.*
-import platformx.composeapp.generated.resources.Res
+import org.xephyrous.components.AlertBox
+import org.xephyrous.components.defaultScreen
+import org.xephyrous.components.outlineText
+import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.About
+import platformx.composeapp.generated.resources.Res
 
 @Composable
-fun About(viewController: ViewController, alertHandler: AlertBox, modifier: Modifier = Modifier) {
+fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {
     defaultScreen(
-        viewController,
+        coroutineScope,
+        viewModel,
         title = "About",
         painter = painterResource(Res.drawable.About),
         alertHandler = alertHandler,
@@ -29,8 +35,8 @@ fun About(viewController: ViewController, alertHandler: AlertBox, modifier: Modi
                 title = "What is PlatformX?",
                 size = DpSize(600.dp, 160.dp),
                 maxLines = Int.MAX_VALUE,
-                text = "Platform-X is a simple yet effective and lightweight web platform that allows Students and Instructors to interact easily." +
-                        "This includes easy scheduling of meetings between parties and content uploads by instructors."
+                text = "Platform-X is a simple yet effective and lightweight web platform that allows Students and Admins to interact easily." +
+                        "This includes easy scheduling of events between parties and content uploads by administrators."
             )
 
             Spacer(modifier = Modifier.height(30.dp))

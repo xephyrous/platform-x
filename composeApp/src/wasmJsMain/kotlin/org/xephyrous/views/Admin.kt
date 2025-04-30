@@ -1,34 +1,25 @@
 package org.xephyrous.views
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
-import org.xephyrous.components.AlertBox
-import org.xephyrous.components.OutlineBoxTitleAlignment
-import org.xephyrous.components.clickableOutlineImage
-import org.xephyrous.components.defaultScreen
-import org.xephyrous.components.viewPanel
-import platformx.composeapp.generated.resources.Res
-import platformx.composeapp.generated.resources.Admin
-import platformx.composeapp.generated.resources.modify_courses
-import platformx.composeapp.generated.resources.modify_data
-import platformx.composeapp.generated.resources.modify_events
-import platformx.composeapp.generated.resources.modify_users
+import org.xephyrous.components.*
+import org.xephyrous.data.ViewModel
+import platformx.composeapp.generated.resources.*
 
 @Composable
-fun Admin(viewController: ViewController, alertHandler: AlertBox, modifier: Modifier = Modifier) {
+fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {
     defaultScreen(
-        viewController,
+        coroutineScope,
+        viewModel,
         title = "Admin",
         painter = painterResource(Res.drawable.Admin),
         alertHandler = alertHandler,

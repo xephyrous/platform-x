@@ -3,8 +3,6 @@ package org.xephyrous.data
 import kotlinx.serialization.Serializable
 
 data class YearMonth(val year: Int, val month: Int) {
-    val monthValue: Int get() = month
-
     fun getDisplayName(): String {
         val monthNames = listOf(
             "January", "February", "March", "April", "May", "June",
@@ -24,7 +22,7 @@ data class YearMonth(val year: Int, val month: Int) {
 
     companion object {
         fun now(): YearMonth {
-            // Hardcoded to May 2025 for WASM compatibility
+            // Hardcoded to May 2025 for no interop
             return YearMonth(2025, 5)
         }
     }
@@ -32,30 +30,6 @@ data class YearMonth(val year: Int, val month: Int) {
 
 @Serializable
 data class LocalDate(val year: Int, val month: Int, val day: Int) {
-    fun plusMonths(months: Int): LocalDate {
-        val newMonth = (month + months - 1) % 12 + 1
-        val newYear = year + (month + months - 1) / 12
-        return LocalDate(newYear, newMonth, day)
-    }
-
-    fun plusDays(days: Int): LocalDate {
-        var newDay = day + days
-        var newMonth = month
-        var newYear = year
-
-        val daysInMonth = getDaysInMonth(year, month)
-
-        while (newDay > daysInMonth) {
-            newDay -= daysInMonth
-            newMonth++
-            if (newMonth > 12) {
-                newMonth = 1
-                newYear++
-            }
-        }
-
-        return LocalDate(newYear, newMonth, newDay)
-    }
     private fun getDaysInMonth(year: Int, month: Int): Int {
         return when (month) {
             1, 3, 5, 7, 8, 10, 12 -> 31
@@ -65,16 +39,67 @@ data class LocalDate(val year: Int, val month: Int, val day: Int) {
         }
     }
 
+    private fun getMonthName(): String {
+        val monthNames = listOf(
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        )
+        return monthNames[month - 1]
+    }
+
+    private fun getDaySuffix(): String {
+        if (day in 11..13) return "th" // Special case for teens
+        return when (day % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
+    }
+
+    fun isBefore(other: LocalDate): Boolean {
+        return when {
+            year < other.year -> true
+            year > other.year -> false
+            month < other.month -> true
+            month > other.month -> false
+            day < other.day -> true
+            else -> false
+        }
+    }
+
     val dayOfWeek: Int
         get() {
-            // A very simplified algorithm to calculate the weekday
-            val y = year - if (month <= 2) 1 else 0 // Adjust year if January or February
-            val m = (month + 9) % 12 + 1 // Adjust month to use the Zeller formula
-            val d = day
-            return (d + ((13 * m + 1) / 5) + y + (y / 4) - (y / 100) + (y / 400)) % 7
+            val mon = when (month) {
+                1 -> 13
+                2 -> 14
+                else -> month
+            }
+            val yr = if (month <= 2) year - 1 else year
+            val q = day
+            val k = yr % 100
+            val j = yr / 100
+            val h = q + 13*(mon + 1) / 5 + k + k / 4 + j / 4 + 5 * j
+            return h % 7
         }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is LocalDate) && year == other.year && month == other.month && day == other.day
+    }
+
+    override fun toString(): String {
+        return "${getMonthName()} $day${getDaySuffix()}, $year"
+    }
 
     companion object {
         fun now() = LocalDate(2025, 5, 1)  // Hardcoded May 2025
+    }
+
+    override fun hashCode(): Int {
+        var result = year
+        result = 31 * result + month
+        result = 31 * result + day
+        result = 31 * result + dayOfWeek
+        return result
     }
 }
