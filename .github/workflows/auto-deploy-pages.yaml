@@ -50,7 +50,7 @@ jobs:
 
           echo
           echo "##### Copying contents to git repo #####"
-          cp -rvf ./composeApp/build/dist/wasmJs/productionExecutable/* "$CLONE_DIRECTORY/projects/platform-x/"
+          cp -rvf ./composeApp/build/dist/wasmJs/developmentExecutable/* "$CLONE_DIRECTORY/projects/platform-x/"
           cd "$CLONE_DIRECTORY"
 
           echo
