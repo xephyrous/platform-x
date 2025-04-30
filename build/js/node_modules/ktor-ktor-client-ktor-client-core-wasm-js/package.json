@@ -1,0 +1,13 @@
+{
+  "name": "ktor-ktor-client-ktor-client-core-wasm-js",
+  "version": "3.1.2",
+  "main": "ktor-ktor-client-ktor-client-core-wasm-js.mjs",
+  "types": "ktor-ktor-client-ktor-client-core-wasm-js.d.ts",
+  "devDependencies": {},
+  "dependencies": {
+    "ws": "8.18.0"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}

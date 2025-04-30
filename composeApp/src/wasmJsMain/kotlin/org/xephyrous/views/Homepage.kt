@@ -33,7 +33,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
             if (viewModel.oAuthToken == null) {
                 Button(
                     onClick = {
-                        OAuth.redirect(arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"))
+                        OAuth.redirect(arrayOf("openid", "email", "https://www.googleapis.com/auth/datastore"t ))
                     },
                     modifier = Modifier.width(200.dp).height(60.dp)
                 ) {
