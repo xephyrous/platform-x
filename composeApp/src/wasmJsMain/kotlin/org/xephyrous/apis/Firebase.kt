@@ -99,19 +99,31 @@ object Firebase {
             )
         }
 
-//        suspend inline fun <reified T> createDocument(
-//            collectionId: String,
-//            documentId: String,
-//            document: T,
-//            idToken: String,
-//            mask: DocumentMask? = null
-//        ) : T {
-//            return HttpClient.post(
-//                "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$collectionId/$documentId",
-//                body = mapOf("fields" to encodeFirestoreFields(document, serializer())),
-//                headers = mapOf("Authorization" to "Bearer $idToken")
-//            ).body()
-//        }
+        suspend inline fun <reified T> createDocument(
+            collectionId: String,
+            documentId: String,
+            document: T,
+            idToken: String
+        ): Result<FirestoreDocument> {
+            val firestoreFields = encodeFirestoreFields(document, serializer())
+
+            val fieldsJson = JsonObject(
+                firestoreFields.mapValues { (_, value) ->
+                    encodeFirestoreValueToJsonElement(value)
+                }
+            )
+
+            return handleResponse<FirestoreDocument, FirebaseError>(
+                HttpClient.patch(
+                    "${ENDPOINT}projects/${Secrets.FIREBASE_PROJECT_ID}/databases/(default)/documents/$collectionId/$documentId",
+                    body = JsonObject(mapOf("fields" to fieldsJson)),
+                    headers = mapOf(
+                        "Authorization" to "Bearer $idToken",
+                        "Content-Type" to "application/json"
+                    )
+                )
+            )
+        }
 
         suspend inline fun <reified T> listDocuments(
             path: String,
