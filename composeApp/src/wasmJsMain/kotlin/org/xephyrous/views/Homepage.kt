@@ -31,7 +31,8 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                 contentDescription = "background",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxHeight()
+                    .align(Alignment.Center)
                     .alpha(0.15f)
             )
 
@@ -44,7 +45,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
             ) {
                 if (viewModel.oAuthToken == null) {
                     Text(
-                        "Go Log In",
+                        "Please Log In to use PlatformX",
                         fontSize = 20.sp,
                         color = Color.White,
                         fontWeight = FontWeight.SemiBold

@@ -20,6 +20,9 @@ import org.xephyrous.apis.Firebase
 import org.xephyrous.apis.OAuth
 import org.xephyrous.apis.getAllUrlParams
 import org.xephyrous.components.AlertBox
+import org.xephyrous.data.CourseData
+import org.xephyrous.data.EventData
+import org.xephyrous.data.LocalDate
 import org.xephyrous.data.UserData
 import org.xephyrous.data.ViewModel
 import org.xephyrous.views.*
@@ -81,6 +84,25 @@ fun App() {
                             viewModel.firebaseUserInfo!!.idToken
                         ).onSuccess {
                             viewModel.userData = it.toObject<UserData>()
+                        }
+
+                        Firebase.Firestore.listDocuments<EventData>(
+                            path = "events",
+                            idToken = viewModel.firebaseUserInfo!!.idToken
+                        ).onSuccess {
+                            val events = it.values.toList()
+
+                            viewModel.events = events.filterNot { event -> event.time.isBefore(LocalDate.now()) }
+                        }.onFailure {
+                            alertHandler.displayAlert("Load Fail", "Failed to load events: ${it.message}")
+                        }
+                        Firebase.Firestore.listDocuments<CourseData>(
+                            path = "courses",
+                            idToken = viewModel.firebaseUserInfo!!.idToken
+                        ).onSuccess {
+                            viewModel.courses = it.toList()
+                        }.onFailure {
+                            alertHandler.displayAlert("Load Fail", "Failed to load courses: ${it.message}")
                         }
 
                         OAuth.getUserInfo(viewModel.oAuthToken!!).onSuccess {
