@@ -15,6 +15,7 @@ import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.About
 import platformx.composeapp.generated.resources.Res
 
+//About Page, Uses defaultScreen component as basic format for page
 @Composable
 fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {
     defaultScreen(
@@ -24,6 +25,7 @@ fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
         painter = painterResource(Res.drawable.About),
         alertHandler = alertHandler,
     ) {
+        //Create Column for proper formating for textbox to line up in middle of page
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -31,6 +33,9 @@ fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            //Using outlineText component to get white box with text in for each, maxLines is used to fit all the words
+
             outlineText(
                 title = "What is PlatformX?",
                 size = DpSize(600.dp, 160.dp),

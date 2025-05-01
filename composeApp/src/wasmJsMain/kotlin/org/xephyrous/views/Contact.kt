@@ -17,6 +17,7 @@ import platformx.composeapp.generated.resources.Res
 
 
 @Composable
+//Contact Page, using defaultScreen component for basic format of page
 fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
     defaultScreen(coroutineScope, viewModel, title = "Contact", painter = painterResource(Res.drawable.Contact), alertHandler = alertHandler) {
         Column(
@@ -26,6 +27,8 @@ fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: 
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //Using outlineText component to get white box with text in it for each
+
             outlineText(
                 title = "EMAIL",
                 size = DpSize(300.dp, 50.dp),

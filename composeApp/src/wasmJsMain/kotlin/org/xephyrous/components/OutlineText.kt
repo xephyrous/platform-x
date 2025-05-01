@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 
 @Composable
+//outlineText component to create white bow around text with a title
 fun outlineText(
     title: String, size: DpSize,
     titleSize: TextUnit = 14.sp,
@@ -30,6 +31,7 @@ fun outlineText(
     maxLines: Int = 1,
     text: String
 ) {
+    //For proper placement of box on pages and text format
     outlineBox(title, size, titleSize, alignment, alignmentSpacing) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -49,6 +51,7 @@ fun outlineText(
 }
 
 @Composable
+//outlineTextTitleless to create white box around text with no title
 fun outlineTextTitleless(
     size: DpSize,
     xOffset: Dp = 0.dp,
@@ -57,6 +60,7 @@ fun outlineTextTitleless(
     maxLines: Int = 1,
     text: String
 ) {
+    //For proper placement of box on page and text format
     outlineBoxTitleless(size, xOffset, yOffest) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -76,6 +80,7 @@ fun outlineTextTitleless(
 }
 
 @Composable
+//to create a clickable white box with text in it with no title
 fun clickableOutlineTextTitleless(
     size: DpSize,
     xOffset: Dp = 0.dp,
@@ -86,6 +91,7 @@ fun clickableOutlineTextTitleless(
     onClick: () -> Unit
 ) {
     outlineBoxTitleless(size, xOffset, yOffest) {
+        //For proper placement of bow on page and text format
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize().clickable { onClick() }
@@ -104,6 +110,7 @@ fun clickableOutlineTextTitleless(
 }
 
 @Composable
+//to create white outline box with text in it with a title
 fun outlineSecureText(
     title: String, size: DpSize,
     titleSize: TextUnit = 14.sp,
@@ -116,6 +123,8 @@ fun outlineSecureText(
     var show by remember { mutableStateOf(false) }
 
     outlineBox(title, size, titleSize, alignment, alignmentSpacing) {
+
+        //for proper placement of box on page and format of text
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
@@ -133,6 +142,7 @@ fun outlineSecureText(
             val image = if (show) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
             val description = if (show) "Hide password" else "Show password"
 
+            //for the clickable icon buttons that navigate to different pages and panels
             IconButton(
                 onClick = { show = !show },
                 modifier = Modifier.size(size.height - 10.dp, size.height - 10.dp),

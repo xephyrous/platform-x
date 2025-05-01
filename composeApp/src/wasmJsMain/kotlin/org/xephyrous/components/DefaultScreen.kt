@@ -20,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import org.xephyrous.data.ViewModel
 
 @Composable
+//Default screen used by most pages to get a basic format for each page
 fun defaultScreen(
     coroutineScope: CoroutineScope,
     viewModel: ViewModel,
@@ -40,6 +41,7 @@ fun defaultScreen(
                 alertHandler.createAlert()
             }
         }
+        //Sidebar for buttons located on right side of pages
         sidebar(coroutineScope, viewModel, title, textSize, alignment, alignmentSpacing, painter, contentDescription)
 
     }

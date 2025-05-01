@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import org.xephyrous.data.ViewModel
 
 @Composable
+//Default page for the homepage
 fun homepageTemplate(
     coroutineScope: CoroutineScope,
     viewModel: ViewModel,
@@ -36,6 +37,7 @@ fun homepageTemplate(
                 alertHandler.createAlert()
             }
         }
+        //Sidebar for all buttons located on the right side of screen
         homeSidebar(coroutineScope, viewModel, textSize, alignment, alignmentSpacing)
     }
 }

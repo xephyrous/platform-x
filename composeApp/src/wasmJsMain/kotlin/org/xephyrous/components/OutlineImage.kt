@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.*
 
 @Composable
+//outlineImage component format, used by pages (no title)
 fun outlineImage(
     title: String, size: DpSize,
     textSize: TextUnit = 14.sp,
@@ -18,6 +19,7 @@ fun outlineImage(
     painter: Painter,
     contentDescription: String = ""
 ) {
+    //formatting
     outlineBox(title, size, textSize, alignment, alignmentSpacing) {
         Image(
             painter = painter,
@@ -28,6 +30,7 @@ fun outlineImage(
 }
 
 @Composable
+//outlineImage component format, used by pages (with title)
 fun outlineImage(
     title: String, size: DpSize,
     xOffset: Dp, yOffset: Dp,
@@ -37,6 +40,7 @@ fun outlineImage(
     painter: Painter,
     contentDescription: String = ""
 ) {
+    //formatting
     outlineBox(title, size, xOffset, yOffset, textSize, alignment, alignmentSpacing) {
         Image(
             painter = painter,
@@ -47,6 +51,7 @@ fun outlineImage(
 }
 
 @Composable
+//clickableOutlineImage component used by pages to navigate to corresponding pages or panels when clicked, default layout, used by pages
 fun clickableOutlineImage(
     title: String, size: DpSize,
     textSize: TextUnit = 14.sp,
@@ -56,6 +61,7 @@ fun clickableOutlineImage(
     contentDescription: String = "",
     onClick: () -> Unit
 ) {
+    //formatting, does not support Offset
     outlineBox(title, size, textSize, alignment, alignmentSpacing) {
         Image(
             painter = painter,
@@ -64,7 +70,7 @@ fun clickableOutlineImage(
         )
     }
 }
-
+//clickableOutlineImage component used by pages to navigate to corresponding pages or panels when clicked, can change layout, used by pages
 @Composable
 fun clickableOutlineImage(
     title: String, size: DpSize,
@@ -76,6 +82,7 @@ fun clickableOutlineImage(
     contentDescription: String = "",
     onClick: () -> Unit
 ) {
+    //formatting, supports Offset
     outlineBox(title, size, xOffset, yOffset, textSize, alignment, alignmentSpacing) {
         Image(
             painter = painter,
@@ -86,12 +93,14 @@ fun clickableOutlineImage(
 }
 
 @Composable
+//outlineImage component with no title, used by pages
 fun outlineImageTitleless(
     size: DpSize,
     painter: Painter,
     padding: Dp = 15.dp,
     contentDescription: String = ""
 ) {
+    //formatting
     outlineBoxTitleless(size) {
         Image(
             painter = painter,

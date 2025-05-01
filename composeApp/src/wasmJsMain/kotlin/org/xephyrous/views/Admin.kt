@@ -42,6 +42,7 @@ fun generateRandomString(length: Int = 20): String {
     }
 }
 
+//Admin Page using defaultScreen component for basic format of page
 @Composable
 fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {
     defaultScreen(
@@ -67,6 +68,8 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                     boxHeight = with(localDensity) { it.size.height.toDp() }
                 }
         ) {
+            //Using clickableOutlineImage component for all buttons on page, will open up correspoding panel
+
             clickableOutlineImage(
                 title = "MODIFY USERS",
                 size = DpSize(boxWidth/9, boxWidth/9),
@@ -106,14 +109,19 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                 adminPanel = true
             }
 
+            //When buttons above are clicked the corresponding panels below will open
+
             viewPanel (openPanel, DpSize(boxWidth/9, boxWidth/9), DpSize(boxWidth-50.dp, boxHeight-50.dp),
                 startingXOffset = boxWidth/2-boxWidth/18, startingYOffset = boxHeight, openXOffset = 25.dp, openYOffset = 25.dp,
                 adminPanel, closeHandler = { adminPanel = false }
             ) {
-                when(openPanel) {
+                when(openPanel)
+                //Modify Users Panel for Admin to Update User Role, or remove User
+                {
                     "Modify Users" -> {
                         // user list
                     }
+                    //Modify Events Panel for Admin to Add, Remove, or Modify Events
                     "Modify Events" -> {
                         outlineBox(
                             "Add Events", size = DpSize(boxWidth/9, boxWidth/9),
@@ -175,6 +183,8 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                             var day by remember { mutableStateOf("") }
                             var month by remember { mutableStateOf("") }
                             var year by remember { mutableStateOf("") }
+
+                            //What all admin needs to input when adding an event, all using outlineInput component
                             outlineInput(
                                 "Name",
                                 DpSize(boxWidth - 246.dp, 75.dp),
@@ -365,6 +375,7 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                             }
                         }
                     }
+                    //Modify Courses panel for Admin to add, remove, or modify events, using outlineBox component
                     "Modify Courses" -> {
                         outlineBox(
                             "Add Courses", size = DpSize(boxWidth/9, boxWidth/9),
@@ -428,6 +439,7 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                             var coursePrefix by remember { mutableStateOf("") }
                             var courseNumber by remember { mutableStateOf("") }
 
+                            //All admin needs to input when adding a course
                             outlineInput(
                                 "Name",
                                 DpSize(boxWidth - 246.dp, 75.dp),

@@ -12,6 +12,7 @@ import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.logo
 
 @Composable
+//formatting for website image(logo)
 fun topBar() {
     Box(
         Modifier

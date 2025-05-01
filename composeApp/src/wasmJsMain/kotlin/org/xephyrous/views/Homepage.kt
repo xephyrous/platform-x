@@ -23,9 +23,12 @@ import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.entire_network
 
 @Composable
+//Homepage with website image
 fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
     homepageTemplate(coroutineScope, viewModel, alertHandler = alertHandler) {
         Box(modifier = Modifier.fillMaxSize()) {
+
+            //Website Image Format
             Image(
                 painter = painterResource(Res.drawable.entire_network),
                 contentDescription = "background",
@@ -43,6 +46,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
+                //If no user has been logged in then log in button will appear
                 if (viewModel.oAuthToken == null) {
                     Text(
                         "Please Log In to use PlatformX",
@@ -51,8 +55,9 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                         fontWeight = FontWeight.SemiBold
                     )
                 }
-
+                //If user has logged in then upcoming events and featured courses will appear if there are some
                 if (viewModel.oAuthToken != null) {
+                    //upcoming events using outlineBox component
                     outlineBox(
                         title = "Upcoming Events",
                         size = DpSize(900.dp, 250.dp)
@@ -66,6 +71,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             } else {
+                                //event formatting
                                 viewModel.events.take(3).forEach { event ->
                                     Text(
                                         text = "• ${event.name} - ${event.time.month}/${event.time.day}/${event.time.year}",
@@ -78,7 +84,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                             }
                         }
                     }
-
+                    //featured courses using outlineBox component
                     outlineBox(
                         title = "Featured Courses",
                         size = DpSize(900.dp, 250.dp)
@@ -92,6 +98,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             } else {
+                                //formatting for courses
                                 viewModel.courses.take(3).forEach { (name, course) ->
                                     Text(
                                         text = "• ${course.coursePrefix}${course.courseNumber} - $name",

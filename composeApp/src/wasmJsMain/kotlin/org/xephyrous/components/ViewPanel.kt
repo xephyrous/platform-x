@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.sp
 
 @Composable
+//viewPanel component to allow the panels to open up when corresponding button is pressed
 fun viewPanel(panelTitle: String, startingSize: DpSize, openSize: DpSize, showPanel: Boolean, closeHandler : () -> Unit, content: @Composable () -> Unit) {
     val width by animateDpAsState(if (showPanel) openSize.width else startingSize.width)
     val height by animateDpAsState(if (showPanel) openSize.height else startingSize.height)
 
+    //For a nice transition when panel is opened or closed
     AnimatedVisibility(
         visible = showPanel,
         enter = fadeIn(
@@ -33,6 +35,7 @@ fun viewPanel(panelTitle: String, startingSize: DpSize, openSize: DpSize, showPa
             animationSpec = tween(durationMillis = 150)
         )
     ) {
+        //panel format
         Box(
             Modifier.fillMaxSize().clickable(indication = null, interactionSource = MutableInteractionSource(), enabled = true) { closeHandler() },
             contentAlignment = Alignment.Center
@@ -50,7 +53,7 @@ fun viewPanel(panelTitle: String, startingSize: DpSize, openSize: DpSize, showPa
         }
     }
 }
-
+//Function so the panels can open up
 @Composable
 fun viewPanel(
     panelTitle: String,
@@ -70,6 +73,7 @@ fun viewPanel(
     val x by animateDpAsState(if (showPanel) openXOffset else startingXOffset)
     val y by animateDpAsState(if (showPanel) openYOffset else startingYOffset)
 
+    //For a nice transition when the panels open or close
     AnimatedVisibility(
         visible = showPanel,
         enter = fadeIn(
@@ -79,6 +83,7 @@ fun viewPanel(
             animationSpec = tween(durationMillis = 150)
         )
     ) {
+        //Panel format
         Box(
             Modifier.fillMaxSize().clickable(indication = null, interactionSource = MutableInteractionSource(), enabled = true) { closeHandler() }
         ) {
