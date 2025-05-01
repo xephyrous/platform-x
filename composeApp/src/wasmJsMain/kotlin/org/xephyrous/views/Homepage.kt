@@ -22,13 +22,28 @@ import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.entire_network
 
+/**
+ * Homepage screen displaying background image, login prompt, upcoming events, and featured courses.
+ *
+ * This composable sets up the homepage layout, including:
+ * - A background image using [Image] with a low alpha value for a subtle effect.
+ * - A login prompt message if the user is not logged in.
+ * - Sections for upcoming events and featured courses, displayed inside [outlineBox] components.
+ *   These sections only appear if there are events or courses available and the user is logged in.
+ *
+ * @param coroutineScope The coroutine scope for running asynchronous tasks.
+ * @param viewModel The [ViewModel] holding the application's data (like events and courses).
+ * @param alertHandler The [AlertBox] for displaying any alerts or errors.
+ */
+
 @Composable
-//Homepage with website image
+
 fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
+    //Reusable homepage layout with top bar, sidebar, and alert support
     homepageTemplate(coroutineScope, viewModel, alertHandler = alertHandler) {
         Box(modifier = Modifier.fillMaxSize()) {
 
-            //Website Image Format
+            //Website background image with low opacity for a subtle visual effect
             Image(
                 painter = painterResource(Res.drawable.entire_network),
                 contentDescription = "background",
@@ -39,6 +54,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                     .alpha(0.15f)
             )
 
+            //Column layout for the main content
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -46,7 +62,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                //If no user has been logged in then log in button will appear
+                //Display login message if the user is not logged in
                 if (viewModel.oAuthToken == null) {
                     Text(
                         "Please Log In to use PlatformX",
@@ -55,9 +71,9 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                         fontWeight = FontWeight.SemiBold
                     )
                 }
-                //If user has logged in then upcoming events and featured courses will appear if there are some
+                //Display upcoming events and featured courses if user is logged in
                 if (viewModel.oAuthToken != null) {
-                    //upcoming events using outlineBox component
+                    //Upcoming events section inside outlineBox component
                     outlineBox(
                         title = "Upcoming Events",
                         size = DpSize(900.dp, 250.dp)
@@ -71,7 +87,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             } else {
-                                //event formatting
+                                //Display a list of upcoming events
                                 viewModel.events.take(3).forEach { event ->
                                     Text(
                                         text = "• ${event.name} - ${event.time.month}/${event.time.day}/${event.time.year}",
@@ -84,7 +100,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                             }
                         }
                     }
-                    //featured courses using outlineBox component
+                    //Featured courses section inside outlineBox component
                     outlineBox(
                         title = "Featured Courses",
                         size = DpSize(900.dp, 250.dp)
@@ -98,7 +114,7 @@ fun Homepage(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler:
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             } else {
-                                //formatting for courses
+                                //Display a list of featured courses
                                 viewModel.courses.take(3).forEach { (name, course) ->
                                     Text(
                                         text = "• ${course.coursePrefix}${course.courseNumber} - $name",

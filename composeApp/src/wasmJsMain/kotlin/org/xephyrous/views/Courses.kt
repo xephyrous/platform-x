@@ -31,13 +31,25 @@ import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Courses
 import platformx.composeapp.generated.resources.Res
 
+/**
+ * Displays the Courses screen, showing a list of courses fetched from Firebase Firestore.
+ * Each course can be clicked to show detailed info in a dialog panel.
+ *
+ * @param coroutineScope Scope for launching coroutines.
+ * @param viewModel The shared application state and user/course data.
+ * @param alertHandler A component used to show error messages if needed.
+ */
 @Composable
 fun Courses(
     coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox
 ) {
+    //State to control visibility of the course detail dialog
     var showDialog by remember { mutableStateOf(false) }
+
+    //State to track which course is selected for detail view
     var selectedCourse by remember { mutableStateOf(Pair("", CourseData(0, "", "", "", "", ""))) }
 
+    //Load the list of courses when OAuth token becomes available
     LaunchedEffect(viewModel.oAuthToken) {
         coroutineScope.launch {
             Firebase.Firestore.listDocuments<CourseData>(
@@ -51,6 +63,7 @@ fun Courses(
         }
     }
 
+    //Main screen layout with title and icon
     defaultScreen(
         coroutineScope,
         viewModel,
@@ -63,6 +76,7 @@ fun Courses(
         var boxWidth by remember { mutableStateOf(0.dp) }
         var boxHeight by remember { mutableStateOf(0.dp) }
 
+        //Column layout for entire screen content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,6 +88,7 @@ fun Courses(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //Show message when no courses are available
             if (viewModel.courses.isEmpty()) {
                 Text(
                     text = "We have no courses to show you right now!",
@@ -85,19 +100,23 @@ fun Courses(
                     modifier = Modifier.weight(1f)
                 )
             }
+            //Scrollable list of courses
             LazyColumn (
                 Modifier.fillMaxSize().scrollable(rememberScrollState(), Orientation.Vertical),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(viewModel.courses.size) { index ->
                     Spacer(modifier = Modifier.height(10.dp))
+                    //Render each course inside an outlineBox
                     outlineBox(
                         title = "${viewModel.courses[index].second.coursePrefix}${viewModel.courses[index].second.courseNumber}", DpSize(boxWidth - 196.dp, 100.dp),
                     ) {
                         Column(Modifier.fillMaxSize().clickable{
+                            //Set selected course and show detail panel
                             selectedCourse = viewModel.courses[index]
                             showDialog = true
                         }) {
+                            //Display course name
                             Text(
                                 text = viewModel.courses[index].first,
                                 maxLines = 1,
@@ -107,6 +126,7 @@ fun Courses(
                                 textAlign = TextAlign.Left,
                                 modifier = Modifier.weight(1f).fillMaxWidth().padding(10.dp)
                             )
+                            //Display location and time
                             Text(
                                 text = viewModel.courses[index].second.location + " | " + viewModel.courses[index].second.time,
                                 maxLines = 1,
@@ -124,8 +144,18 @@ fun Courses(
         }
     }
 
+/**
+ * Displays a panel containing detailed information about the currently selected course.
+ *
+ * The panel includes:
+ * - Course name
+ * - Course description
+ * - Instructor name
+ * - Location and time
+ */
     viewPanel("COURSE OVERVIEW", DpSize(0.dp, 0.dp), DpSize(1200.dp, 800.dp), showDialog, closeHandler = { showDialog = false }) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            //Course name
             Text(
                 text = selectedCourse.first,
                 maxLines = 1,
@@ -135,6 +165,7 @@ fun Courses(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(10.dp)
             )
+            //Course description
             Text(
                 text = selectedCourse.second.description,
                 maxLines = Int.MAX_VALUE,
@@ -144,6 +175,7 @@ fun Courses(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f).padding(10.dp)
             )
+            //Instructor name
             Text(
                 text = "Taught By: " + selectedCourse.second.instructor,
                 maxLines = 1,
@@ -153,6 +185,7 @@ fun Courses(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(10.dp)
             )
+            //Location and time
             Text(
                 text = selectedCourse.second.location + " | " + selectedCourse.second.time,
                 maxLines = 1,

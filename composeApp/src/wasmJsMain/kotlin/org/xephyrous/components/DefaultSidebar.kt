@@ -17,6 +17,21 @@ import org.xephyrous.apis.OAuth
 import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.*
 
+/**
+ * Creates the sidebar with navigation options based on user roles.
+ *
+ * The sidebar includes clickable images for each screen depending on the user's role.
+ * The sidebar adapts for `UserRole.User`, `UserRole.Admin`, and `UserRole.Anonymous`.
+ *
+ * @param coroutineScope Coroutine scope used to launch asynchronous tasks.
+ * @param viewModel ViewModel to manage screen navigation and visibility.
+ * @param title The title for the sidebar.
+ * @param textSize The font size for the text.
+ * @param alignment The alignment of the title within the sidebar.
+ * @param alignmentSpacing Spacing between elements in the sidebar.
+ * @param painter Painter for the sidebar image.
+ * @param contentDescription The content description for the image.
+ */
 @Composable
 fun sidebar(
     coroutineScope: CoroutineScope,
@@ -36,6 +51,7 @@ fun sidebar(
         Box (
             Modifier.fillMaxSize().verticalScroll(rememberScrollState())
         ) {
+            //Creates an outline for the sidebar image with a title and specified properties.
             outlineImage(
                 title = title,
                 size = DpSize(60.dp, 60.dp),
@@ -47,6 +63,7 @@ fun sidebar(
                 painter = painter,
                 contentDescription = contentDescription
             )
+            //Creates a clickable image that will navigate to the homepage when clicked.
             clickableOutlineImage(
                 title = "Return",
                 size = DpSize(60.dp, 60.dp),
@@ -55,9 +72,10 @@ fun sidebar(
                 textSize = textSize,
                 alignment = alignment,
                 alignmentSpacing = alignmentSpacing,
-                painter = painterResource(Res.drawable.Return), // replace with actual back logo
+                painter = painterResource(Res.drawable.Return),
                 contentDescription = "Site Back Button"
             ) {
+                //Navigates back to the homepage with a delay for UI transition
                 coroutineScope.launch {
                     viewModel.visible = false
                     delay(300)
@@ -69,6 +87,18 @@ fun sidebar(
     }
 }
 
+/**
+ * Creates the home sidebar with navigation options based on user roles.
+ *
+ * The sidebar contains clickable images for navigation to various screens such as "About", "Profile",
+ * "Contact", etc., and adapts according to the user's role (`UserRole.User`, `UserRole.Admin`, `UserRole.Anonymous`).
+ *
+ * @param coroutineScope Coroutine scope used to launch asynchronous tasks.
+ * @param viewModel ViewModel to manage screen navigation and visibility.
+ * @param textSize The font size for the text.
+ * @param alignment The alignment of the title within the sidebar.
+ * @param alignmentSpacing Spacing between elements in the sidebar.
+ */
 @Composable
 fun homeSidebar(
     coroutineScope: CoroutineScope,
@@ -77,10 +107,11 @@ fun homeSidebar(
     alignment: OutlineBoxTitleAlignment = OutlineBoxTitleAlignment.OVERHANG,
     alignmentSpacing: Dp = 30.dp
 ) {
+    //Helper function to navigate to the specified screen with animation.
     fun navigateTo(screen: Screens) {
         coroutineScope.launch {
             viewModel.visible = false
-            delay(300)
+            delay(300)  //Small delay for UI transition effect
             viewModel.currentScreen = screen
             viewModel.visible = true
         }
@@ -94,8 +125,10 @@ fun homeSidebar(
         Box(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState(), reverseScrolling = true)
         ) {
+            //Check user role and display different navigation options based on the role
             when (viewModel.userData?.role) {
                 UserRole.User -> {
+                    //User role options: About, Profile, Contact, Calendar, Courses, Events
                     clickableOutlineImage(
                         title = "About",
                         size = DpSize(60.dp, 60.dp),
@@ -170,6 +203,7 @@ fun homeSidebar(
                 }
 
                 UserRole.Admin -> {
+                    //Admin role options: All user options + Admin
                     clickableOutlineImage(
                         title = "About",
                         size = DpSize(60.dp, 60.dp),
@@ -256,6 +290,7 @@ fun homeSidebar(
                 }
 
                 UserRole.Anonymous -> {
+                    //Anonymous users can only access Login,About,and Contact
                     clickableOutlineImage(
                         title = "Login",
                         size = DpSize(60.dp, 60.dp),

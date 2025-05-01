@@ -20,8 +20,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 
+/**
+ * Creates a white outline box around text with a title.
+ *
+ * This composable places a text inside a box with an optional title. The text is centered and can handle
+ * multiple lines. The box size and appearance are controlled by the [size], [alignment], and other parameters.
+ *
+ * @param title The title of the outline box.
+ * @param size The size of the outline box.
+ * @param titleSize The font size for the title, default is 14.sp.
+ * @param textSize The font size for the text, default is 14.sp.
+ * @param alignment The alignment of the title within the box, default is [OutlineBoxTitleAlignment.LEFT].
+ * @param alignmentSpacing The spacing between the title and text, default is 10.dp.
+ * @param maxLines The maximum number of lines for the text, default is 1.
+ * @param text The text content to be displayed inside the box.
+ */
 @Composable
-//outlineText component to create white bow around text with a title
 fun outlineText(
     title: String, size: DpSize,
     titleSize: TextUnit = 14.sp,
@@ -31,7 +45,6 @@ fun outlineText(
     maxLines: Int = 1,
     text: String
 ) {
-    //For proper placement of box on pages and text format
     outlineBox(title, size, titleSize, alignment, alignmentSpacing) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -50,18 +63,28 @@ fun outlineText(
     }
 }
 
+/**
+ * Creates a white outline box around text with no title.
+ *
+ * This composable places text inside a box without a title. The text is centered and can handle multiple lines.
+ *
+ * @param size The size of the outline box.
+ * @param xOffset The horizontal offset of the box, default is 0.dp.
+ * @param yOffset The vertical offset of the box, default is 0.dp.
+ * @param textSize The font size for the text, default is 14.sp.
+ * @param maxLines The maximum number of lines for the text, default is 1.
+ * @param text The text content to be displayed inside the box.
+ */
 @Composable
-//outlineTextTitleless to create white box around text with no title
 fun outlineTextTitleless(
     size: DpSize,
     xOffset: Dp = 0.dp,
-    yOffest: Dp = 0.dp,
+    yOffset: Dp = 0.dp,
     textSize: TextUnit = 14.sp,
     maxLines: Int = 1,
     text: String
 ) {
-    //For proper placement of box on page and text format
-    outlineBoxTitleless(size, xOffset, yOffest) {
+    outlineBoxTitleless(size, xOffset, yOffset) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
@@ -79,19 +102,31 @@ fun outlineTextTitleless(
     }
 }
 
+/**
+ * Creates a clickable white outline box with text inside and no title.
+ *
+ * This composable places text inside a clickable box without a title. The text is centered and can handle multiple lines.
+ * The box becomes clickable and triggers the provided [onClick] lambda function.
+ *
+ * @param size The size of the outline box.
+ * @param xOffset The horizontal offset of the box, default is 0.dp.
+ * @param yOffset The vertical offset of the box, default is 0.dp.
+ * @param textSize The font size for the text, default is 14.sp.
+ * @param maxLines The maximum number of lines for the text, default is 1.
+ * @param text The text content to be displayed inside the box.
+ * @param onClick The lambda function to be executed when the box is clicked.
+ */
 @Composable
-//to create a clickable white box with text in it with no title
 fun clickableOutlineTextTitleless(
     size: DpSize,
     xOffset: Dp = 0.dp,
-    yOffest: Dp = 0.dp,
+    yOffset: Dp = 0.dp,
     textSize: TextUnit = 14.sp,
     maxLines: Int = 1,
     text: String,
     onClick: () -> Unit
 ) {
-    outlineBoxTitleless(size, xOffset, yOffest) {
-        //For proper placement of bow on page and text format
+    outlineBoxTitleless(size, xOffset, yOffset) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize().clickable { onClick() }
@@ -109,8 +144,22 @@ fun clickableOutlineTextTitleless(
     }
 }
 
+/**
+ * Creates a white outline box around secure text (e.g., password), with a toggle to show or hide the text.
+ *
+ * This composable creates a text field inside a box with a title. The text is initially obscured by bullet characters,
+ * and an icon button is provided to toggle between showing and hiding the text. This is useful for password inputs.
+ *
+ * @param title The title of the outline box.
+ * @param size The size of the outline box.
+ * @param titleSize The font size for the title, default is 14.sp.
+ * @param textSize The font size for the text, default is 14.sp.
+ * @param alignment The alignment of the title within the box, default is [OutlineBoxTitleAlignment.LEFT].
+ * @param alignmentSpacing The spacing between the title and text, default is 10.dp.
+ * @param maxLines The maximum number of lines for the text, default is 1.
+ * @param text The text content to be displayed inside the box.
+ */
 @Composable
-//to create white outline box with text in it with a title
 fun outlineSecureText(
     title: String, size: DpSize,
     titleSize: TextUnit = 14.sp,
@@ -124,7 +173,6 @@ fun outlineSecureText(
 
     outlineBox(title, size, titleSize, alignment, alignmentSpacing) {
 
-        //for proper placement of box on page and format of text
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
@@ -138,15 +186,16 @@ fun outlineSecureText(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f).offset(x = (size.height-10.dp)/2)
             )
-
+            //Determine the appropriate icon based on the visibility state.
             val image = if (show) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
             val description = if (show) "Hide password" else "Show password"
 
-            //for the clickable icon buttons that navigate to different pages and panels
+            //Icon button to toggle visibility of the text.
             IconButton(
                 onClick = { show = !show },
                 modifier = Modifier.size(size.height - 10.dp, size.height - 10.dp),
             ) {
+                //Display the icon representing visibility status.
                 Icon(
                     imageVector = image, description,
                     tint = Color.White

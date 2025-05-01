@@ -30,6 +30,13 @@ import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Event
 import platformx.composeapp.generated.resources.Res
 
+/**
+ * Helper function to check if the user is enrolled in a given event.
+ *
+ * @param event The event to check enrollment status for.
+ * @param viewModel The shared ViewModel containing user data.
+ * @return `true` if the user is currently enrolled in the given event, `false` otherwise.
+ */
 fun isEnrolled(
     event: EventData,
     viewModel: ViewModel
@@ -39,6 +46,24 @@ fun isEnrolled(
 
 var updating = false
 
+/**
+ * Composable function that displays a list of upcoming events and allows user interaction.
+ *
+ * This screen fetches a list of events from Firebase and displays them in a scrollable list.
+ * Each event is shown in an `outlineBox`, and selecting one opens a detailed view with options
+ * to enroll or un enroll, depending on the user's current enrollment status.
+ *
+ * Behavior:
+ * - Fetches events from the `events` collection in Firestore on load.
+ * - Filters out events with a date before today.
+ * - Shows a message if no events are available.
+ * - Opens a modal dialog with event details when an event is clicked.
+ * - Allows authenticated users to enroll or un enroll from an event.
+ *
+ * @param coroutineScope Scope used for asynchronous operations like data fetching and enrollment updates.
+ * @param viewModel Shared view model holding user and event data.
+ * @param alertHandler Function to display alert messages for error handling.
+ */
 @Composable
 fun Event(
     coroutineScope: CoroutineScope,
@@ -49,6 +74,7 @@ fun Event(
     var selectedEvent by remember { mutableStateOf(EventData("", "", "", LocalDate(1,1,1))) }
     var enrolledInSelected by remember { mutableStateOf(false) }
 
+    //Fetch events when token is ready
     LaunchedEffect(viewModel.oAuthToken) {
         coroutineScope.launch {
             Firebase.Firestore.listDocuments<EventData>(
@@ -64,6 +90,7 @@ fun Event(
         }
     }
 
+    //Main screen layout with title and icon
     defaultScreen(
         coroutineScope,
         viewModel,
@@ -76,6 +103,7 @@ fun Event(
         var boxWidth by remember { mutableStateOf(0.dp) }
         var boxHeight by remember { mutableStateOf(0.dp) }
 
+        //Column layout for entire screen content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -87,6 +115,7 @@ fun Event(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //Show message when no events are available
             if (viewModel.events.isEmpty()) {
                 Text(
                     text = "We have no events to show you right now!",
@@ -98,6 +127,7 @@ fun Event(
                     modifier = Modifier.weight(1f)
                 )
             }
+            //Scrollable list of events
             LazyColumn (
                 Modifier.fillMaxSize().scrollable(rememberScrollState(), Orientation.Vertical),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -112,6 +142,7 @@ fun Event(
                             enrolledInSelected = isEnrolled(selectedEvent, viewModel)
                             showDialog = true
                         }) {
+                            //Short description preview
                             Text(
                                 text = viewModel.events[index].description.take(50) + if (viewModel.events[index].description.length > 50) "..." else "",
                                 maxLines = 1,
@@ -121,6 +152,7 @@ fun Event(
                                 textAlign = TextAlign.Left,
                                 modifier = Modifier.weight(1f).fillMaxWidth().padding(10.dp)
                             )
+                            //Location and time
                             Text(
                                 text = viewModel.events[index].location + " | " + viewModel.events[index].time,
                                 maxLines = 1,
@@ -137,9 +169,24 @@ fun Event(
             }
         }
     }
-
+    /**
+     * Displays a panel showing the details of the selected event.
+     *
+     * This panel includes:
+     * - Event name
+     * - Event description
+     * - Event location and time
+     * - An "Enroll" or "Un enroll" button based on the user's current enrollment status
+     *
+     * Behavior:
+     * - Only visible when `showDialog` is true
+     * - Authenticated users (non-anonymous) can enroll or un enroll
+     * - Enrollment changes are reflected in both local ViewModel and Firebase
+     *
+     */
     viewPanel("EVENT OVERVIEW", DpSize(0.dp, 0.dp), DpSize(1200.dp, 800.dp), showDialog, closeHandler = { showDialog = false }) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            //Event name
             Text(
                 text = selectedEvent.name,
                 maxLines = 1,
@@ -149,6 +196,7 @@ fun Event(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(10.dp)
             )
+            //Full event description
             Text(
                 text = selectedEvent.description,
                 maxLines = Int.MAX_VALUE,
@@ -158,6 +206,7 @@ fun Event(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f).padding(10.dp)
             )
+            //Location and date/time
             Text(
                 text = selectedEvent.location + " | " + selectedEvent.time,
                 maxLines = 1,
@@ -168,12 +217,14 @@ fun Event(
                 modifier = Modifier.fillMaxWidth().padding(10.dp)
             )
 
+            //Show enroll/un enroll button for logged in users
             if (viewModel.userData!!.role != UserRole.Anonymous) {
                 clickableOutlineTextTitleless(DpSize(300.dp, 60.dp), text = if (enrolledInSelected) "Unenroll" else "Enroll") {
                     coroutineScope.launch {
-                        if (updating) return@launch // guard clause
+                        if (updating) return@launch //Guard clause to prevent concurrent updates
                         updating = true
                         if (enrolledInSelected) {
+                            //Toggle enrollment status
                             viewModel.userData = viewModel.userData!!.copy(
                                 events = viewModel.userData!!.events.filterNot { it == selectedEvent }
                             )
@@ -183,7 +234,7 @@ fun Event(
                             )
                         }
 
-                        // Push changes to database
+                        //Push updated user data to Firestore
                         Firebase.Firestore.updateDocument(
                             "users/${viewModel.firebaseUserInfo!!.localId}",
                             viewModel.firebaseUserInfo!!.idToken,

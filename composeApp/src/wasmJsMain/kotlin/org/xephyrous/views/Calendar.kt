@@ -33,6 +33,13 @@ import org.xephyrous.data.YearMonth
 import platformx.composeapp.generated.resources.Calendar
 import platformx.composeapp.generated.resources.Res
 
+/**
+ * Finds events in the user's calendar that match the given [localDate].
+ *
+ * @param localDate the date to search for.
+ * @param viewModel the ViewModel containing the user's data.
+ * @return a list of events happening on the specified date.
+ */
 fun findEventsOnDay(
     localDate: LocalDate,
     viewModel: ViewModel
@@ -44,6 +51,15 @@ fun findEventsOnDay(
     return events.toList()
 }
 
+/**
+ * A Composable calendar view displaying a monthly grid of selectable dates.
+ * Clicking a date reveals the events for that day in a view panel.
+ *
+ * @param viewModel the application's ViewModel holding user and event data.
+ * @param yearMonth the month and year to be displayed.
+ * @param onPreviousMonth lambda to be called when navigating to the previous month.
+ * @param onNextMonth lambda to be called when navigating to the next month.
+ */
 @Composable
 fun CalendarView(
     viewModel: ViewModel,
@@ -51,9 +67,10 @@ fun CalendarView(
     onPreviousMonth: () -> Unit,
     onNextMonth: () -> Unit
 ) {
+    //Setup for calendar rendering and internal state tracking
     val firstDayOfMonth = yearMonth.getFirstDayOfMonth()
     val daysInMonth = yearMonth.getDaysInMonth()
-    val startDayOfWeek = firstDayOfMonth.dayOfWeek  // This gives us the starting weekday of the month
+    val startDayOfWeek = firstDayOfMonth.dayOfWeek  //This gives us the starting weekday of the month
 
     val days = List(daysInMonth) { day -> LocalDate(yearMonth.year, yearMonth.month, day + 1) }
 
@@ -65,22 +82,24 @@ fun CalendarView(
     var panelX by remember { mutableStateOf(0.dp) }
     var panelY by remember { mutableStateOf(0.dp) }
     var panel by remember { mutableStateOf(false) }
-    var viewDate by remember { mutableStateOf<LocalDate>(LocalDate(2, 2, 2)) } // this should never show
+    var viewDate by remember { mutableStateOf<LocalDate>(LocalDate(2, 2, 2)) } //this should never show
     var events: List<EventData> by remember { mutableStateOf<List<EventData>>(emptyList()) }
 
+    //Outer calendar container
     Box(
         Modifier.fillMaxSize().onGloballyPositioned {
             boxWidth = with(localDensity) { it.size.width.toDp() }
             boxHeight = with(localDensity) { it.size.height.toDp() }
         }
     ) {
+        //Month title
         outlineTextTitleless(
             DpSize(boxWidth/4, boxHeight/32),
             boxWidth/2 - boxWidth/8, 0.dp,
             26.sp, text = yearMonth.getDisplayName()
         )
 
-        // Display weekday names (Sun, Mon, Tue, ...)
+        //Display weekday names (Sun, Mon, Tue, ...)
         Box {
             val weekdayNames = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
             for (weekdayIndex in 0 until weekdayNames.size) {
@@ -93,11 +112,11 @@ fun CalendarView(
             }
         }
 
-        // Calendar grid
+        //Calendar day grid with selectable dates
         val rows = (days.size + startDayOfWeek) / 7 + 1
         for (rowIndex in 0 until rows) {
             Box {
-                // Generate each day of the row
+                //Generate each day of the row
                 for (colIndex in 0 until 7) {
                     val dayIndex = rowIndex * 7 + colIndex - startDayOfWeek
                     if (dayIndex in 0 until days.size) {
@@ -125,6 +144,7 @@ fun CalendarView(
             }
         }
 
+        //Navigation buttons
         IconButton(
             onClick = { onPreviousMonth() },
             modifier = Modifier.offset(x = boxWidth/14*3, y = boxHeight/2 - boxWidth/32).size(boxWidth/32),
@@ -141,6 +161,12 @@ fun CalendarView(
             Icon(Icons.AutoMirrored.Sharp.ArrowForwardIos, contentDescription = "Next Month", Modifier.fillMaxSize(), tint = Color.White)
         }
 
+        /**
+         * Displays a panel showing the events for a selected day.
+         * This panel is triggered when a date is clicked, and it shows the events
+         * scheduled for that specific day. If there are no events, a message is displayed
+         * indicating that there are no events for the selected date.
+         */
         viewPanel(
             "Daily Events",
             DpSize(boxWidth/16, boxHeight/16), DpSize(boxWidth-80.dp, boxHeight-80.dp),
@@ -208,12 +234,20 @@ fun CalendarView(
     }
 }
 
+/**
+ * Calendar screen that manages the currently displayed month and provides
+ * previous/next month navigation.
+ *
+ * @param viewModel The shared ViewModel containing user and event data.
+ */
 @Composable
 fun CalendarScreen(
     viewModel: ViewModel
 ) {
+    //State holding the year/month currently being displayed
     var currentYearMonth by remember { mutableStateOf(YearMonth.now()) }
 
+    //Navigate to the previous month
     fun goToPreviousMonth() {
         currentYearMonth = if (currentYearMonth.month == 1) {
             YearMonth(currentYearMonth.year - 1, 12)
@@ -222,6 +256,7 @@ fun CalendarScreen(
         }
     }
 
+    //Navigate to the next month
     fun goToNextMonth() {
         currentYearMonth = if (currentYearMonth.month == 12) {
             YearMonth(currentYearMonth.year + 1, 1)
@@ -230,6 +265,7 @@ fun CalendarScreen(
         }
     }
 
+    //Render the calendar for the selected month
     CalendarView(
         viewModel = viewModel,
         yearMonth = currentYearMonth,
@@ -238,11 +274,22 @@ fun CalendarScreen(
     )
 }
 
+/**
+ * Entry-point composable for the Calendar feature.
+ * Wraps [CalendarScreen] in the app’s standard screen scaffold.
+ *
+ * @param coroutineScope CoroutineScope for any async work.
+ * @param viewModel The shared ViewModel containing state and data.
+ * @param alertHandler Component used to display alerts.
+ */
 @Composable
 fun Calendar(
     coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox
 ) {
+    //Use the default app screen layout with title and sidebar
     defaultScreen(coroutineScope, viewModel, title = "Calendar", painter = painterResource(Res.drawable.Calendar), alertHandler = alertHandler) {
+
+        //Display the month navigation and grid
         CalendarScreen(viewModel)
     }
 }

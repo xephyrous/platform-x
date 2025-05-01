@@ -19,13 +19,30 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.sp
 
+/**
+ * Creates a panel that can open and close with an animation, based on the visibility state.
+ * The panel expands or contracts in size when the `showPanel` state changes, with smooth transitions.
+ *
+ * This composable creates a panel that expands or contracts, and includes an option to close it
+ * by clicking anywhere outside the panel area. The panel content is provided as a composable lambda,
+ * and the transition effects are controlled with the `showPanel` state. The panel also animates
+ * its size (width and height) using the `animateDpAsState` function to smoothly adjust the panel's size
+ * when it opens or closes.
+ *
+ * @param panelTitle The title displayed in the panel's header.
+ * @param startingSize The initial size of the panel when it is closed.
+ * @param openSize The size of the panel when it is opened.
+ * @param showPanel A boolean state that determines if the panel is open or closed.
+ *                  When true, the panel will open; when false, it will close.
+ * @param closeHandler A callback function invoked when the user clicks outside the panel to close it.
+ * @param content A composable lambda that defines the content to be displayed inside the panel.
+ */
 @Composable
-//viewPanel component to allow the panels to open up when corresponding button is pressed
 fun viewPanel(panelTitle: String, startingSize: DpSize, openSize: DpSize, showPanel: Boolean, closeHandler : () -> Unit, content: @Composable () -> Unit) {
     val width by animateDpAsState(if (showPanel) openSize.width else startingSize.width)
     val height by animateDpAsState(if (showPanel) openSize.height else startingSize.height)
 
-    //For a nice transition when panel is opened or closed
+    //Smoothly animate the panel's visibility with fade in and fade out transitions
     AnimatedVisibility(
         visible = showPanel,
         enter = fadeIn(
@@ -35,11 +52,12 @@ fun viewPanel(panelTitle: String, startingSize: DpSize, openSize: DpSize, showPa
             animationSpec = tween(durationMillis = 150)
         )
     ) {
-        //panel format
+        //Panel container that can be clicked to close the panel
         Box(
             Modifier.fillMaxSize().clickable(indication = null, interactionSource = MutableInteractionSource(), enabled = true) { closeHandler() },
             contentAlignment = Alignment.Center
         ) {
+            //Content inside the panel, with size adjustments based on the open/close state
             Box(modifier = Modifier.size(width = width, height = height).clickable(enabled = false){}) {
                 outlineBox(
                     title = panelTitle,
@@ -47,13 +65,30 @@ fun viewPanel(panelTitle: String, startingSize: DpSize, openSize: DpSize, showPa
                     fontSize = 22.sp,
                     alignment = OutlineBoxTitleAlignment.LEFT
                 ) {
-                    content()
+                    content()  //Panel content passed in as composable lambda
                 }
             }
         }
     }
 }
-//Function so the panels can open up
+
+/**
+ * Creates a panel that can open and close with animation and supports both size and position transitions.
+ * This composable allows the panel to change its size and position (X and Y offsets) smoothly when toggling visibility.
+ * It includes a close button that can be clicked anywhere outside the panel to close it.
+ *
+ * @param panelTitle The title displayed in the panel's header.
+ * @param startingSize The initial size of the panel when it is closed.
+ * @param openSize The size of the panel when it is opened.
+ * @param startingXOffset The initial X offset of the panel when it is closed.
+ * @param startingYOffset The initial Y offset of the panel when it is closed.
+ * @param openXOffset The X offset of the panel when it is opened.
+ * @param openYOffset The Y offset of the panel when it is opened.
+ * @param showPanel A boolean state that determines if the panel is open or closed.
+ *                  When true, the panel will open; when false, it will close.
+ * @param closeHandler A callback function invoked when the user clicks outside the panel to close it.
+ * @param content A composable lambda that defines the content to be displayed inside the panel.
+ */
 @Composable
 fun viewPanel(
     panelTitle: String,
@@ -73,7 +108,7 @@ fun viewPanel(
     val x by animateDpAsState(if (showPanel) openXOffset else startingXOffset)
     val y by animateDpAsState(if (showPanel) openYOffset else startingYOffset)
 
-    //For a nice transition when the panels open or close
+    //Smoothly animate the panel's visibility with fade in and fade out transitions
     AnimatedVisibility(
         visible = showPanel,
         enter = fadeIn(
@@ -83,10 +118,11 @@ fun viewPanel(
             animationSpec = tween(durationMillis = 150)
         )
     ) {
-        //Panel format
+        //Panel container that can be clicked to close the panel
         Box(
             Modifier.fillMaxSize().clickable(indication = null, interactionSource = MutableInteractionSource(), enabled = true) { closeHandler() }
         ) {
+            //Content inside the panel, with size and position adjustments based on the open/close state
             Box(modifier = Modifier.size(width = width, height = height).offset(x = x, y = y).clickable(enabled = false){}) {
                 outlineBox(
                     title = panelTitle,
@@ -94,7 +130,7 @@ fun viewPanel(
                     fontSize = 22.sp,
                     alignment = OutlineBoxTitleAlignment.LEFT
                 ) {
-                    content()
+                    content()  //Panel content passed in as composable lambda
                 }
             }
         }

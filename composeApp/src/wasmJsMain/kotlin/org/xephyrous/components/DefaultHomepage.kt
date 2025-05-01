@@ -18,8 +18,21 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import org.xephyrous.data.ViewModel
 
+/**
+ * Template composable used for structuring the homepage layout.
+ *
+ * This layout includes a top bar, main content area, and a sidebar aligned to the right.
+ * The sidebar contains navigation buttons, while the center displays dynamic content and alerts.
+ *
+ * @param coroutineScope The scope for executing coroutines within this layout.
+ * @param viewModel The application's shared [ViewModel] containing state and data.
+ * @param textSize Optional parameter to adjust the font size used in the sidebar (default is 14sp).
+ * @param alignment Determines the title alignment for sidebar outline boxes (default is [OutlineBoxTitleAlignment.OVERHANG]).
+ * @param alignmentSpacing Space between the title and content in sidebar items (default is 30.dp).
+ * @param alertHandler Handler for displaying alert popups using [AlertBox].
+ * @param content The main screen content to be shown in the center column of the layout.
+ */
 @Composable
-//Default page for the homepage
 fun homepageTemplate(
     coroutineScope: CoroutineScope,
     viewModel: ViewModel,
@@ -37,7 +50,7 @@ fun homepageTemplate(
                 alertHandler.createAlert()
             }
         }
-        //Sidebar for all buttons located on the right side of screen
+        //Sidebar for navigation and additional actions
         homeSidebar(coroutineScope, viewModel, textSize, alignment, alignmentSpacing)
     }
 }

@@ -11,8 +11,17 @@ import org.jetbrains.compose.resources.painterResource
 import platformx.composeapp.generated.resources.Res
 import platformx.composeapp.generated.resources.logo
 
+/**
+ * Top bar composable displaying the website's logo.
+ *
+ * This composable creates a horizontal container ([Box]) with a fixed height,
+ * displaying the site logo centered within it. The image is loaded from the
+ * [Res.drawable.logo] resource and intended to serve as branding at the top of the screen.
+ *
+ * - Uses [Image] to render the logo.
+ * - Container fills the width and has a height of 75dp.
+ */
 @Composable
-//formatting for website image(logo)
 fun topBar() {
     Box(
         Modifier

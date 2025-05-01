@@ -14,10 +14,20 @@ import org.xephyrous.components.outlineText
 import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.About
 import platformx.composeapp.generated.resources.Res
-
-//About Page, Uses defaultScreen component as basic format for page
+/**
+ * Displays the "About" screen using a standardized layout provided by [defaultScreen].
+ *
+ * This screen explains what "PlatformX" and "Xephyrous" are using styled text containers.
+ *
+ * @param coroutineScope The coroutine scope used for managing asynchronous tasks within the screen.
+ * @param viewModel The shared [ViewModel] instance for accessing UI and business logic.
+ * @param alertHandler An [AlertBox] handler used for displaying alerts or messages.
+ * @param modifier Optional [Modifier] for layout customization.
+ */
 @Composable
 fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox, modifier: Modifier = Modifier) {
+
+    //Base layout structure for the screen with title and icon.
     defaultScreen(
         coroutineScope,
         viewModel,
@@ -25,7 +35,7 @@ fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
         painter = painterResource(Res.drawable.About),
         alertHandler = alertHandler,
     ) {
-        //Create Column for proper formating for textbox to line up in middle of page
+        //Centered column layout for placing content vertically
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -34,8 +44,7 @@ fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            //Using outlineText component to get white box with text in for each, maxLines is used to fit all the words
-
+            //First outlined text section explaining PlatformX
             outlineText(
                 title = "What is PlatformX?",
                 size = DpSize(600.dp, 160.dp),
@@ -44,8 +53,9 @@ fun About(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                         "This includes easy scheduling of events between parties and content uploads by administrators."
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(30.dp)) //Adds spacing between the sections
 
+            //Second outlined text section explaining Xephyrous
             outlineText(
                 title = "What is Xephyrous?",
                 size = DpSize(600.dp, 160.dp),

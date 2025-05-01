@@ -15,10 +15,27 @@ import org.xephyrous.data.ViewModel
 import platformx.composeapp.generated.resources.Contact
 import platformx.composeapp.generated.resources.Res
 
+/**
+ * Contact page for displaying contact information.
+ *
+ * This composable creates a contact page with the following:
+ * - Displays a title "Contact" in the top bar using [defaultScreen].
+ * - Shows three sections with contact information (Email, Website, GitHub) inside
+ *   a centered column layout.
+ * - Each section is styled with the [outlineText] component, which provides a
+ *   white box with text.
+ *
+ * The layout is designed to be centered, and each piece of contact information is
+ * separated by a 30dp space.
+ *
+ * @param coroutineScope The coroutine scope used for launching asynchronous tasks.
+ * @param viewModel The [ViewModel] that holds the app's data and business logic.
+ * @param alertHandler The [AlertBox] used for displaying alerts.
+ */
 
 @Composable
-//Contact Page, using defaultScreen component for basic format of page
 fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: AlertBox) {
+    //Base layout structure for the screen with title and icon.
     defaultScreen(coroutineScope, viewModel, title = "Contact", painter = painterResource(Res.drawable.Contact), alertHandler = alertHandler) {
         Column(
             modifier = Modifier
@@ -27,8 +44,7 @@ fun Contact(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: 
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //Using outlineText component to get white box with text in it for each
-
+            //Using outlineText component to display each contact info section
             outlineText(
                 title = "EMAIL",
                 size = DpSize(300.dp, 50.dp),
