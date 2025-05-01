@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.xephyrous.UserRole
 import org.xephyrous.apis.Firebase
 import org.xephyrous.components.*
 import org.xephyrous.data.*
@@ -60,6 +61,10 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
         var adminPanel by remember { mutableStateOf(false) }
         var openPanel by remember { mutableStateOf("") }
 
+        var userList: List<Pair<String, UserData>> by remember { mutableStateOf(listOf()) }
+
+        var user: Pair<String, UserData> by remember { mutableStateOf(Pair("", UserData(UserRole.User))) }
+
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -79,8 +84,19 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                 alignment = OutlineBoxTitleAlignment.RIGHT,
                 contentDescription = "Modify users button",
             ) {
-                openPanel = "Modify Users"
-                adminPanel = true
+                coroutineScope.launch {
+                    Firebase.Firestore.listDocuments<UserData>(
+                        path = "users",
+                        idToken = viewModel.firebaseUserInfo!!.idToken
+                    ).onSuccess {
+                        userList = it.toList()
+                    }.onFailure {
+                        alertHandler.displayAlert("Load Fail", "Failed to load events: ${it.message}")
+                    }
+                    openPanel = "Modify Users"
+
+                    adminPanel = true
+                }
             }
 
             clickableOutlineImage(
@@ -116,10 +132,185 @@ fun Admin(coroutineScope: CoroutineScope, viewModel: ViewModel, alertHandler: Al
                 adminPanel, closeHandler = { adminPanel = false }
             ) {
                 when(openPanel)
-                //Modify Users Panel for Admin to Update User Role, or remove User
+                    //Modify Users Panel for Admin to Update User Role, or remove User
                 {
                     "Modify Users" -> {
                         // user list
+                        Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "Modify Users",
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.weight(1f).padding(horizontal = 10.dp)
+                                )
+                            }
+                            LazyColumn (
+                                Modifier.fillMaxSize().scrollable(rememberScrollState(), Orientation.Vertical),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                items(userList.size) { index ->
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    outlineBox(
+                                        title = userList[index].first, DpSize(boxWidth - 246.dp, 100.dp),
+                                    ) {
+                                        Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                                            Column(Modifier.fillMaxHeight().weight(1f)) {
+                                                Text(
+                                                    text = "Role: " + userList[index].second.role.toString(),
+                                                    maxLines = 1,
+                                                    color = Color.White,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 20.sp,
+                                                    textAlign = TextAlign.Left,
+                                                    modifier = Modifier.weight(1f).fillMaxWidth().padding(10.dp)
+                                                )
+                                            }
+                                            if (userList[index].second.role == UserRole.User) {
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                outlineBoxTitleless(DpSize(200.dp, 50.dp)) {
+                                                    Box(Modifier.fillMaxSize().clickable{
+
+                                                        user = userList[index]
+
+                                                        coroutineScope.launch {
+                                                            if (adminUpdate) return@launch // guard clause
+                                                            adminUpdate = true
+                                                            user =  Pair(user.first, user.second.copy(
+                                                                role = UserRole.Admin
+                                                            ))
+
+                                                            // Push changes to database
+                                                            Firebase.Firestore.updateDocument(
+                                                                "users/${user.first}",
+                                                                viewModel.firebaseUserInfo!!.idToken,
+                                                                user.second
+                                                            )
+                                                            adminUpdate = false
+                                                        }
+                                                    }) {
+                                                        Text(
+                                                            text = "Make Admin",
+                                                            color = Color.White,
+                                                            fontWeight = FontWeight.Bold,
+                                                            fontSize = 20.sp,
+                                                            textAlign = TextAlign.Center,
+                                                            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).align(Alignment.Center)
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                            outlineBoxTitleless(DpSize(200.dp, 50.dp)) {
+                                                Box(Modifier.fillMaxSize().clickable{
+                                                    user = userList[index]
+                                                    openPanel = "Edit User"
+                                                }) {
+                                                    Text(
+                                                        text = "Edit Events",
+                                                        color = Color.White,
+                                                        fontWeight = FontWeight.Bold,
+                                                        fontSize = 20.sp,
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).align(Alignment.Center)
+                                                    )
+                                                }
+                                            }
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                }
+                            }
+                        }
+                    }
+                    "Edit User" -> {
+                        Column {
+                            Row(Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "Remove Events",
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.weight(1f).padding(horizontal = 10.dp)
+                                )
+                                IconButton(
+                                    onClick = { openPanel = "Modify Users" },
+                                    modifier = Modifier.size(25.dp),
+                                    enabled = true,
+                                ) {
+                                    Icon(Icons.AutoMirrored.Sharp.ArrowBackIos, contentDescription = "Go Back", Modifier.fillMaxSize(), tint = Color.White)
+                                }
+                            }
+                            LazyColumn (
+                                Modifier.fillMaxSize().scrollable(rememberScrollState(), Orientation.Vertical),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                items(user.second.events.size) { index ->
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    outlineBox(
+                                        title = user.second.events[index].name, DpSize(boxWidth - 246.dp, 100.dp),
+                                    ) {
+                                        Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                                            Column(Modifier.fillMaxHeight().weight(1f)) {
+                                                Text(
+                                                    text = user.second.events[index].description.take(50) + if (user.second.events[index].description.length > 50) "..." else "",
+                                                    maxLines = 1,
+                                                    color = Color.White,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 20.sp,
+                                                    textAlign = TextAlign.Left,
+                                                    modifier = Modifier.weight(1f).fillMaxWidth().padding(10.dp)
+                                                )
+                                                Text(
+                                                    text = user.second.events[index].location + " | " + user.second.events[index].time,
+                                                    maxLines = 1,
+                                                    color = Color.Gray,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 14.sp,
+                                                    textAlign = TextAlign.Left,
+                                                    modifier = Modifier.fillMaxWidth().padding(10.dp)
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                            outlineBoxTitleless(DpSize(150.dp, 50.dp)) {
+                                                Box(Modifier.fillMaxSize().clickable{
+                                                    coroutineScope.launch {
+                                                        if (adminUpdate) return@launch // guard clause
+                                                        adminUpdate = true
+                                                        user =  Pair(user.first, user.second.copy(
+                                                            events = user.second.events.filterNot { it == user.second.events[index] }
+                                                        ))
+
+                                                        // Push changes to database
+                                                        Firebase.Firestore.updateDocument(
+                                                            "users/${user.first}",
+                                                            viewModel.firebaseUserInfo!!.idToken,
+                                                            user.second
+                                                        )
+                                                        adminUpdate = false
+                                                    }
+                                                }) {
+                                                    Text(
+                                                        text = "REMOVE",
+                                                        color = Color.White,
+                                                        fontWeight = FontWeight.Bold,
+                                                        fontSize = 20.sp,
+                                                        textAlign = TextAlign.Center,
+                                                        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).align(Alignment.Center)
+                                                    )
+                                                }
+                                            }
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                }
+                            }
+                        }
                     }
                     //Modify Events Panel for Admin to Add, Remove, or Modify Events
                     "Modify Events" -> {
