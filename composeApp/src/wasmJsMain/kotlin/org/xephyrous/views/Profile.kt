@@ -16,7 +16,6 @@ import platformx.composeapp.generated.resources.entire_network
 
 /**
  * Displays the Profile screen.
- *
  * This composable lays out the user's profile view, showing their profile image,
  * email, and role. It wraps the content inside a defaultScreen layout.
  *

@@ -18,7 +18,6 @@ import platformx.composeapp.generated.resources.Res
  * Displays the "About" screen using a standardized layout provided by [defaultScreen].
  *
  * This screen explains what "PlatformX" and "Xephyrous" are using styled text containers.
- *
  * @param coroutineScope The coroutine scope used for managing asynchronous tasks within the screen.
  * @param viewModel The shared [ViewModel] instance for accessing UI and business logic.
  * @param alertHandler An [AlertBox] handler used for displaying alerts or messages.
