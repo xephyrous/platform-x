@@ -35,7 +35,6 @@ import platformx.composeapp.generated.resources.Res
 
 /**
  * Finds events in the user's calendar that match the given [localDate].
- *
  * @param localDate the date to search for.
  * @param viewModel the ViewModel containing the user's data.
  * @return a list of events happening on the specified date.
