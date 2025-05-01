@@ -26,6 +26,7 @@ import org.xephyrous.data.ViewModel
  * which typically includes navigation buttons or visual cues (e.g., images).
  * It also supports dynamic alerts via the provided [AlertBox].
  *
+ *
  * @param coroutineScope The coroutine scope used for async operations in this screen.
  * @param viewModel The shared application [ViewModel] holding global state.
  * @param title Title to be displayed in the sidebar.

@@ -311,6 +311,7 @@ fun outlineBox(
  * A composable function that renders a box without a title.
  * This is useful for when you want a container without the need for a title.
  *
+ *
  * @param size The size of the box. Defaults to a width of 200dp and height of 75dp.
  * @param content A composable lambda that defines the content inside the box.
  */

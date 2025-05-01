@@ -33,6 +33,7 @@ import kotlinx.coroutines.*
  * The alert appears at the bottom of the screen and automatically disappears after a short duration (3 seconds).
  * The alert box can be dismissed by clicking anywhere outside the box.
  *
+ *
  * The alert box uses animation for both appearance and disappearance:
  * - It fades in when shown.
  * - It fades out after the specified duration or when clicked.

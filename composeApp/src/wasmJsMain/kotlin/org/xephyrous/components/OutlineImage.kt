@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.*
  *
  * Commonly used for static image content with a labeled border.
  *
+ *
  * @param title The title displayed at the top of the outline box.
  * @param size The size of the entire outline box.
  * @param textSize The size of the title text (default: 14sp).

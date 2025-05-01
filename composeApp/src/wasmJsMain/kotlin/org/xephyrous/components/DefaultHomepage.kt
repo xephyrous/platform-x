@@ -24,6 +24,7 @@ import org.xephyrous.data.ViewModel
  * This layout includes a top bar, main content area, and a sidebar aligned to the right.
  * The sidebar contains navigation buttons, while the center displays dynamic content and alerts.
  *
+ *
  * @param coroutineScope The scope for executing coroutines within this layout.
  * @param viewModel The application's shared [ViewModel] containing state and data.
  * @param textSize Optional parameter to adjust the font size used in the sidebar (default is 14sp).

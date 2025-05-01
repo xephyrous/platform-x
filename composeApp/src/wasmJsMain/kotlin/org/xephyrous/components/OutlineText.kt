@@ -108,6 +108,7 @@ fun outlineTextTitleless(
  * This composable places text inside a clickable box without a title. The text is centered and can handle multiple lines.
  * The box becomes clickable and triggers the provided [onClick] lambda function.
  *
+ *
  * @param size The size of the outline box.
  * @param xOffset The horizontal offset of the box, default is 0.dp.
  * @param yOffset The vertical offset of the box, default is 0.dp.

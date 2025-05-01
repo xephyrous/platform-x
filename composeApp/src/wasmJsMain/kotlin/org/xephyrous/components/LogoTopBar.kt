@@ -18,6 +18,7 @@ import platformx.composeapp.generated.resources.logo
  * displaying the site logo centered within it. The image is loaded from the
  * [Res.drawable.logo] resource and intended to serve as branding at the top of the screen.
  *
+ *
  * - Uses [Image] to render the logo.
  * - Container fills the width and has a height of 75dp.
  */

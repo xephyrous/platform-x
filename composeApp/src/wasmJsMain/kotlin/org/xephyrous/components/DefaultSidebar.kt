@@ -23,6 +23,7 @@ import platformx.composeapp.generated.resources.*
  * The sidebar includes clickable images for each screen depending on the user's role.
  * The sidebar adapts for `UserRole.User`, `UserRole.Admin`, and `UserRole.Anonymous`.
  *
+ *
  * @param coroutineScope Coroutine scope used to launch asynchronous tasks.
  * @param viewModel ViewModel to manage screen navigation and visibility.
  * @param title The title for the sidebar.

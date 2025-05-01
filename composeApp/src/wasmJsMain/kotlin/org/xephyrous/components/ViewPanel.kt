@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
  * its size (width and height) using the `animateDpAsState` function to smoothly adjust the panel's size
  * when it opens or closes.
  *
+ *
  * @param panelTitle The title displayed in the panel's header.
  * @param startingSize The initial size of the panel when it is closed.
  * @param openSize The size of the panel when it is opened.

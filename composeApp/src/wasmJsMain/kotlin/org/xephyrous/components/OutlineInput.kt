@@ -31,6 +31,7 @@ import org.xephyrous.data.CallbackStore
  * can be customized for size, title, alignment, and more. The `CallbackStore` is used
  * to invoke a callback function when the text changes.
  *
+ *
  * @param title The title to be displayed above the input field.
  * @param size The size of the outline box containing the input field.
  * @param callbackStore A `CallbackStore` used to manage callbacks when the value changes.
