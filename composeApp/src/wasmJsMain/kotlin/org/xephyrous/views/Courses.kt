@@ -35,6 +35,7 @@ import platformx.composeapp.generated.resources.Res
  * Displays the Courses screen, showing a list of courses fetched from Firebase Firestore.
  * Each course can be clicked to show detailed info in a dialog panel.
  *
+ *
  * @param coroutineScope Scope for launching coroutines.
  * @param viewModel The shared application state and user/course data.
  * @param alertHandler A component used to show error messages if needed.

@@ -31,6 +31,7 @@ import platformx.composeapp.generated.resources.entire_network
  * - Sections for upcoming events and featured courses, displayed inside [outlineBox] components.
  *   These sections only appear if there are events or courses available and the user is logged in.
  *
+ *
  * @param coroutineScope The coroutine scope for running asynchronous tasks.
  * @param viewModel The [ViewModel] holding the application's data (like events and courses).
  * @param alertHandler The [AlertBox] for displaying any alerts or errors.

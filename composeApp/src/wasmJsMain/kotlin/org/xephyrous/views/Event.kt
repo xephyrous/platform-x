@@ -33,6 +33,7 @@ import platformx.composeapp.generated.resources.Res
 /**
  * Helper function to check if the user is enrolled in a given event.
  *
+ *
  * @param event The event to check enrollment status for.
  * @param viewModel The shared ViewModel containing user data.
  * @return `true` if the user is currently enrolled in the given event, `false` otherwise.

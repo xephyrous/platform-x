@@ -27,7 +27,6 @@ import platformx.composeapp.generated.resources.Res
  *
  * The layout is designed to be centered, and each piece of contact information is
  * separated by a 30dp space.
- *
  * @param coroutineScope The coroutine scope used for launching asynchronous tasks.
  * @param viewModel The [ViewModel] that holds the app's data and business logic.
  * @param alertHandler The [AlertBox] used for displaying alerts.
