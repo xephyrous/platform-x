@@ -11,7 +11,13 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.xephyrous.js.encodeURIComponent
 
+/**
+ * Singleton object that provides HTTP client utilities for performing RESTful API requests.
+ */
 object HttpClient {
+    /**
+     * A pre-configured Ktor [HttpClient] instance for making requests with JSON support.
+     */
     val client = HttpClient(Js) {
         install(ContentNegotiation) {
             json(Json {
@@ -22,6 +28,15 @@ object HttpClient {
         }
     }
 
+    /**
+     * Performs an HTTP GET request.
+     *
+     * @param url The URL to send the request to.
+     * @param headers Optional HTTP headers.
+     * @param params Optional query parameters.
+     *
+     * @return The deserialized response body of type [T].
+     */
     suspend inline fun <reified T> get(
         url: String,
         headers: Map<String, String> = emptyMap(),
@@ -36,6 +51,16 @@ object HttpClient {
         return response.body()
     }
 
+    /**
+     * Performs an HTTP POST request.
+     *
+     * @param url The endpoint to which the POST request is sent.
+     * @param body The body payload to send.
+     * @param headers Optional HTTP headers.
+     * @param params Optional query parameters.
+     *
+     * @return The raw [HttpResponse].
+     */
     suspend inline fun <reified T : Any> post(
         url: String,
         body: T,
@@ -58,6 +83,15 @@ object HttpClient {
         }
     }
 
+    /**
+     * Performs an HTTP PUT request.
+     *
+     * @param url The endpoint to which the PUT request is sent.
+     * @param body The request payload.
+     * @param headers Optional HTTP headers.
+     *
+     * @return The raw [HttpResponse].
+     */
     suspend inline fun <reified T : Any> put(
         url: String,
         body: T,
@@ -70,6 +104,14 @@ object HttpClient {
         }
     }
 
+    /**
+     * Performs an HTTP DELETE request.
+     *
+     * @param url The URL of the resource to delete.
+     * @param headers Optional HTTP headers.
+     *
+     * @return The raw [HttpResponse].
+     */
     suspend fun delete(
         url: String,
         headers: Map<String, String> = emptyMap()
@@ -78,6 +120,17 @@ object HttpClient {
             headers.forEach { (key, value) -> header(key, value) }
         }
     }
+
+    /**
+     * Performs an HTTP PATCH request.
+     *
+     * @param url The endpoint to which the PATCH request is sent.
+     * @param body The body payload to send.
+     * @param headers Optional HTTP headers.
+     * @param params Optional query parameters.
+     *
+     * @return The raw [HttpResponse].
+     */
     suspend inline fun <reified T : Any> patch(
         url: String,
         body: T,
@@ -99,5 +152,4 @@ object HttpClient {
             setBody(Json.encodeToString(body))  // serialize body to JSON
         }
     }
-
 }

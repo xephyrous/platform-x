@@ -4,6 +4,14 @@ import kotlinx.browser.window
 import org.xephyrous.js.decodeURIComponent
 import org.xephyrous.js.encodeURIComponent
 
+/**
+ * Utility function to build a complete URL with query parameters.
+ *
+ * @param url The base URL to which parameters will be appended.
+ * @param params A map of query parameters and their corresponding values.
+ *
+ * @return The constructed URL with encoded query parameters.
+ */
 fun buildURI(
     url: String,
     params: Map<String, String>
@@ -15,6 +23,11 @@ fun buildURI(
     return "$url$separator$encodedParams"
 }
 
+/**
+ * Retrieves all URL parameters, including both query parameters and hash fragment parameters.
+ *
+ * @return A map of URL parameters and their corresponding values.
+ */
 fun getAllUrlParams(): Map<String, String> {
     val params = mutableMapOf<String, String>()
 
